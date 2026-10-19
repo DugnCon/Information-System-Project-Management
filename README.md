@@ -22,3 +22,4 @@ Nội dung chính: quản lý rủi ro dự án, chỉ số RII, ma trận xác 
 Kế hoạch làm việc theo ngày: [PLAN.md](PLAN.md)
 
 Hạn nộp: 04/11/2026.
+"# Qu-n-l-d-n-HTTT" 
