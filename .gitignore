@@ -1,0 +1,23 @@
+# Tài liệu gốc (slide của cô, bài mẫu của sinh viên khác) – không đưa lên repo công khai
+/*.pdf
+
+# LaTeX
+*.aux
+*.log
+*.out
+*.toc
+*.lof
+*.lot
+*.bbl
+*.blg
+*.synctex.gz
+*.fls
+*.fdb_latexmk
+
+# Python / R
+__pycache__/
+.ipynb_checkpoints/
+.Rhistory
+.RData
+.Rproj.user/
+.venv/
