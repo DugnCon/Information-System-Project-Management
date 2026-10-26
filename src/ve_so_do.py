@@ -159,8 +159,48 @@ def ve_mo_hinh():
     plt.close(fig)
 
 
+def ve_quy_trinh():
+    """Lưu đồ quy trình tái hiện thực nghiệm: hai hướng song song từ bài báo tới so sánh kết quả."""
+    fig, ax = plt.subplots(figsize=(13, 7))
+    ax.set_xlim(0, 13)
+    ax.set_ylim(0, 7.4)
+    ax.axis("off")
+
+    def mui_ten(x0, y0, x1, y1):
+        ax.annotate("", xy=(x1, y1), xytext=(x0, y0), arrowprops=dict(arrowstyle="-|>", color="#555", lw=1.2))
+
+    hop(ax, 6.5, 6.75, "Bài báo Kassem (2022)\nkhông công bố dữ liệu gốc", "#3d5a80", w=3.6, h=0.8, co=10,
+        dam=True, chu_mau="white")
+    hop(ax, 3.0, 5.45, "HƯỚNG 1\nKiểm tra số liệu đã công bố", "#cfe2f3", w=3.4, h=0.8, co=10, dam=True)
+    hop(ax, 10.0, 5.45, "HƯỚNG 2\nPhân tích trên dữ liệu mô phỏng", "#fce5cd", w=3.4, h=0.8, co=10, dam=True)
+    mui_ten(5.2, 6.6, 3.6, 5.85)
+    mui_ten(7.8, 6.6, 9.4, 5.85)
+
+    trai = ["Gõ lại 10 bảng thành CSV\n(dựng lại Bảng 9 từ các đường chéo)",
+            "Tính lại RII, mức PIM, AVE, CR,\n√AVE, Q², GoF, f², SE = β/t",
+            "Đối chiếu với số in trong bài\n(sai số làm tròn ± 0,0015)"]
+    phai = ["Sinh 314 phiếu theo tham số công bố\n(Bảng 7, 8, 9, 11)",
+            "Cronbach's α → RII → PIM →\nPLS-SEM bậc 2 (lặp chỉ báo)",
+            "Bootstrapping 5000 lần, blindfolding,\nHTMT, tổng hiệu ứng"]
+    for k, (a, b) in enumerate(zip(trai, phai)):
+        y = 4.3 - k * 1.15
+        hop(ax, 3.0, y, a, "white", w=3.9, h=0.8, co=9)
+        hop(ax, 10.0, y, b, "white", w=3.9, h=0.8, co=9)
+        mui_ten(3.0, y + 0.75 if k else 5.05, 3.0, y + 0.42)
+        mui_ten(10.0, y + 0.75 if k else 5.05, 10.0, y + 0.42)
+
+    hop(ax, 6.5, 0.55, "So sánh với bài báo: chỗ khớp, chỗ lệch, nguyên nhân\n→ Chương 3 và phần phản biện ở Chương 4",
+        "#d9ead3", w=5.6, h=0.8, co=10, dam=True)
+    mui_ten(3.0, 1.55, 4.8, 0.95)
+    mui_ten(10.0, 1.55, 8.2, 0.95)
+    fig.tight_layout()
+    fig.savefig(OUT / "quy_trinh_tai_hien.png", dpi=200, bbox_inches="tight")
+    plt.close(fig)
+
+
 if __name__ == "__main__":
     OUT.mkdir(parents=True, exist_ok=True)
     ve_so_do_tu_duy()
     ve_mo_hinh()
+    ve_quy_trinh()
     print("Đã vẽ:", *sorted(p.name for p in OUT.glob("*.png")))
