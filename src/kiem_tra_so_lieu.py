@@ -297,6 +297,37 @@ def kiem_tra_cau_truc(ave_df):
     ghi()
 
 
+def kiem_tra_nhat_quan_cau_truc():
+    """R² và f² của bài báo có khớp với β và tương quan Nội bộ – Bên ngoài suy ra từ Bảng 9 không?
+    Với 2 biến giải thích chuẩn hoá: R² = β1² + β2² + 2·β1·β2·r; bỏ biến 1 thì R² = (β2 + β1·r)²."""
+    fl = pd.read_csv(DATA / "bang9_fornell_larcker.csv", index_col=0)
+    M = fl.values.copy()
+    M = np.where(np.isnan(M), M.T, M)
+    np.fill_diagonal(M, 1.0)
+    C = pd.DataFrame(M, index=fl.index, columns=fl.columns)
+    nb, bn = ["CL", "CO", "CN", "FD", "TC", "RM", "MR"], ["EC", "PO", "LP", "EN", "SE", "FM"]
+    # tương quan giữa trung bình các nhóm nội bộ và trung bình các nhóm bên ngoài
+    r = C.loc[nb, bn].values.sum() / np.sqrt(C.loc[nb, nb].values.sum() * C.loc[bn, bn].values.sum())
+    b1, b2 = 0.200, 0.673
+    r2 = b1 ** 2 + b2 ** 2 + 2 * b1 * b2 * r
+    f2_nb = (r2 - (b2 + b1 * r) ** 2) / (1 - r2)
+    f2_bn = (r2 - (b1 + b2 * r) ** 2) / (1 - r2)
+    ghi("## 9. R², β và f² có nhất quán với tương quan ở Bảng 9 không?")
+    ghi()
+    ghi("Với hai biến giải thích chuẩn hoá có tương quan r: R² = β₁² + β₂² + 2β₁β₂r, và khi bỏ biến 1 thì R² còn (β₂ + β₁r)². "
+        "Lấy r = tương quan giữa trung bình 7 nhóm nội bộ và trung bình 6 nhóm bên ngoài, tính từ Bảng 9.")
+    ghi()
+    ghi(f"- r suy ra = {r:.3f}")
+    ghi(f"- R² suy ra = {r2:.3f} (bài báo 0.720) → {khop(r2, 0.720, 0.005)}")
+    ghi(f"- f² nội bộ suy ra = {f2_nb:.3f} (bài báo 0.042) → {khop(f2_nb, 0.042, 0.005)}")
+    ghi(f"- f² bên ngoài suy ra = {f2_bn:.3f} (bài báo 0.471) → chênh {f2_bn - 0.471:+.3f}")
+    ghi()
+    ghi("r ở đây là xấp xỉ: bài báo dùng trọng số PLS (không công bố) chứ không lấy trung bình đều các nhóm, và f² "
+        "rất nhạy với r. Với sai lệch nhỏ như trên, có thể kết luận phần mô hình cấu trúc bậc 2 (β, R², f²) gần như "
+        "nhất quán với ma trận tương quan của chính bài báo, khác với các chỉ số đo lường ở mục 3–4 và 7.")
+    ghi()
+
+
 def ve_rii(rii):
     df = rii.sort_values("rii_tong")
     fig, ax = plt.subplots(figsize=(8, 5.5))
@@ -327,6 +358,7 @@ def main():
     ave = kiem_tra_do_luong()
     kiem_tra_fornell_larcker()
     kiem_tra_cau_truc(ave)
+    kiem_tra_nhat_quan_cau_truc()
     ve_rii(rii)
 
     (ROOT / "results" / "kiem-tra-so-lieu.md").write_text("\n".join(bao_cao), encoding="utf-8")

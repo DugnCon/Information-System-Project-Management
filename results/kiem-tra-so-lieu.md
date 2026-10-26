@@ -158,3 +158,14 @@ f² = (R²_có − R²_bỏ) / (1 − R²_có) ⇒ R²_bỏ = R²_có − f² ×
 - Bỏ rủi ro bên ngoài (f² = 0.471): R² còn 0.588
 
 Bỏ rủi ro bên ngoài mà R² vẫn còn 0.588 nghĩa là riêng rủi ro nội bộ đã giải thích được ~59%. Như vậy hai nhóm chồng lấn nhau rất nhiều, phù hợp với tương quan cao ở Bảng 9.
+
+## 9. R², β và f² có nhất quán với tương quan ở Bảng 9 không?
+
+Với hai biến giải thích chuẩn hoá có tương quan r: R² = β₁² + β₂² + 2β₁β₂r, và khi bỏ biến 1 thì R² còn (β₂ + β₁r)². Lấy r = tương quan giữa trung bình 7 nhóm nội bộ và trung bình 6 nhóm bên ngoài, tính từ Bảng 9.
+
+- r suy ra = 0.831
+- R² suy ra = 0.717 (bài báo 0.720) → khớp
+- f² nội bộ suy ra = 0.044 (bài báo 0.042) → khớp
+- f² bên ngoài suy ra = 0.494 (bài báo 0.471) → chênh +0.023
+
+r ở đây là xấp xỉ: bài báo dùng trọng số PLS (không công bố) chứ không lấy trung bình đều các nhóm, và f² rất nhạy với r. Với sai lệch nhỏ như trên, có thể kết luận phần mô hình cấu trúc bậc 2 (β, R², f²) gần như nhất quán với ma trận tương quan của chính bài báo, khác với các chỉ số đo lường ở mục 3–4 và 7.
