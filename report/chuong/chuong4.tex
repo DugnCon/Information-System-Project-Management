@@ -1,10 +1,84 @@
 \chapter{Ví dụ thực tế và phân tích mở rộng}
 \label{chuong:mo-rong}
 
-\section{Ví dụ 1: Dự án dầu khí tại Việt Nam}
+Chương này áp dụng khung phân tích của bài báo vào hai trường hợp thực tế. Trường hợp thứ nhất là một dự án xây dựng của ngành dầu khí Việt Nam. Trường hợp thứ hai là một dự án hệ thống thông tin, lĩnh vực của môn học. Phần cuối chương trình bày các phân tích mở rộng và đánh giá phản biện bài báo.
+
+\section{Ví dụ 1: Dự án Nhà máy Nhiệt điện Thái Bình 2}
+\label{sec:thai-binh-2}
+
+\subsection{Giới thiệu dự án}
+
+Nhà máy Nhiệt điện Thái Bình 2 (công suất $2 \times 600$~MW) do Tập đoàn Dầu khí Việt Nam (PVN) làm chủ đầu tư. Tổng công ty Cổ phần Xây lắp Dầu khí Việt Nam (PVC), một đơn vị thành viên của PVN, được chỉ định làm tổng thầu EPC (thiết kế, mua sắm, xây dựng). Đây là dự án xây dựng do một tập đoàn dầu khí quốc gia làm chủ đầu tư và đơn vị xây lắp dầu khí thi công, nên phù hợp để đối chiếu với đối tượng nghiên cứu của bài báo. Bảng~\ref{tab:tb2} tóm tắt các mốc chính.
+
+\begin{table}[H]
+\centering
+\caption{Các mốc chính của dự án Nhiệt điện Thái Bình 2 (tổng hợp từ~\cite{bdt2020tb2,moit2023tb2,investor2023tb2})}
+\label{tab:tb2}
+\begin{tabularx}{\textwidth}{@{}lX@{}}
+\toprule
+\textbf{Nội dung} & \textbf{Thông tin} \\
+\midrule
+Tổng mức đầu tư ban đầu (7/2010) & 31.505,4 tỷ đồng \\
+Tổng mức đầu tư sau 2 lần điều chỉnh (2011, 2016) & 41.799,1 tỷ đồng (tăng 32,7\%) \\
+Khởi công & Năm 2011 \\
+Thời gian thực hiện gói thầu EPC theo kế hoạch & 45 tháng \\
+Gián đoạn & Công trường gần như dừng, đến tháng 8/2018 mới hoạt động lại \\
+Lãi vay phát sinh giai đoạn 2016--2019 & 81,867 triệu USD \\
+Khánh thành & 27/4/2023, chậm khoảng 7--8 năm so với kế hoạch \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Nguyên nhân theo kết luận thanh tra}
+
+Theo kết luận của Thanh tra Chính phủ công bố năm 2020~\cite{bdt2020tb2}, các nguyên nhân chính gồm:
+\begin{itemize}
+  \item \textbf{Chỉ định thầu không đúng quy định.} PVN chỉ định PVC làm tổng thầu EPC khi chưa đủ điều kiện, trái với Luật Đấu thầu số 61/2005/QH11 và Nghị định 85/2009/NĐ-CP. Thời gian thực hiện gói thầu 45 tháng cũng vượt mức pháp luật cho phép đối với gói chỉ định thầu.
+  \item \textbf{Năng lực nhà thầu không đáp ứng.} Trước khi được chỉ định, PVC chủ yếu làm xây dựng dân dụng và hạ tầng, chưa từng làm tổng thầu EPC cho một dự án nhiệt điện lớn. Sau khi ký hợp đồng, PVC không thực hiện đúng cam kết. Thanh tra xác định đây là nguyên nhân chính gây chậm tiến độ và tăng chi phí.
+  \item \textbf{Sai phạm trong điều chỉnh tổng mức đầu tư và giá hợp đồng EPC.} Thanh tra cũng chỉ ra trách nhiệm của Bộ Công Thương và các cá nhân liên quan.
+  \item \textbf{Hệ quả tài chính.} Riêng lãi vay phát sinh từ 2016 đến 2019 đã là 81,867 triệu USD.
+\end{itemize}
+
+\subsection{Đối chiếu với 13 nhóm rủi ro của bài báo}
+
+Bảng~\ref{tab:tb2-nhom} xếp các vấn đề của dự án vào 13 nhóm rủi ro trong mô hình của Kassem~\cite{kassem2022}.
+
+\begin{table}[H]
+\centering
+\caption{Các vấn đề của dự án Thái Bình 2 xếp theo nhóm rủi ro của bài báo}
+\label{tab:tb2-nhom}
+\begin{tabularx}{\textwidth}{@{}p{3.4cm}cX@{}}
+\toprule
+\textbf{Nhóm rủi ro} & \textbf{Loại} & \textbf{Biểu hiện ở dự án Thái Bình 2} \\
+\midrule
+Chủ đầu tư (CL) & Nội bộ & PVN chỉ định thầu khi chưa đủ điều kiện; chậm xử lý vướng mắc \\
+Nhà thầu (CO) & Nội bộ & PVC thiếu năng lực và kinh nghiệm tổng thầu EPC, không thực hiện đúng cam kết \\
+Đấu thầu và hợp đồng (TC) & Nội bộ & Chỉ định thầu sai luật; thời gian gói thầu vượt quy định; điều chỉnh giá hợp đồng sai \\
+Khả thi và thiết kế (FD) & Nội bộ & Tổng mức đầu tư phải điều chỉnh hai lần, tăng 32,7\% \\
+Quản lý dự án (MR) & Nội bộ & Tiến độ kéo dài, công trường có giai đoạn gần như dừng hẳn \\
+Kinh tế quốc gia (EC) & Bên ngoài & Chi phí lãi vay tăng mạnh khi dự án kéo dài \\
+Chính trị (PO) & Bên ngoài & Các vụ án và việc xử lý trách nhiệm cán bộ làm dự án bị đình trệ \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Nhận xét}
+
+Trường hợp Thái Bình 2 cho thấy một bức tranh \emph{ngược} với kết luận của bài báo. Ở Yemen, rủi ro bên ngoài (chính trị, kinh tế, an ninh) chiếm ưu thế với $\beta = 0{,}673$ so với $0{,}200$ của rủi ro nội bộ~\cite{kassem2022}. Ở Thái Bình 2, gần như toàn bộ nguyên nhân gốc đều là rủi ro \textbf{nội bộ}: chủ đầu tư, nhà thầu, đấu thầu và hợp đồng. Rủi ro bên ngoài chỉ xuất hiện như \emph{hệ quả}, khi dự án kéo dài thì lãi vay tăng và phát sinh các vụ việc pháp lý.
+
+Nhận xét này phù hợp với nghiên cứu của Thuyet và cộng sự~\cite{thuyet2007} về các dự án xây dựng dầu khí tại Việt Nam. Nghiên cứu đó xác định các rủi ro hàng đầu là thủ tục hành chính và phê duyệt kéo dài, thiết kế kém, năng lực đội ngũ dự án yếu, công tác đấu thầu chưa phù hợp và chủ đầu tư phê duyệt nội bộ chậm. Đó đều là rủi ro thuộc nhóm nội bộ hoặc gắn với cơ chế quản lý, không phải rủi ro an ninh hay chiến tranh.
+
+Từ đó có thể rút ra hai điểm:
+\begin{enumerate}
+  \item \textbf{Kết quả của bài báo phụ thuộc mạnh vào bối cảnh.} Mức độ ưu thế của rủi ro bên ngoài phản ánh tình trạng xung đột ở Yemen từ năm 2015, và không nên áp dụng nguyên vào môi trường chính trị ổn định như Việt Nam.
+  \item \textbf{Khung 13 nhóm rủi ro thì dùng lại được.} Mọi vấn đề của Thái Bình 2 đều xếp được vào các nhóm của bài báo. Bộ câu hỏi và mô hình có thể dùng để khảo sát lại trong bối cảnh Việt Nam, đúng với gợi ý ``nghiên cứu so sánh giữa các quốc gia'' ở mục 6.2 của bài báo.
+\end{enumerate}
 
 \section{Ví dụ 2: Quản lý rủi ro trong một dự án hệ thống thông tin}
+\label{sec:vi-du-httt}
 
 \section{Mô phỏng Monte Carlo tác động của rủi ro lên tiến độ}
+\label{sec:monte-carlo}
 
 \section{Đánh giá phản biện bài báo}
+\label{sec:phan-bien}
