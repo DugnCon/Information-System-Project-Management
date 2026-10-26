@@ -21,3 +21,7 @@ __pycache__/
 .RData
 .Rproj.user/
 .venv/
+
+# Thông tin đăng nhập, không bao giờ commit
+.env
+.env.*
