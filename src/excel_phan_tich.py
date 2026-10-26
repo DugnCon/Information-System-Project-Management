@@ -28,6 +28,20 @@ XANH = PatternFill("solid", fgColor="C6EFCE")
 NOI_BO = ["CL", "CO", "CN", "FD", "TC", "RM", "MR"]
 
 
+def hien_truc(bd):
+    """openpyxl 3.1 mặc định ẩn trục khi mở bằng Excel mới: bật lại trục, chú thích đặt dưới."""
+    bd.x_axis.delete = False
+    bd.y_axis.delete = False
+    if bd.title is not None:
+        bd.title.overlay = False
+    if bd.legend is not None:
+        bd.legend.position = "b"
+        bd.legend.overlay = False
+    bd.x_axis.title = None                               # tên trục dễ đè lên số; tiêu đề biểu đồ đã đủ rõ
+    bd.y_axis.title = None
+    return bd
+
+
 def tieu_de(ws, hang, ten_cot, rong=None, cot_dau=1):
     for i, t in enumerate(ten_cot):
         c = ws.cell(hang, cot_dau + i, t)
@@ -149,7 +163,7 @@ def sheet_rii(wb):
     ch.add_data(Reference(ws, min_col=3, max_col=4, min_row=4, max_row=cuoi), titles_from_data=True)
     ch.set_categories(Reference(ws, min_col=1, min_row=5, max_row=cuoi))
     ch.height, ch.width = 9, 16
-    ws.add_chart(ch, f"B{cuoi + 5}")
+    ws.add_chart(hien_truc(ch), f"B{cuoi + 5}")
     ws.freeze_panes = "C5"
 
 
@@ -202,7 +216,7 @@ def sheet_ave_cr(wb):
     ch.add_data(Reference(ws, min_col=8, max_col=9, min_row=4, max_row=hc), titles_from_data=True)
     ch.set_categories(Reference(ws, min_col=6, min_row=5, max_row=hc))
     ch.height, ch.width = 8, 18
-    ws.add_chart(ch, f"F{hc + 4}")
+    ws.add_chart(hien_truc(ch), f"F{hc + 4}")
 
 
 # ---------------------------------------------------------------- Fornell–Larcker
@@ -358,7 +372,7 @@ def sheet_mo_phong(wb):
     ch.add_data(Reference(ws, min_col=2, max_col=3, min_row=4, max_row=cuoi), titles_from_data=True)
     ch.set_categories(Reference(ws, min_col=1, min_row=5, max_row=cuoi))
     ch.height, ch.width = 8, 18
-    ws.add_chart(ch, f"A{cuoi + 4}")
+    ws.add_chart(hien_truc(ch), f"A{cuoi + 4}")
 
 
 def main():

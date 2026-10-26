@@ -20,6 +20,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from openpyxl import Workbook
+from openpyxl.chart import BarChart, LineChart, Reference
 from openpyxl.formatting.rule import CellIsRule
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 from openpyxl.utils import get_column_letter
@@ -30,6 +31,22 @@ FIG = ROOT / "results" / "figures"
 TAB = ROOT / "results" / "tables"
 SO_LAN = 10_000
 SEED = 2026
+
+
+def hien_truc(bd):
+    """openpyxl 3.1 mặc định ẩn trục khi mở bằng Excel mới: bật lại trục, chú thích đặt dưới."""
+    bd.x_axis.delete = False
+    bd.y_axis.delete = False
+    if bd.title is not None:
+        bd.title.overlay = False
+    if bd.legend is not None:
+        bd.legend.position = "b"
+        bd.legend.overlay = False
+    bd.x_axis.title = None                               # tên trục dễ đè lên số; tiêu đề biểu đồ đã đủ rõ
+    bd.y_axis.title = None
+    return bd
+
+
 HAN_CHOT = 95          # số ngày làm việc cam kết trong hợp đồng (giả định)
 
 # (mã, công việc, tiền nhiệm, lạc quan, khả dĩ nhất, bi quan) – đơn vị: ngày làm việc
@@ -246,6 +263,59 @@ def ghi_excel(ket_qua):
         o(ws, r, 3, round(float(b), 3), fmt=fmt)
     o(ws, 12, 1, "Dự phòng thời gian đề xuất (P80 − kế hoạch)", can="left", dam=True)
     o(ws, 12, 3, f"=C8-'Lịch trình'!C{len(CONG_VIEC) + 7}", fmt="0.0", dam=True)
+
+    # bảng tần suất (từ Python) + xác suất tích lũy (công thức) để vẽ biểu đồ Excel
+    bins = np.arange(int(tong_khong_rr.min()) // 5 * 5, int(tong.max()) // 5 * 5 + 10, 5)
+    dem0 = np.histogram(tong_khong_rr, bins)[0]
+    dem1 = np.histogram(tong, bins)[0]
+    tieu_de_cot = ["Đến ngày", "Số lần (không rủi ro)", "Số lần (có rủi ro)", "Tích lũy (có rủi ro)"]
+    for i, (t, w) in enumerate(zip(tieu_de_cot, [10, 14, 14, 14])):
+        c = ws.cell(4, 5 + i, t)
+        c.font = Font(name=FONT, size=10, bold=True, color="FFFFFF")
+        c.fill = PatternFill("solid", fgColor="1F4E78")
+        c.alignment = Alignment(horizontal="center", wrap_text=True)
+        ws.column_dimensions[get_column_letter(5 + i)].width = w
+    for k, (b, a0, a1) in enumerate(zip(bins[1:], dem0, dem1)):
+        r = 5 + k
+        o(ws, r, 5, int(b))
+        o(ws, r, 6, int(a0))
+        o(ws, r, 7, int(a1))
+        o(ws, r, 8, f"=SUM($G$5:G{r})/SUM($G$5:$G${4 + len(dem1)})", fmt="0%")
+    cuoi = 4 + len(dem1)
+    cot_ch = BarChart()
+    cot_ch.title = "Phân phối thời gian hoàn thành (10.000 lần mô phỏng)"
+    cot_ch.y_axis.title = "Số lần"
+    cot_ch.x_axis.title = "Thời gian hoàn thành (ngày)"
+    cot_ch.add_data(Reference(ws, min_col=6, max_col=7, min_row=4, max_row=cuoi), titles_from_data=True)
+    cot_ch.set_categories(Reference(ws, min_col=5, min_row=5, max_row=cuoi))
+    duong = LineChart()
+    duong.add_data(Reference(ws, min_col=8, min_row=4, max_row=cuoi), titles_from_data=True)
+    duong.y_axis.axId = 200
+    duong.y_axis.crosses = "max"
+    duong.y_axis.delete = False
+    duong.y_axis.scaling.min, duong.y_axis.scaling.max = 0, 1
+    cot_ch += duong
+    cot_ch.height, cot_ch.width = 9, 20
+    ws.add_chart(hien_truc(cot_ch), f"A{cuoi + 3}")
+
+    # sổ rủi ro: đóng góp kỳ vọng = xác suất × độ nhạy, và biểu đồ
+    rr = wb["Sổ rủi ro"]
+    c = rr.cell(4, 16, "Đóng góp kỳ vọng (ngày)")
+    c.font = Font(name=FONT, size=10, bold=True, color="FFFFFF")
+    c.fill = PatternFill("solid", fgColor="1F4E78")
+    c.alignment = Alignment(horizontal="center", wrap_text=True)
+    rr.column_dimensions["P"].width = 12
+    n_rr = len(RUI_RO)
+    for r in range(5, 5 + n_rr):
+        o(rr, r, 16, f"=E{r}*O{r}", fmt="0.00", dam=True)
+    ngang = BarChart()
+    ngang.type = "bar"
+    ngang.title = "Đóng góp kỳ vọng của từng rủi ro vào thời gian dự án (ngày)"
+    ngang.add_data(Reference(rr, min_col=16, min_row=4, max_row=4 + n_rr), titles_from_data=True)
+    ngang.set_categories(Reference(rr, min_col=1, min_row=5, max_row=4 + n_rr))
+    ngang.legend = None
+    ngang.height, ngang.width = 9, 16
+    rr.add_chart(hien_truc(ngang), f"C{n_rr + 9}")
     wb.save(OUT / "vi-du-httt.xlsx")
 
 

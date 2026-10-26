@@ -17,6 +17,7 @@ matplotlib.use("Agg")
 import matplotlib.dates as mdates
 import matplotlib.pyplot as plt
 from openpyxl import Workbook
+from openpyxl.chart import BarChart, Reference
 from openpyxl.comments import Comment
 from openpyxl.formatting.rule import CellIsRule, FormulaRule
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
@@ -27,6 +28,20 @@ ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "quan-ly-du-an"
 NGAY_BAO_CAO = date(2026, 10, 26)
 BAT_DAU, KET_THUC = date(2026, 10, 18), date(2026, 11, 4)
+
+
+def hien_truc(bd):
+    """openpyxl 3.1 mặc định ẩn trục khi mở bằng Excel mới: bật lại trục, chú thích đặt dưới."""
+    bd.x_axis.delete = False
+    bd.y_axis.delete = False
+    if bd.title is not None:
+        bd.title.overlay = False
+    if bd.legend is not None:
+        bd.legend.position = "b"
+        bd.legend.overlay = False
+    bd.x_axis.title = None                               # tên trục dễ đè lên số; tiêu đề biểu đồ đã đủ rõ
+    bd.y_axis.title = None
+    return bd
 
 
 def d(ngay, thang=10):
@@ -232,6 +247,26 @@ def sheet_wbs(wb):
     ws.conditional_formatting.add(f"H6:H{cuoi}", CellIsRule(operator="greaterThan", formula=["0"],
                                   font=Font(name=FONT, color="C00000", bold=True)))
     ws.freeze_panes = "C6"
+
+    # bảng tóm tắt % theo nhóm (công thức trỏ về dòng tổng hợp) + biểu đồ
+    o(ws, 5, 15, "Nhóm công việc", dam=True)
+    o(ws, 5, 16, "% hoàn thành", dam=True)
+    ws.column_dimensions["O"].width = 26
+    ws.column_dimensions["P"].width = 12
+    for k, wbs in enumerate(ma_tong):
+        o(ws, 6 + k, 15, f"=WBS!B{tong[wbs]}", can="left")
+        o(ws, 6 + k, 16, f"=I{tong[wbs]}", fmt="0%")
+    o(ws, 6 + len(ma_tong), 15, "Toàn dự án", dam=True, can="left")
+    o(ws, 6 + len(ma_tong), 16, f"=I{r}", fmt="0%", dam=True)
+    bd = BarChart()
+    bd.type = "bar"
+    bd.title = "Mức độ hoàn thành theo nhóm công việc"
+    bd.add_data(Reference(ws, min_col=16, min_row=5, max_row=6 + len(ma_tong)), titles_from_data=True)
+    bd.set_categories(Reference(ws, min_col=15, min_row=6, max_row=6 + len(ma_tong)))
+    bd.y_axis.scaling.min, bd.y_axis.scaling.max = 0, 1
+    bd.legend = None
+    bd.height, bd.width = 8, 14
+    ws.add_chart(hien_truc(bd), "O15")
     return ws, cuoi
 
 
@@ -352,8 +387,23 @@ def sheet_barem(wb):
         o(ws, r + 3 + k, 1, yc)
         o(ws, r + 3 + k, 3, tt, nhap=True, can="center")
     vung = f"C{r + 3}:C{r + 2 + len(hinh_thuc)}"
-    ws.conditional_formatting.add(vung, CellIsRule(operator="equal", formula=['"Đạt"'],
+    ws.conditional_formatting.add(vung, FormulaRule(formula=[f'LEFT(C{r + 3},3)="Đạt"'],
                                   fill=PatternFill("solid", fgColor="C6EFCE")))
+
+    # tên ngắn cho biểu đồ + biểu đồ điểm tối đa và điểm dự kiến
+    ten_ngan = ["Nội dung", "Tái hiện", "Mở rộng", "Thuyết trình", "Phản biện"]
+    o(ws, 4, 7, "Mục", dam=True)
+    ws.column_dimensions["G"].width = 13
+    for k, t in enumerate(ten_ngan):
+        o(ws, 5 + k, 7, t)
+    bd = BarChart()
+    bd.title = "Điểm tối đa và điểm dự kiến theo barem"
+    bd.y_axis.title = "Điểm"
+    bd.add_data(Reference(ws, min_col=2, min_row=4, max_row=cuoi), titles_from_data=True)
+    bd.add_data(Reference(ws, min_col=4, min_row=4, max_row=cuoi), titles_from_data=True)
+    bd.set_categories(Reference(ws, min_col=7, min_row=5, max_row=cuoi))
+    bd.height, bd.width = 8, 16
+    ws.add_chart(hien_truc(bd), f"E{r + 3}")
     ws.conditional_formatting.add(vung, FormulaRule(formula=[f'LEFT(C{r + 3},5)="Chưa "'],
                                   fill=PatternFill("solid", fgColor="FFEB9C")))
     ws.conditional_formatting.add(vung, FormulaRule(formula=[f'LEFT(C{r + 3},5)="Không"'],
