@@ -1,17 +1,73 @@
 \chapter{Phương pháp và mô hình nghiên cứu}
 \label{chuong:phuong-phap}
 
+Bài báo của Kassem~\cite{kassem2022} kết hợp ba lớp phân tích trên cùng một bộ dữ liệu khảo sát 314 phiếu: chỉ số tầm quan trọng tương đối (RII) để xếp hạng từng yếu tố rủi ro, ma trận xác suất -- tác động (PIM) để phân vùng rủi ro, và mô hình phương trình cấu trúc bình phương tối thiểu riêng phần (PLS-SEM) để đo ảnh hưởng của các nhóm rủi ro lên thành công dự án. Chương này trình bày cơ sở lý thuyết, công thức và cách đọc kết quả của từng phương pháp.
+
+\section{Dữ liệu khảo sát và độ tin cậy thang đo}
+\label{sec:du-lieu}
+
+Dữ liệu của bài báo được thu thập bằng bảng hỏi gồm tám phần. Mỗi yếu tố rủi ro được người trả lời chấm \textbf{hai lần} trên thang Likert 5 mức (1 = rất thấp, 5 = rất cao): một lần cho \emph{xác suất xảy ra} và một lần cho \emph{mức tác động}. Phần cuối hỏi về năm hậu quả của rủi ro đối với dự án. Có 360 phiếu được phát ra, thu về 323 và giữ lại 314 phiếu hợp lệ. Danh sách yếu tố rủi ro ban đầu gồm 61 yếu tố, sau khảo sát thử và tham vấn bốn chuyên gia còn lại 51 yếu tố~\cite{kassem2022}.
+
+Trước khi phân tích, cần kiểm tra các câu hỏi trong cùng một nhóm có đo cùng một khái niệm hay không. Chỉ số thường dùng là hệ số Cronbach's alpha~\cite{cronbach1951}:
+\begin{equation}
+\alpha = \frac{K}{K-1}\left(1 - \frac{\sum_{i=1}^{K}\sigma_i^2}{\sigma_T^2}\right)
+\label{eq:cronbach}
+\end{equation}
+trong đó $K$ là số câu hỏi của nhóm, $\sigma_i^2$ là phương sai của câu thứ $i$ và $\sigma_T^2$ là phương sai của tổng điểm. Hệ số $\alpha$ càng gần 1 thì các câu hỏi càng nhất quán. Ngưỡng chấp nhận phổ biến là $\alpha \geq 0{,}7$~\cite{hair2019report}. Trong bài báo, cả 13 nhóm rủi ro và nhóm hậu quả đều đạt, với $\alpha$ từ 0,771 đến 0,944.
+
 \section{Chỉ số tầm quan trọng tương đối (RII)}
+\label{sec:rii}
+
+\subsection{Công thức}
+
+RII là cách quy đổi điểm Likert của nhiều người trả lời thành một con số duy nhất trong khoảng $(0;1]$ để xếp hạng các yếu tố. Đây là chỉ số được dùng rộng rãi trong các nghiên cứu về chậm tiến độ và vượt chi phí trong xây dựng~\cite{sambasivan2007}:
+\begin{equation}
+RII = \frac{\sum W}{A \times N} = \frac{\sum_{k=1}^{5} k \cdot n_k}{A \times N}
+\label{eq:rii}
+\end{equation}
+trong đó $W$ là điểm mỗi người trả lời chấm cho yếu tố ($1$ đến $5$), $n_k$ là số người chấm mức $k$, $A = 5$ là điểm cao nhất của thang đo và $N$ là tổng số người trả lời. Giá trị nhỏ nhất của RII là $1/5 = 0{,}2$ (mọi người đều chấm 1) và lớn nhất là 1 (mọi người đều chấm 5).
+
+\emph{Lưu ý:} bài báo định nghĩa $W$ là ``điểm trung bình có trọng số của người trả lời, nhận giá trị từ 1 đến 5''~\cite{kassem2022}. Nếu $W$ là điểm trung bình thì không được chia thêm cho $N$, vì làm vậy là chia số người trả lời hai lần. Định nghĩa đúng, phù hợp với cách tác giả tính ra các con số trong bài, là $W$ là \emph{tổng} điểm như ở công thức~\eqref{eq:rii}.
+
+\subsection{RII tổng hợp cho rủi ro}
+
+Vì mỗi yếu tố được chấm cả xác suất và tác động, bài báo tính hai chỉ số $RII_P$ và $RII_I$ rồi nhân lại theo định nghĩa ``chỉ số rủi ro = xác suất $\times$ mức độ nghiêm trọng'':
+\begin{equation}
+RII_{tong} = RII_P \times RII_I
+\label{eq:rii-tong}
+\end{equation}
+
+\textbf{Ví dụ.} Giả sử 5 người chấm mức tác động của yếu tố ``chậm ra quyết định'' là 5, 4, 4, 3, 5 và chấm xác suất là 4, 3, 4, 4, 3. Khi đó $RII_I = 21/(5 \times 5) = 0{,}84$, $RII_P = 18/25 = 0{,}72$, và $RII_{tong} = 0{,}84 \times 0{,}72 \approx 0{,}605$.
+
+Với số liệu thật trong bài báo, yếu tố này (mã CL1) có $RII_I = 0{,}675$ và $RII_P = 0{,}821$, cho $RII_{tong} = 0{,}554$, xếp thứ 4 trong 51 yếu tố.
+
+\subsection{Ưu điểm và hạn chế}
+
+RII đơn giản, dễ tính, dễ giải thích cho các bên liên quan không chuyên về thống kê. Tuy nhiên, RII coi thang Likert như thang đo khoảng (khoảng cách giữa mức 1 và 2 bằng giữa mức 4 và 5), không cho biết mức độ đồng thuận giữa những người trả lời, và chỉ xếp hạng từng yếu tố riêng lẻ chứ không cho biết quan hệ giữa các yếu tố.
 
 \section{Ma trận xác suất -- tác động (PIM)}
+\label{sec:pim}
 
-\section{Mô hình phương trình cấu trúc (SEM)}
-% Biến tiềm ẩn, biến quan sát; CB-SEM và PLS-SEM.
+Ma trận xác suất -- tác động là công cụ của quy trình phân tích rủi ro định tính trong PMBOK~\cite{pmbok6}. Mỗi rủi ro được đặt vào một ô của lưới $5 \times 5$ theo mức xác suất (trục dọc) và mức tác động (trục ngang), mỗi trục gồm năm mức: rất thấp (VL), thấp (L), trung bình (M), cao (H) và rất cao (VH). Nếu quy các mức ra số từ 1 đến 5, điểm rủi ro của một ô là:
+\begin{equation}
+S = P \times I, \qquad P, I \in \{1, 2, 3, 4, 5\}
+\label{eq:pim}
+\end{equation}
 
-\section{Phương pháp PLS-SEM}
-% Mô hình đo lường, mô hình cấu trúc, thuật toán, bootstrapping, bảng ngưỡng các chỉ số.
+Các ô được tô màu theo vùng, mỗi vùng gắn với một chiến lược ứng phó~\cite{kassem2022,pmbok6}:
+\begin{itemize}
+  \item \textbf{Vùng đỏ}: rủi ro nghiêm trọng, cần né tránh hoặc giảm thiểu, chấp nhận tốn chi phí.
+  \item \textbf{Vùng vàng}: rủi ro trung bình, cần có biện pháp kiểm soát.
+  \item \textbf{Vùng xanh}: rủi ro thấp, chỉ cần theo dõi hoặc chấp nhận.
+\end{itemize}
 
-\section{Mô hình nghiên cứu của bài báo}
-% 13 giả thuyết, sơ đồ mô hình bậc 2.
+Hình~\ref{fig:pim} thể hiện vị trí của 10 rủi ro hàng đầu theo Bảng 6 của bài báo. Ở đây các vùng được chia theo điểm $S$: đỏ khi $S \geq 15$, vàng khi $8 \leq S < 15$, xanh khi $S < 8$. Bài báo không công bố ngưỡng chia vùng, nên cách chia này là giả định của báo cáo.
 
-\section{Ứng dụng, ưu điểm, hạn chế và xu hướng}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.72\textwidth]{ma_tran_pim_top10.png}
+\caption{Vị trí 10 rủi ro hàng đầu trên ma trận xác suất -- tác động (vẽ lại từ Bảng 6 trong~\cite{kassem2022})}
+\label{fig:pim}
+\end{figure}
+
+\textbf{So sánh RII và PIM.} Hai công cụ dùng chung đầu vào nhưng trả lời hai câu hỏi khác nhau. RII cho ra một con số liên tục để \emph{xếp hạng}. PIM cho ra một \emph{vùng} để chọn chiến lược ứng phó. Vì PIM chỉ có 5 mức trên mỗi trục, nhiều rủi ro rơi vào cùng một ô: trong Hình~\ref{fig:pim}, năm rủi ro xếp hạng 6 đến 10 cùng nằm ở ô (Cao, Cao) và không phân biệt được với nhau. Ngược lại, RII phân biệt được các yếu tố chỉ chênh nhau vài phần nghìn, nhưng không cho biết nên ứng phó thế nào. Một điểm đáng chú ý là thứ hạng theo hai cách không trùng nhau. Theo RII, ``chính phủ bất ổn'' đứng đầu~\cite{kassem2022}, nhưng yếu tố này không có trong top 10 của ma trận. Chương~\ref{chuong:tai-hien} sẽ kiểm tra lại sự nhất quán giữa hai bảng này.
