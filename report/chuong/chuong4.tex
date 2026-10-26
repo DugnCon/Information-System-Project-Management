@@ -155,3 +155,55 @@ So sánh với ma trận PIM có một kết quả đáng chú ý. Rủi ro R4 n
 
 \section{Đánh giá phản biện bài báo}
 \label{sec:phan-bien}
+
+\subsection{Điểm mạnh}
+
+\begin{itemize}
+  \item \textbf{Kết hợp nhiều lớp phân tích.} RII xếp hạng, PIM phân vùng và PLS-SEM đo ảnh hưởng. Mỗi lớp trả lời một câu hỏi khác nhau, và các lớp cho ra kết quả định tính thống nhất.
+  \item \textbf{Mẫu khảo sát đủ lớn và đúng đối tượng.} 314 người trả lời thuộc cả ba vai trò chủ đầu tư, nhà thầu và tư vấn; phần lớn có trên 10 năm kinh nghiệm.
+  \item \textbf{Khung 13 nhóm rủi ro có giá trị tham khảo.} Khung này dùng lại được cho cả dự án xây dựng ở Việt Nam (ví dụ 1) và dự án hệ thống thông tin (ví dụ 2).
+  \item \textbf{Phần tính toán cơ bản chính xác.} RII, AVE, CR, $Q^2$ và các chỉ số bậc 2 đều tính lại được từ chính số liệu của bài (Chương~\ref{chuong:tai-hien}).
+\end{itemize}
+
+\subsection{Hạn chế}
+
+\begin{enumerate}
+  \item \textbf{Không công bố dữ liệu.} Người đọc không kiểm chứng được kết quả. Ngay cả ma trận tương quan giữa các câu hỏi, đủ để tính lại HTMT, cũng không được công bố.
+  \item \textbf{Định nghĩa sai và thiếu thông tin về phương pháp.} Công thức RII định nghĩa sai $W$. Bài không nói cách quy đổi điểm sang các mức của ma trận PIM, không nói cách ước lượng mô hình bậc 2, và không nói AVE 0,566 trong công thức GoF lấy từ đâu.
+  \item \textbf{Giá trị phân biệt chưa được kiểm tra đúng.} Fornell--Larcker thực ra không đạt ở nhóm RM. Bài cũng không báo cáo HTMT, trong khi mô phỏng cho thấy nhiều khả năng có cặp vượt ngưỡng.
+  \item \textbf{Kết quả của 13 giả thuyết không tái hiện được.} Hệ số và giá trị $t$ của các nhóm bậc 1 không khớp với bất kỳ cách ước lượng chuẩn nào. Phần thảo luận còn mâu thuẫn với bảng kết quả: H5 được nói là ``không được ủng hộ'' nhưng bảng cho $p < 0{,}001$, và các giá trị $t$ trong văn bản khác với Bảng 11.
+  \item \textbf{Dùng GoF làm tiêu chí phù hợp}, trong khi chính tài liệu tác giả trích dẫn~\cite{henseler2013} đã chỉ ra GoF không có tác dụng đó.
+  \item \textbf{Lỗi trình bày và biên tập.} Có đoạn văn bị lặp nguyên văn, hình bị chồng chữ, $Q^2$ bị ghi ngược ở phần kết luận, và còn sót dòng ``FOR PEER REVIEW''. Một tài liệu trích dẫn không liên quan tới nội dung, như tài liệu [45] về cảm biến đường sắt được dẫn cho một dự án lọc dầu.
+  \item \textbf{Phạm vi khái quát hẹp.} Dữ liệu chỉ từ Yemen trong giai đoạn xung đột. Kết luận ``rủi ro bên ngoài lấn át'' không áp dụng được cho bối cảnh ổn định, như hai ví dụ trong chương này cho thấy.
+  \item \textbf{Dữ liệu tự đánh giá.} Toàn bộ điểm số dựa trên cảm nhận của người trả lời, không đối chiếu với số liệu thực tế về chi phí hay tiến độ của các dự án.
+\end{enumerate}
+
+\subsection{Đề xuất cải thiện}
+
+\begin{itemize}
+  \item Công bố dữ liệu ẩn danh hoặc ít nhất là ma trận tương quan giữa các câu hỏi.
+  \item Báo cáo HTMT kèm khoảng tin cậy bootstrap. Gộp hoặc tách lại các nhóm chồng lấn (MR -- RM; EC -- PO -- SE).
+  \item Nói rõ cách ước lượng mô hình bậc 2 theo hướng dẫn của Sarstedt và cộng sự~\cite{sarstedt2019hoc}. Báo cáo riêng hệ số từ nhóm tới khái niệm bậc 2 và tổng hiệu ứng lên thành công dự án.
+  \item Thay GoF bằng đánh giá khả năng dự báo ngoài mẫu (PLSpredict~\cite{shmueli2019}). Dùng PLSc~\cite{dijkstra2015} để giảm sai lệch do sai số đo.
+  \item Bổ sung phân tích định lượng tác động lên tiến độ và chi phí, như mô phỏng Monte Carlo ở mục~\ref{sec:monte-carlo}, để chuyển từ ``rủi ro nào quan trọng'' sang ``dự án cần dự phòng bao nhiêu''.
+\end{itemize}
+
+\section{Áp dụng công cụ quản lý dự án cho chính quá trình làm báo cáo}
+\label{sec:quan-ly-bao-cao}
+
+Bản thân việc làm báo cáo này cũng là một dự án nhỏ: có phạm vi, thời hạn (04/11/2026) và rủi ro. Báo cáo áp dụng chính các công cụ của môn học để quản lý quá trình thực hiện:
+\begin{itemize}
+  \item \textbf{WBS} gồm 6 nhóm và 24 công việc, mỗi công việc gắn với một mục trong barem chấm điểm.
+  \item \textbf{Biểu đồ Gantt} so sánh kế hoạch ban đầu (baseline) với thực tế, lấy theo lịch sử commit trên GitHub (Hình~\ref{fig:gantt-bao-cao}).
+  \item \textbf{Sổ đăng ký rủi ro} gồm 9 rủi ro, chấm điểm $P \times I$ theo cùng quy ước với ma trận PIM. Ví dụ: không có dữ liệu gốc (R1, vùng đỏ, ứng phó bằng hai hướng tái hiện ở Chương~\ref{chuong:tai-hien}), chậm tiến độ (R3, vùng đỏ, ứng phó bằng làm bù và ưu tiên các mục có trong barem).
+  \item \textbf{Kế hoạch trên MS Project} có baseline, phần trăm hoàn thành và ngày trạng thái.
+\end{itemize}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{gantt_bao_cao.png}
+\caption{Kế hoạch và thực tế thực hiện báo cáo (tại ngày 26/10/2026)}
+\label{fig:gantt-bao-cao}
+\end{figure}
+
+Biểu đồ Gantt cho thấy giai đoạn 22--25/10 bị trễ so với kế hoạch, và phần việc đó được làm bù trong ngày 26/10. Đây đúng là rủi ro R3 đã nhận diện trong sổ đăng ký. Việc theo dõi bằng baseline giúp phát hiện sớm độ trễ và điều chỉnh kế hoạch kịp thời, thay vì chỉ phát hiện ra khi đã sát hạn nộp.
