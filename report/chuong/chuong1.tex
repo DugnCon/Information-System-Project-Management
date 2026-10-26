@@ -1,16 +1,131 @@
 \chapter{Tổng quan về quản lý rủi ro dự án}
 \label{chuong:tong-quan}
 
+Chương này trình bày các khái niệm nền tảng để đọc hiểu bài báo của Kassem~\cite{kassem2022}: dự án và thước đo thành công của dự án, khái niệm rủi ro và quy trình quản lý rủi ro theo PMBOK và ISO~31000, đặc thù của dự án xây dựng trong ngành dầu khí, và các kỹ thuật quản lý rủi ro thường dùng.
+
 \section{Dự án và thành công của dự án}
-% Định nghĩa dự án (PMBOK), tam giác sắt thời gian – chi phí – chất lượng.
+\label{sec:du-an}
+
+Theo PMBOK~\cite{pmbok6}, dự án là \emph{một nỗ lực tạm thời nhằm tạo ra một sản phẩm, dịch vụ hoặc kết quả duy nhất}. Hai đặc điểm ``tạm thời'' và ``duy nhất'' cũng là nguồn gốc của rủi ro: dự án nào cũng có điểm mới, chưa từng làm đúng y như vậy, nên kinh nghiệm từ dự án trước chỉ dùng được một phần.
+
+Thành công của dự án từ lâu được đo bằng ba tiêu chí \textbf{thời gian, chi phí và chất lượng}, thường gọi là ``tam giác sắt''. Atkinson~\cite{atkinson1999} cho rằng ba tiêu chí này chỉ là ``hai phỏng đoán và một hiện tượng'': thời gian và chi phí được ước tính từ khi chưa có đủ thông tin, còn chất lượng là khái niệm thay đổi theo người đánh giá. Vì vậy ông đề xuất bổ sung các tiêu chí như lợi ích cho tổ chức và cho các bên liên quan. Bài báo của Kassem vẫn đi theo cách tiếp cận truyền thống: thành công được đo ngược lại qua năm hậu quả xấu là trễ tiến độ, vượt chi phí, chất lượng kém, không đạt mục tiêu và dự án bị dừng~\cite{kassem2022}.
+
+Trong ngành xây dựng, vượt chi phí và trễ tiến độ là hiện tượng phổ biến. Ở các nước kém phát triển, mức vượt có khi hơn 100\% so với kế hoạch~\cite{kassem2022}. Nguyên nhân thường được nhắc tới là các bên tham gia không nhận diện và kiểm soát được rủi ro ngay từ đầu dự án.
 
 \section{Rủi ro và quản lý rủi ro}
-% Định nghĩa rủi ro theo PMBOK và ISO 31000; quy trình quản lý rủi ro.
+\label{sec:rui-ro}
+
+\subsection{Khái niệm rủi ro}
+
+PMBOK~\cite{pmbok6} định nghĩa rủi ro dự án riêng lẻ là \emph{một sự kiện hoặc điều kiện không chắc chắn, nếu xảy ra sẽ gây tác động tích cực hoặc tiêu cực tới một hay nhiều mục tiêu của dự án}. Tiêu chuẩn ISO~31000:2018~\cite{iso31000} định nghĩa ngắn gọn hơn: rủi ro là \emph{ảnh hưởng của sự không chắc chắn lên mục tiêu}.
+
+Hai định nghĩa có ba điểm chung đáng chú ý:
+\begin{itemize}
+  \item Rủi ro gắn với \textbf{mục tiêu}. Không có mục tiêu thì không có rủi ro.
+  \item Rủi ro có hai chiều: \textbf{khả năng xảy ra} (xác suất) và \textbf{mức ảnh hưởng} (tác động). Đây chính là hai trục của ma trận xác suất -- tác động và là hai thành phần của chỉ số RII trình bày ở Chương~\ref{chuong:phuong-phap}.
+  \item Rủi ro có thể là \textbf{mối đe dọa} (tác động tiêu cực) hoặc \textbf{cơ hội} (tác động tích cực). Bài báo của Kassem chỉ xét mặt tiêu cực.
+\end{itemize}
+
+\subsection{Quy trình quản lý rủi ro theo PMBOK}
+
+PMBOK phiên bản 6~\cite{pmbok6} coi quản lý rủi ro là một trong mười vùng kiến thức và chia thành bảy quy trình (Bảng~\ref{tab:quy-trinh-pmbok}).
+
+\begin{table}[H]
+\centering
+\caption{Bảy quy trình quản lý rủi ro dự án theo PMBOK 6~\cite{pmbok6}}
+\label{tab:quy-trinh-pmbok}
+\begin{tabularx}{\textwidth}{@{}clX@{}}
+\toprule
+\textbf{TT} & \textbf{Quy trình} & \textbf{Nội dung chính} \\
+\midrule
+1 & Lập kế hoạch quản lý rủi ro & Xác định cách thức tiến hành quản lý rủi ro cho dự án \\
+2 & Nhận diện rủi ro & Lập danh sách rủi ro, nguồn gốc và đặc điểm của chúng (sổ đăng ký rủi ro) \\
+3 & Phân tích định tính & Xếp ưu tiên rủi ro theo xác suất và tác động \\
+4 & Phân tích định lượng & Ước lượng bằng số ảnh hưởng tổng hợp của rủi ro lên mục tiêu dự án \\
+5 & Lập kế hoạch ứng phó & Chọn chiến lược và hành động xử lý từng rủi ro \\
+6 & Thực hiện ứng phó & Triển khai các hành động đã thống nhất \\
+7 & Giám sát rủi ro & Theo dõi rủi ro đã biết, phát hiện rủi ro mới, đánh giá hiệu quả ứng phó \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Với các mối đe dọa, PMBOK đưa ra năm chiến lược ứng phó: \textbf{báo cáo lên cấp trên} khi rủi ro vượt thẩm quyền của dự án, \textbf{né tránh}, \textbf{chuyển giao} (ví dụ mua bảo hiểm hoặc đưa vào hợp đồng), \textbf{giảm thiểu} và \textbf{chấp nhận}.
+
+PMBOK phiên bản 7~\cite{pmbok7} chuyển từ cách tiếp cận theo quy trình sang cách tiếp cận theo nguyên tắc và miền hiệu suất. Quản lý rủi ro nằm trong miền hiệu suất \emph{Sự không chắc chắn} (Uncertainty) và nguyên tắc \emph{Tối ưu hóa ứng phó rủi ro}. Tuy vậy, các công cụ như sổ đăng ký rủi ro hay ma trận xác suất -- tác động vẫn được giữ nguyên.
+
+\subsection{Quy trình quản lý rủi ro theo ISO 31000}
+
+ISO~31000:2018~\cite{iso31000} là tiêu chuẩn chung cho mọi loại tổ chức, không riêng cho dự án. Quy trình gồm: thiết lập phạm vi, bối cảnh và tiêu chí; \textbf{đánh giá rủi ro} (gồm nhận diện, phân tích và định mức rủi ro); xử lý rủi ro; giám sát và xem xét. Song song với đó là trao đổi, tham vấn, ghi nhận và báo cáo xuyên suốt cả quá trình.
+
+So sánh hai cách tiếp cận: bước ``đánh giá rủi ro'' của ISO~31000 tương ứng với ba quy trình 2, 3, 4 của PMBOK. Nghiên cứu của Kassem nằm trọn trong bước này. Bài báo nhận diện 51 yếu tố rủi ro, phân tích định tính bằng RII và ma trận xác suất -- tác động, rồi dùng mô hình PLS-SEM để định lượng mức ảnh hưởng của từng nhóm rủi ro lên thành công dự án. Phần ứng phó chỉ dừng ở các khuyến nghị chung cho từng bên liên quan.
 
 \section{Đặc thù của dự án xây dựng dầu khí}
+\label{sec:dau-khi}
+
+Dự án xây dựng trong ngành dầu khí (nhà máy xử lý, đường ống, kho bể, cơ sở hạ tầng mỏ) có rủi ro cao hơn dự án xây dựng thông thường vì một số lý do~\cite{kassem2022,thuyet2007}:
+\begin{itemize}
+  \item \textbf{Vốn đầu tư lớn}, nên một tỷ lệ vượt chi phí nhỏ cũng là con số tuyệt đối rất lớn.
+  \item \textbf{Nhiều bên tham gia}: chủ đầu tư thường là nhà nước hoặc công ty dầu khí quốc gia, cùng với nhà thầu EPC, nhà thầu phụ, tư vấn và nhà cung cấp quốc tế.
+  \item \textbf{Công nghệ phức tạp}, thiết bị phải nhập khẩu, dễ chịu ảnh hưởng của chuỗi cung ứng.
+  \item \textbf{Ảnh hưởng lớn tới môi trường và cộng đồng}, nên chịu nhiều ràng buộc pháp lý và sự phản đối của người dân địa phương.
+  \item \textbf{Gắn với chính trị và kinh tế vĩ mô}: dầu khí là tài sản quốc gia, nên chịu tác động trực tiếp của chính sách, giá dầu và tình hình an ninh.
+\end{itemize}
+
+Bối cảnh của bài báo là Yemen, nơi xảy ra nội chiến từ năm 2015. Theo tác giả, xung đột đã làm dừng phần lớn hoạt động khai thác và dự án dầu khí~\cite{kassem2022}. Đây là yếu tố cần nhớ khi diễn giải kết quả ``rủi ro bên ngoài lấn át rủi ro nội bộ'' ở các chương sau. Nghiên cứu của Thuyet và cộng sự~\cite{thuyet2007} về dự án dầu khí tại Việt Nam là một đối chiếu hữu ích, vì bối cảnh chính trị ổn định hơn nhiều.
 
 \section{Các kỹ thuật quản lý rủi ro}
-% Dịch Bảng 1 của bài báo.
+\label{sec:ky-thuat}
+
+Bài báo liệt kê 22 kỹ thuật quản lý rủi ro hay được dùng trong các nghiên cứu trước (Bảng~1 trong~\cite{kassem2022}), nhưng không phân loại chúng. Bảng~\ref{tab:ky-thuat} sắp xếp lại các kỹ thuật đó theo quy trình PMBOK mà chúng phục vụ chủ yếu. Một số kỹ thuật dùng được ở nhiều bước, ở đây chỉ xếp vào bước điển hình nhất.
+
+\begin{longtable}{@{}p{4.3cm}p{5.3cm}p{4.4cm}@{}}
+\caption{Các kỹ thuật quản lý rủi ro trong bài báo, phân theo quy trình PMBOK}
+\label{tab:ky-thuat}\\
+\toprule
+\textbf{Quy trình} & \textbf{Kỹ thuật} & \textbf{Tên tiếng Anh} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Quy trình} & \textbf{Kỹ thuật} & \textbf{Tên tiếng Anh} \\
+\midrule
+\endhead
+\multirow{10}{4.3cm}{Nhận diện rủi ro}
+ & Động não & Brainstorming \\
+ & Danh mục kiểm tra & Checklist \\
+ & Phỏng vấn & Interviews \\
+ & Phương pháp Delphi & Delphi Method \\
+ & Ý kiến chuyên gia & Expert Judgement \\
+ & Phân tích thay đổi & Change Analysis (ChA) \\
+ & Cấu trúc phân rã rủi ro & Risk Breakdown Structure (RBS) \\
+ & Ma trận phân rã rủi ro & Risk Breakdown Matrix (RBM) \\
+ & Phân tích SWOT & SWOT Analysis \\
+ & Rà soát mối nguy & Hazard Review (HR) \\
+\midrule
+\multirow{8}{4.3cm}{Phân tích định tính}
+ & Ma trận xác suất -- tác động & Probability and Impact Matrix \\
+ & Chỉ số tầm quan trọng tương đối & Relative Importance Index (RII) \\
+ & Chỉ số rủi ro & Risk Index \\
+ & Phân tích Pareto & Pareto Analysis (PA) \\
+ & Phân tích dạng lỗi và tác động & FMEA \\
+ & Phân tích mối nguy và khả năng vận hành & HAZOP \\
+ & Phân tích nguyên nhân -- hệ quả & Cause and Consequence Analysis \\
+ & Sơ đồ nhân tố nguyên nhân sự kiện & Event Causal Factor Charting \\
+\midrule
+\multirow{4}{4.3cm}{Phân tích định lượng}
+ & Mô phỏng Monte Carlo & Monte Carlo Method \\
+ & Giá trị tiền tệ kỳ vọng & Expected Monetary Value (EMV) \\
+ & Phân tích cây lỗi & Fault Tree Analysis (FTA) \\
+ & Logic mờ & Fuzzy Logic \\
+\bottomrule
+\end{longtable}
+
+Có thể rút ra hai nhận xét từ bảng trên:
+\begin{enumerate}
+  \item Phần lớn các kỹ thuật thuộc nhóm \textbf{nhận diện} và \textbf{phân tích định tính}. Chúng dựa nhiều vào ý kiến chủ quan của chuyên gia và người tham gia dự án. RII và ma trận xác suất -- tác động mà bài báo sử dụng cũng thuộc nhóm này: đầu vào là điểm số trên thang Likert do người trả lời tự đánh giá.
+  \item Bảng không có kỹ thuật nào để đo \textbf{quan hệ nhân quả giữa các nhóm rủi ro và kết quả dự án}. Đây là khoảng trống mà bài báo muốn lấp bằng mô hình phương trình cấu trúc (SEM). SEM không nằm trong bộ công cụ chuẩn của PMBOK mà đến từ thống kê trong khoa học xã hội và quản trị~\cite{hair2022primer}.
+\end{enumerate}
 
 \section{Sơ đồ tổng quan chủ đề}
-% Sơ đồ tư duy.
+\label{sec:so-do}
+
+% Sơ đồ tư duy: thêm hình hinh/so-do-tu-duy.png
