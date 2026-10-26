@@ -22,7 +22,12 @@ Toàn bộ mã nguồn, số liệu và kết quả phân tích được lưu t�
 \texttt{src/quan\_ly\_du\_an.py} & Sinh WBS, Gantt, sổ rủi ro của quá trình làm báo cáo \\
 \texttt{src/ve\_so\_do.py} & Vẽ sơ đồ tư duy, sơ đồ mô hình, lưu đồ \\
 \texttt{results/} & Bảng, hình và báo cáo kết quả tự sinh \\
-\texttt{quan-ly-du-an/} & File Excel và MS Project \\
+\texttt{src/ve\_bieu\_do.py} & Biểu đồ người trả lời, Fornell--Larcker, dự án Thái Bình 2 \\
+\texttt{src/excel\_phan\_tich.py} & Sinh file Excel kiểm tra số liệu bằng công thức \\
+\texttt{quan-ly-du-an/phan-tich-bai-bao.xlsx} & Kiểm tra RII, AVE, CR, Fornell--Larcker, $Q^2$, GoF, $R^2$, $f^2$ bằng Excel \\
+\texttt{quan-ly-du-an/vi-du-httt.xlsx, .xml} & Ví dụ 2: lịch trình PERT, sổ rủi ro, kết quả Monte Carlo (Excel); lịch trình (MS Project) \\
+\texttt{quan-ly-du-an/quan-ly-du-an.xlsx} & WBS, Gantt, sổ rủi ro, đối chiếu barem của quá trình làm báo cáo \\
+\texttt{quan-ly-du-an/ke-hoach.xml} & Kế hoạch làm báo cáo có baseline cho MS Project \\
 \bottomrule
 \end{tabularx}
 \end{table}
@@ -36,6 +41,8 @@ python src/phan_tich_mo_phong.py 5000
 python src/vi_du_httt.py
 python src/quan_ly_du_an.py
 python src/ve_so_do.py
+python src/ve_bieu_do.py
+python src/excel_phan_tich.py
 \end{verbatim}
 
 \chapter{Khai báo công cụ hỗ trợ}

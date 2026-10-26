@@ -22,9 +22,14 @@ Nội dung chính: quản lý rủi ro dự án, chỉ số RII, ma trận xác 
 
 ```
 pip install -r requirements.txt
-python src/kiem_tra_so_lieu.py
-python src/ve_so_do.py
-python src/quan_ly_du_an.py
+python src/kiem_tra_so_lieu.py        # kiểm tra số liệu đã công bố
+python src/mo_phong.py                # sinh dữ liệu mô phỏng 314 phiếu
+python src/phan_tich_mo_phong.py 5000 # PLS-SEM, bootstrap 5000 lần (~12 phút)
+python src/vi_du_httt.py              # ví dụ dự án HTTT, Monte Carlo
+python src/quan_ly_du_an.py           # WBS, Gantt, sổ rủi ro của dự án làm báo cáo
+python src/ve_so_do.py                # sơ đồ tư duy, mô hình, lưu đồ
+python src/ve_bieu_do.py              # biểu đồ từ số liệu bài báo
+python src/excel_phan_tich.py         # file Excel kiểm tra số liệu bằng công thức
 ```
 
 Hạn nộp: 04/11/2026.
