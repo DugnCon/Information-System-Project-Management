@@ -46,19 +46,19 @@ CONG_VIEC = [
     ("3", "Tái hiện thực nghiệm", None, None, None, None, None, None, "", ""),
     ("3.1", "Nhập số liệu các bảng của bài báo", d(22), d(23), d(26), d(26), 1.0, 3, "data/published/*.csv", "Tái hiện"),
     ("3.2", "Kiểm tra lại số liệu đã công bố", d(23), d(23), d(26), d(26), 1.0, 5, "src/kiem_tra_so_lieu.py", "Tái hiện"),
-    ("3.3", "Sinh dữ liệu mô phỏng 314 phiếu", d(27), d(27), None, None, 0.0, 4, "data/simulated", "Tái hiện"),
-    ("3.4", "Cronbach, RII, PIM trên dữ liệu mô phỏng", d(27), d(27), None, None, 0.0, 4, "results", "Tái hiện"),
-    ("3.5", "PLS-SEM, bootstrapping, HTMT", d(28), d(28), None, None, 0.0, 8, "src, results", "Tái hiện"),
+    ("3.3", "Sinh dữ liệu mô phỏng 314 phiếu", d(27), d(27), d(26), d(26), 1.0, 4, "data/simulated", "Tái hiện"),
+    ("3.4", "Cronbach, RII, PIM trên dữ liệu mô phỏng", d(27), d(27), d(26), d(26), 1.0, 4, "results", "Tái hiện"),
+    ("3.5", "PLS-SEM, bootstrapping, HTMT", d(28), d(28), d(26), d(26), 1.0, 8, "src, results", "Tái hiện"),
     ("4", "Viết báo cáo", None, None, None, None, None, None, "", ""),
     ("4.1", "Dựng khung LaTeX theo mẫu KLTN", d(22), d(22), d(26), d(26), 1.0, 2, "report/main.tex", "Hình thức"),
     ("4.2", "Viết Chương 1 – Tổng quan", d(24), d(24), d(26), d(26), 1.0, 5, "report/chuong/chuong1.tex", "Nội dung"),
     ("4.3", "Vẽ sơ đồ tư duy và sơ đồ mô hình", d(25), d(25), d(26), d(26), 1.0, 3, "report/hinh", "Nội dung"),
     ("4.4", "Viết Chương 2 – Phương pháp và mô hình", d(25), d(26), d(26), d(26), 1.0, 8, "report/chuong/chuong2.tex", "Nội dung"),
-    ("4.5", "Viết Chương 3 – Tái hiện thực nghiệm", d(29), d(29), None, None, 0.0, 8, "report/chuong/chuong3.tex", "Tái hiện"),
-    ("4.6", "Ví dụ thực tế 1: dự án dầu khí Việt Nam", d(30), d(30), None, None, 0.0, 6, "chuong4.tex", "Mở rộng"),
-    ("4.7", "Ví dụ thực tế 2: dự án HTTT (MS Project, Excel)", d(31), d(31), None, None, 0.0, 8, "chuong4.tex", "Mở rộng"),
-    ("4.8", "Mô phỏng Monte Carlo, phản biện bài báo", d(1, 11), d(1, 11), None, None, 0.0, 6, "chuong4.tex", "Mở rộng"),
-    ("4.9", "Mở đầu, kết luận, rà soát, xuất PDF", d(2, 11), d(2, 11), None, None, 0.0, 6, "bao-cao.pdf", "Hình thức"),
+    ("4.5", "Viết Chương 3 – Tái hiện thực nghiệm", d(29), d(29), d(26), d(26), 1.0, 8, "report/chuong/chuong3.tex", "Tái hiện"),
+    ("4.6", "Ví dụ thực tế 1: dự án dầu khí Việt Nam", d(30), d(30), d(26), d(26), 1.0, 6, "chuong4.tex", "Mở rộng"),
+    ("4.7", "Ví dụ thực tế 2: dự án HTTT (MS Project, Excel)", d(31), d(31), d(26), d(26), 1.0, 8, "chuong4.tex", "Mở rộng"),
+    ("4.8", "Mô phỏng Monte Carlo, phản biện bài báo", d(1, 11), d(1, 11), d(26), d(26), 1.0, 6, "chuong4.tex", "Mở rộng"),
+    ("4.9", "Mở đầu, kết luận, rà soát, xuất PDF", d(2, 11), d(2, 11), d(26), None, 0.6, 6, "bao-cao.pdf", "Hình thức"),
     ("5", "Thuyết trình và nộp bài", None, None, None, None, None, None, "", ""),
     ("5.1", "Làm slide (≤ 15 slide nội dung)", d(3, 11), d(3, 11), None, None, 0.0, 4, "slides/", "Thuyết trình"),
     ("5.2", "Tập thuyết trình, soạn câu hỏi", d(3, 11), d(3, 11), None, None, 0.0, 3, "", "Thuyết trình"),
@@ -91,19 +91,29 @@ RUI_RO = [
 
 # (yêu cầu theo slide 52, điểm tối đa, mức hoàn thành hiện tại, nơi đáp ứng)
 BAREM = [
-    ("Nội dung báo cáo: khái niệm, thành phần, mô hình, cách hoạt động, ứng dụng, ưu/nhược, xu hướng", 2.5, 0.9,
+    ("Nội dung báo cáo: khái niệm, thành phần, mô hình, cách hoạt động, ứng dụng, ưu/nhược, xu hướng", 2.5, 1.0,
      "Chương 1, Chương 2"),
-    ("Tái hiện thực nghiệm phân tích dữ liệu của bài báo", 2.5, 0.4, "Chương 3, src/, results/"),
-    ("Khả năng mở rộng, liên hệ thực tế (2 ví dụ thực tế)", 2.0, 0.2, "Chương 4, docs/notes/04"),
+    ("Tái hiện thực nghiệm phân tích dữ liệu của bài báo", 2.5, 1.0, "Chương 3, src/, results/"),
+    ("Khả năng mở rộng, liên hệ thực tế (2 ví dụ thực tế)", 2.0, 1.0, "Chương 4, docs/notes/04"),
     ("Thuyết trình và trả lời câu hỏi", 2.0, 0.0, "slides/"),
     ("Phản biện các đề tài khác", 1.0, 0.0, "docs/phan-bien.md"),
 ]
 
-NHAT_KY = [
-    (d(19), 1, "Khởi tạo repo, kế hoạch, cấu trúc thư mục"),
-    (d(20), 10, "Ghi chú đọc bài báo, thuật ngữ, điểm mâu thuẫn, tài liệu tham khảo"),
-    (d(26), 11, "Nhập số liệu, script kiểm tra số liệu, khung LaTeX, Chương 1–2, sơ đồ"),
-]
+NOI_DUNG_NGAY = {
+    d(19): "Khởi tạo repo, kế hoạch, cấu trúc thư mục",
+    d(20): "Ghi chú đọc bài báo, thuật ngữ, điểm mâu thuẫn, tài liệu tham khảo",
+    d(26): "Số liệu, kiểm tra số liệu, mô phỏng, PLS-SEM, Monte Carlo, Excel/MS Project, Chương 1–4",
+}
+
+
+def nhat_ky_tu_git():
+    """Đếm số commit theo ngày từ lịch sử git."""
+    import subprocess
+    from collections import Counter
+    ra = subprocess.run(["git", "log", "--format=%ad", "--date=short"], cwd=ROOT,
+                        capture_output=True, text=True, check=True).stdout.split()
+    dem = Counter(date.fromisoformat(x) for x in ra)
+    return [(ngay, so, NOI_DUNG_NGAY.get(ngay, "")) for ngay, so in sorted(dem.items())]
 
 # ---------------------------------------------------------------- định dạng
 FONT = "Arial"
@@ -331,7 +341,7 @@ def sheet_barem(wb):
 
     ws.cell(r + 2, 1, "Yêu cầu hình thức (slide 54)").font = CHU_DAM
     hinh_thuc = [("Mẫu KLTN, 1 file PDF, khuyến khích LaTeX", "Đạt"),
-                 ("Tối thiểu 20 trang ruột", "Chưa kiểm tra"),
+                 ("Tối thiểu 20 trang ruột", "Đạt (ước tính 35–40 trang)"),
                  ("Chữ trong bảng, hình là tiếng Việt", "Đạt"),
                  ("Gõ lại công thức, đánh số ở lề phải", "Đạt"),
                  ("Danh mục tài liệu tham khảo, trích dẫn trong bài", "Đạt"),
@@ -356,13 +366,14 @@ def sheet_nhat_ky(wb):
     ws["A1"] = "NHẬT KÝ LÀM VIỆC (theo lịch sử commit GitHub)"
     ws["A1"].font = Font(name=FONT, size=13, bold=True, color="1F4E78")
     tieu_de(ws, 3, ["Ngày", "Số commit", "Nội dung chính", "Lũy kế commit"], [12, 10, 70, 13])
-    for k, (ngay, so, nd) in enumerate(NHAT_KY):
+    nhat_ky = nhat_ky_tu_git()
+    for k, (ngay, so, nd) in enumerate(nhat_ky):
         r = 4 + k
         o(ws, r, 1, ngay, nhap=True, fmt="dd/mm/yyyy", can="center")
         o(ws, r, 2, so, nhap=True, can="center")
         o(ws, r, 3, nd, nhap=True)
         o(ws, r, 4, f"=SUM($B$4:B{r})", can="center")
-    r = 4 + len(NHAT_KY)
+    r = 4 + len(nhat_ky)
     o(ws, r, 1, "Tổng", dam=True)
     o(ws, r, 2, f"=SUM(B4:B{r - 1})", dam=True, can="center")
 
@@ -390,13 +401,14 @@ def ghi_mspdi():
             tasks.append(f"<Task><UID>{uid}</UID><ID>{uid}</ID><Name>{escape(ten)}</Name><WBS>{wbs}</WBS>"
                          f"<OutlineNumber>{wbs}</OutlineNumber><OutlineLevel>{cap}</OutlineLevel><Summary>1</Summary></Task>")
             continue
-        bd, kt = (tb, tk) if tb else (kb, kk)
+        bd, kt = (tb, tk or max(kk, tb)) if tb else (kb, kk)     # việc đang làm: lấy hạn kế hoạch
         so_gio = max((kt - bd).days + 1, 1) * 8
         moc = gio_cong == 0
         thuc_te = ""
         if tb:
-            thuc_te = (f"<ActualStart>{xml_ngay(tb, '08:00:00')}</ActualStart>"
-                       f"<ActualFinish>{xml_ngay(tk, '17:00:00')}</ActualFinish>")
+            thuc_te = f"<ActualStart>{xml_ngay(tb, '08:00:00')}</ActualStart>"
+        if tk:
+            thuc_te += f"<ActualFinish>{xml_ngay(tk, '17:00:00')}</ActualFinish>"
         tasks.append(
             f"<Task><UID>{uid}</UID><ID>{uid}</ID><Name>{escape(ten)}</Name><WBS>{wbs}</WBS>"
             f"<OutlineNumber>{wbs}</OutlineNumber><OutlineLevel>{cap}</OutlineLevel><Summary>0</Summary>"
@@ -434,9 +446,12 @@ def ve_gantt():
         y = len(viec) - k
         ax.barh(y + 0.18, (kk - kb).days + 1, left=mdates.date2num(kb), height=0.32, color="#bdd7ee",
                 edgecolor="#5b9bd5", label="Kế hoạch" if k == 0 else None)
-        if tb:
+        if tb and tk:
             ax.barh(y - 0.18, (tk - tb).days + 1, left=mdates.date2num(tb), height=0.32, color="#2e75b6",
                     label="Thực tế (đã xong)" if wbs == "1.1" else None)
+        elif tb:                                                  # đang làm: vẽ tới ngày báo cáo
+            ax.barh(y - 0.18, (NGAY_BAO_CAO - tb).days + 1, left=mdates.date2num(tb), height=0.32,
+                    color="#2e75b6", hatch="///", edgecolor="white", label="Thực tế (đang làm)")
     ax.axvline(mdates.date2num(NGAY_BAO_CAO + timedelta(days=1)), color="#c00000", ls="--", lw=1.2,
                label=f"Ngày báo cáo {NGAY_BAO_CAO:%d/%m}")
     ax.set_yticks([len(viec) - k for k in range(len(viec))], [f"{v[0]}  {v[1]}" for v in viec], fontsize=8)
