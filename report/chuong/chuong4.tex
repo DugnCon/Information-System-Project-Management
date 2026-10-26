@@ -77,8 +77,81 @@ Từ đó có thể rút ra hai điểm:
 \section{Ví dụ 2: Quản lý rủi ro trong một dự án hệ thống thông tin}
 \label{sec:vi-du-httt}
 
+\subsection{Dự án Healthcare.gov}
+
+Healthcare.gov là cổng đăng ký bảo hiểm y tế trực tuyến của Chính phủ Hoa Kỳ, do Trung tâm Dịch vụ Medicare và Medicaid (CMS) quản lý. Cổng chính thức mở cho người dân đăng ký từ ngày 1/10/2013, nhưng rất nhiều người không truy cập hoặc không sử dụng được. Báo cáo GAO-14-694 của Văn phòng Kiểm toán Chính phủ Hoa Kỳ~\cite{gao2014} cho biết:
+\begin{itemize}
+  \item Cam kết chi cho hệ thống chợ bảo hiểm liên bang (FFM) tăng từ 56 triệu USD (9/2011) lên hơn 209 triệu USD (2/2014). Cam kết chi cho cổng trao đổi dữ liệu (data hub) tăng từ 30 triệu lên gần 85 triệu USD.
+  \item CMS giao việc cho nhà thầu khi chưa xác định được các yêu cầu quan trọng, như số bang tham gia và số người dùng dự kiến. Hợp đồng lại theo hình thức thanh toán theo chi phí thực tế.
+  \item CMS không lập chiến lược mua sắm để nhận diện và ứng phó rủi ro theo quy định, và lần đầu áp dụng cách phát triển tăng dần (incremental).
+  \item Yêu cầu thay đổi liên tục, gây chậm trễ và lãng phí công sức của nhà thầu. CMS không dùng các kế hoạch giám sát chất lượng sẵn có.
+  \item Đánh giá mức sẵn sàng được dời từ tháng 3 sang tháng 9/2013, chỉ vài tuần trước ngày vận hành. Theo GAO, CMS đã đưa hệ thống vào hoạt động khi chưa kiểm chứng được hệ thống có đáp ứng các yêu cầu về hiệu năng hay không.
+\end{itemize}
+
+Nếu xếp các vấn đề trên vào 13 nhóm của Kassem~\cite{kassem2022}, phần lớn rơi vào nhóm \emph{nội bộ}: chủ đầu tư (CL, thay đổi yêu cầu, quyết định chậm), nghiên cứu khả thi (FD, giao việc khi chưa biết quy mô), đấu thầu và hợp đồng (TC, loại hợp đồng không phù hợp) và quản lý dự án (MR, thiếu chiến lược rủi ro, giám sát lỏng lẻo). Như vậy, giống ví dụ Thái Bình 2, đây là một thất bại chủ yếu do rủi ro nội bộ.
+
+\subsection{Áp dụng công cụ cho một dự án hệ thống thông tin mẫu}
+
+Để minh họa cách dùng các công cụ quản lý rủi ro của môn học, báo cáo xây dựng một dự án mẫu: \emph{cổng đăng ký dịch vụ trực tuyến} gồm 12 công việc, từ khảo sát yêu cầu tới triển khai chính thức. Thời lượng mỗi công việc được ước lượng ba điểm (lạc quan, khả dĩ nhất, bi quan). Dự án có 12 rủi ro được rút ra từ bài học Healthcare.gov và xếp theo 13 nhóm của bài báo. \textbf{Các thông số này là giả định để minh họa}, không phải số liệu của một dự án cụ thể. Các công cụ được dùng gồm:
+\begin{itemize}
+  \item \textbf{MS Project}: lập lịch trình với các quan hệ phụ thuộc, xác định đường găng (file \texttt{vi-du-httt.xml}).
+  \item \textbf{Excel}: tính thời lượng kỳ vọng theo PERT, $t_e = (O + 4M + P)/6$, và lập sổ đăng ký rủi ro có điểm $P \times I$ cùng vùng màu theo đúng quy ước ma trận PIM ở Chương~\ref{chuong:phuong-phap} (file \texttt{vi-du-httt.xlsx}).
+  \item \textbf{Mô phỏng Monte Carlo} bằng Python, tương tự chức năng của phần mềm RiskyProject được giới thiệu trong môn học.
+\end{itemize}
+
+Với thời lượng khả dĩ nhất, đường găng là T1 $\to$ T2 $\to$ T3 $\to$ T5 $\to$ T7 $\to$ T8 $\to$ T9 $\to$ T10 $\to$ T12, dài 90 ngày làm việc. Tổng kỳ vọng PERT trên đường găng là 94,8 ngày, với độ lệch chuẩn 4,0 ngày. Trong sổ đăng ký rủi ro, có 4 rủi ro thuộc vùng đỏ: chủ đầu tư thay đổi yêu cầu (R1), đội phát triển thiếu kinh nghiệm (R3), ước tính khối lượng front-end quá thấp (R4) và tích hợp hệ thống cũ khó hơn dự kiến (R11).
+
 \section{Mô phỏng Monte Carlo tác động của rủi ro lên tiến độ}
 \label{sec:monte-carlo}
+
+Ma trận PIM xếp hạng rủi ro nhưng không trả lời được câu hỏi mà chủ đầu tư quan tâm nhất: \emph{với các rủi ro này, khả năng dự án xong đúng hạn là bao nhiêu?} Mô phỏng Monte Carlo trả lời câu hỏi đó. Đây là kỹ thuật phân tích định lượng trong Bảng~\ref{tab:ky-thuat}. Mô phỏng gồm 10.000 lần chạy, mỗi lần:
+\begin{enumerate}
+  \item Rút thời lượng của từng công việc từ phân phối tam giác $(O, M, P)$.
+  \item Với mỗi rủi ro, rút ngẫu nhiên xem rủi ro có xảy ra hay không theo xác suất của nó. Nếu xảy ra, cộng thêm vào công việc bị ảnh hưởng một số ngày trễ lấy ngẫu nhiên đều trong khoảng [tối thiểu; tối đa].
+  \item Tính lại đường găng và thời gian hoàn thành dự án.
+\end{enumerate}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.95\textwidth]{mc_phan_phoi.png}
+\caption{Phân phối thời gian hoàn thành dự án mẫu qua 10.000 lần mô phỏng}
+\label{fig:mc-phan-phoi}
+\end{figure}
+
+\begin{table}[H]
+\centering
+\caption{Kết quả mô phỏng Monte Carlo (đơn vị: ngày làm việc)}
+\label{tab:mc}
+\begin{tabular}{@{}lcc@{}}
+\toprule
+\textbf{Chỉ số} & \textbf{Không tính rủi ro} & \textbf{Có rủi ro} \\
+\midrule
+Trung bình & 99,6 & 118,9 \\
+P50 & 99,5 & 118,2 \\
+P80 & 103,9 & 128,2 \\
+P90 & 106,2 & 134,1 \\
+Xác suất hoàn thành trong 95 ngày & 18,7\% & 0,7\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Kết quả (Hình~\ref{fig:mc-phan-phoi}, Bảng~\ref{tab:mc}) cho thấy:
+\begin{itemize}
+  \item \textbf{Kế hoạch 90 ngày gần như không thể đạt được.} Ngay cả khi không có rủi ro nào xảy ra, thời gian trung bình đã là 99,6 ngày. Lý do là phân phối thời lượng lệch về phía bi quan: trung bình của phân phối tam giác, $(O + M + P)/3$, cao hơn giá trị khả dĩ $M$. Khi tính thêm rủi ro, xác suất kịp hạn 95 ngày chỉ còn 0,7\%.
+  \item \textbf{Dự phòng thời gian.} Để có 80\% khả năng hoàn thành, dự án cần khoảng 128 ngày, tức phải dự phòng thêm khoảng 38 ngày so với kế hoạch 90 ngày. Đây chính là cơ sở định lượng để lập \emph{dự phòng tiến độ} (schedule reserve) trong PMBOK~\cite{pmbok6}.
+  \item \textbf{Chỉ số tới hạn.} Các công việc T4 (thiết kế giao diện) và T6 (front-end) chỉ nằm trên đường găng ở khoảng 1\% số lần mô phỏng, vì nhánh này có thời gian dự trữ lớn.
+\end{itemize}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.95\textwidth]{mc_do_nhay.png}
+\caption{Biểu đồ độ nhạy: đóng góp kỳ vọng của từng rủi ro vào thời gian dự án}
+\label{fig:mc-do-nhay}
+\end{figure}
+
+Biểu đồ độ nhạy (Hình~\ref{fig:mc-do-nhay}) xếp các rủi ro theo \emph{đóng góp kỳ vọng}, tức xác suất nhân với số ngày dự án bị kéo dài khi rủi ro xảy ra. Ba rủi ro cần ưu tiên ứng phó là R1 (chủ đầu tư thay đổi yêu cầu), R11 (tích hợp hệ thống cũ) và R3 (đội phát triển thiếu kinh nghiệm). Cả ba đều là bài học trực tiếp từ Healthcare.gov.
+
+So sánh với ma trận PIM có một kết quả đáng chú ý. Rủi ro R4 nằm ở \emph{vùng đỏ} của ma trận, nhưng trong mô phỏng gần như không ảnh hưởng tới tiến độ (đóng góp kỳ vọng 0,1 ngày), vì nó tác động lên nhánh front-end có thời gian dự trữ. Ngược lại, R2 (chậm phê duyệt UAT) chỉ ở vùng vàng nhưng xếp thứ tư về độ nhạy, vì nó nằm trên đường găng. Ma trận PIM chỉ xét từng rủi ro riêng lẻ. Muốn biết rủi ro thực sự ảnh hưởng tới dự án ra sao, cần ghép rủi ro vào lịch trình, và đó là giá trị mà phân tích định lượng bổ sung cho phân tích định tính.
 
 \section{Đánh giá phản biện bài báo}
 \label{sec:phan-bien}
