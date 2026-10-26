@@ -1,0 +1,16 @@
+ma,nhom,so_cau,cronbach_alpha
+CL,Chủ đầu tư,6,0.898
+CO,Nhà thầu,3,0.883
+CN,Tư vấn,3,0.834
+FD,Khả thi và thiết kế,5,0.926
+TC,Đấu thầu và hợp đồng,4,0.838
+RM,Nguồn lực và cung ứng vật tư,5,0.895
+MR,Quản lý dự án,5,0.944
+EC,Kinh tế quốc gia,4,0.922
+PO,Chính trị,4,0.915
+LP,Người dân địa phương,3,0.771
+EN,Môi trường và an toàn,3,0.861
+SE,An ninh,3,0.899
+FM,Bất khả kháng,3,0.878
+ALL,Toàn bộ 51 câu,51,0.974
+EF,Ảnh hưởng tới thành công dự án,5,0.810

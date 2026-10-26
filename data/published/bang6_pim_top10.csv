@@ -1,0 +1,11 @@
+hang,ma,rui_ro,nhom,tac_dong,xac_suat
+1,FD4,Ước tính chi phí dự án sai,FD,VH,VH
+2,FD5,Ước tính tiến độ sai,FD,VH,H
+3,PO1,Bất ổn chính trị,PO,H,VH
+4,FD1,Nghiên cứu khả thi không đúng,FD,H,VH
+5,CL1,Chậm ra quyết định,CL,H,VH
+6,,Thiếu dự án hạ tầng,EC,H,H
+7,,Vật liệu xây dựng kém chất lượng,RM,H,H
+8,RM1,Thiếu lao động và năng suất thấp,RM,H,H
+9,,Quản lý hợp đồng kém,CN,H,H
+10,,Phối hợp giữa các nhà thầu kém,CO,H,H

@@ -1,0 +1,11 @@
+ma,rui_ro,rii_tac_dong,hang_tac_dong,rii_xac_suat,hang_xac_suat,rii_tong,hang_tong
+CL1,Chậm ra quyết định,0.675,21,0.821,4,0.554,4
+CL2,Chính phủ bất ổn,0.779,1,0.742,14,0.578,1
+FD1,Nghiên cứu khả thi không đúng,0.707,9,0.718,19,0.508,9
+FD4,Ước tính chi phí dự án sai,0.717,7,0.793,6,0.568,2
+FD5,Ước tính tiến độ sai,0.714,8,0.779,10,0.556,3
+TC3,Điều khoản hợp đồng không rõ,0.625,41,0.875,1,0.547,7
+EC1,Khủng hoảng kinh tế và tài chính,0.634,38,0.796,5,0.504,10
+RM1,Thiếu lao động và năng suất thấp,0.678,18,0.757,12,0.513,8
+PO1,Bất ổn chính trị,0.656,30,0.836,3,0.549,5
+FM3,Chiến tranh trong nước,0.645,33,0.850,2,0.548,6
