@@ -132,7 +132,122 @@ Ngoài ra còn các lỗi trình bày như ghi ngược $Q^2$ ở phần Kết l
 \section{Phân tích trên dữ liệu mô phỏng}
 \label{sec:mo-phong}
 
-% Viết sau khi chạy xong bootstrap 5000 lần (results/mo-phong.md)
+\subsection{Cách sinh dữ liệu}
+
+Bộ dữ liệu mô phỏng gồm 314 phiếu, được sinh theo bốn bước:
+\begin{enumerate}
+  \item Sinh điểm của 13 nhóm rủi ro từ phân phối chuẩn nhiều chiều, với ma trận tương quan là ma trận Bảng 9 đã dựng lại (đường chéo bằng 1).
+  \item Tính điểm \emph{rủi ro nội bộ} và \emph{rủi ro bên ngoài} bằng trung bình chuẩn hóa của các nhóm con, rồi sinh biến kết quả theo đúng hệ số đường dẫn bài báo công bố: $EF = 0{,}200 \cdot INT + 0{,}673 \cdot EXT + \varepsilon$.
+  \item Sinh điểm từng câu hỏi theo mô hình đo lường $x = \lambda F + \sqrt{1 - \lambda^2}\,e$, với $\lambda$ là loading ở Bảng 8, rồi làm tròn sang thang Likert 1--5. Trung bình mỗi câu được đặt sao cho RII tác động và RII xác suất của 10 rủi ro hàng đầu bằng giá trị ở Bảng 7. Các câu còn lại có RII tổng nhỏ hơn 0,50. Điểm xác suất có tương quan 0,5 với điểm tác động.
+  \item Sinh năm câu hậu quả với trung bình bằng các giá trị nêu ở mục 5.2 của bài báo (EF1: 3,917; EF2: 2,755; \ldots).
+\end{enumerate}
+
+Có thể coi đây là một ``thế giới giả định'' trong đó mọi tham số do bài báo công bố đều đúng. Phân tích trên dữ liệu này cho biết một quy trình phân tích chuẩn sẽ thu được kết quả như thế nào trong thế giới đó.
+
+\subsection{Độ tin cậy, RII và ma trận xác suất -- tác động}
+
+Hệ số Cronbach's $\alpha$ của 13 nhóm trên dữ liệu mô phỏng nằm trong khoảng 0,848--0,934, cùng mức với bài báo (0,771--0,944). Bảng~\ref{tab:mp-rii} so sánh 10 rủi ro hàng đầu theo RII. Có 9 trên 10 rủi ro vẫn nằm trong top 10, và 5 rủi ro đầu bảng giữ nguyên thứ hạng hoặc chỉ đổi chỗ cho nhau. RII mô phỏng thấp hơn một chút (khoảng 0,01--0,03) do việc làm tròn và cắt điểm ở hai đầu thang 1--5.
+
+\begin{table}[H]
+\centering
+\caption{RII của 10 rủi ro hàng đầu: bài báo và dữ liệu mô phỏng}
+\label{tab:mp-rii}
+\begin{tabular}{@{}llcccc@{}}
+\toprule
+\textbf{Mã} & \textbf{Rủi ro} & \textbf{RII bài báo} & \textbf{Hạng} & \textbf{RII mô phỏng} & \textbf{Hạng} \\
+\midrule
+CL2 & Chính phủ bất ổn & 0,578 & 1 & 0,548 & 2 \\
+FD4 & Ước tính chi phí sai & 0,568 & 2 & 0,560 & 1 \\
+FD5 & Ước tính tiến độ sai & 0,556 & 3 & 0,545 & 3 \\
+CL1 & Chậm ra quyết định & 0,554 & 4 & 0,540 & 4 \\
+PO1 & Bất ổn chính trị & 0,549 & 5 & 0,536 & 5 \\
+FM3 & Chiến tranh trong nước & 0,548 & 6 & 0,523 & 7 \\
+TC3 & Điều khoản hợp đồng không rõ & 0,547 & 7 & 0,524 & 6 \\
+RM1 & Thiếu lao động, năng suất thấp & 0,513 & 8 & 0,492 & 10 \\
+FD1 & Nghiên cứu khả thi không đúng & 0,508 & 9 & 0,500 & 8 \\
+EC1 & Khủng hoảng kinh tế, tài chính & 0,504 & 10 & 0,482 & 13 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Mô hình đo lường}
+
+Mô hình bậc 2 được ước lượng theo cách \textbf{lặp chỉ báo}~\cite{sarstedt2019hoc}: khối \emph{rủi ro nội bộ} dùng lại toàn bộ 31 câu của 7 nhóm con, khối \emph{rủi ro bên ngoài} dùng lại 20 câu của 6 nhóm con, và biến kết quả EF dùng 4 câu (đã bỏ EF3 như tác giả). Thuật toán hội tụ sau 7 vòng lặp.
+
+\begin{itemize}
+  \item \textbf{Độ tin cậy và giá trị hội tụ.} Mọi nhóm bậc 1 đều đạt $\alpha$, CR $> 0{,}7$ và AVE $> 0{,}5$. Hai khối bậc 2 có CR bằng 0,973 và 0,969, gần với bài báo (0,976 và 0,972). Theo Hair và cộng sự~\cite{hair2019report}, CR vượt 0,95 là dấu hiệu các câu hỏi trùng lặp. Với cách lặp chỉ báo thì điều này gần như chắc chắn xảy ra, vì một khối gom tới 20--31 câu.
+  \item \textbf{Fornell--Larcker.} Trên dữ liệu mô phỏng không có vi phạm. Lý do là tương quan giữa \emph{điểm biến tiềm ẩn} bị suy giảm bởi sai số đo, nên thấp hơn tương quan ``thật'' đã dùng để sinh dữ liệu.
+  \item \textbf{HTMT.} Đây là tiêu chí bài báo không báo cáo. HTMT tính từ tương quan giữa các câu hỏi nên không bị suy giảm như trên. Kết quả (Hình~\ref{fig:htmt}) cho thấy 3 cặp vượt ngưỡng 0,85: \textbf{MR -- RM (0,872)}, PO -- EC (0,867) và SE -- EC (0,859). Cặp MR -- RM chính là cặp đã vi phạm Fornell--Larcker trong số liệu của bài báo (mục~\ref{sec:kiem-tra}). Hai phép kiểm tra độc lập cùng chỉ ra một vấn đề: các nhóm \emph{quản lý dự án} và \emph{nguồn lực, vật tư}, cũng như cụm \emph{kinh tế -- chính trị -- an ninh}, không thực sự phân biệt được với nhau.
+\end{itemize}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.78\textwidth]{mp_htmt.png}
+\caption{Ma trận HTMT giữa các nhóm rủi ro trên dữ liệu mô phỏng}
+\label{fig:htmt}
+\end{figure}
+
+\subsection{Mô hình cấu trúc}
+
+Bảng~\ref{tab:mp-cau-truc} so sánh các chỉ số của mô hình cấu trúc, với bootstrapping 5000 lần và blindfolding có khoảng cách bỏ $D = 7$.
+
+\begin{table}[H]
+\centering
+\caption{Mô hình cấu trúc: bài báo và dữ liệu mô phỏng}
+\label{tab:mp-cau-truc}
+\begin{tabular}{@{}lccc@{}}
+\toprule
+\textbf{Chỉ số} & \textbf{Bài báo} & \textbf{Mô phỏng} & \textbf{Nhận xét} \\
+\midrule
+$\beta$ (nội bộ $\to$ EF) & 0,200 & 0,302 & Gần nhau hơn \\
+$\beta$ (bên ngoài $\to$ EF) & 0,673 & 0,492 & Vẫn lớn hơn nội bộ \\
+Sai số chuẩn của hai $\beta$ & 0,064 & 0,064 & Trùng khớp \\
+$R^2$ (EF) & 0,720 & 0,581 & Thấp hơn \\
+$f^2$ nội bộ / bên ngoài & 0,042 / 0,471 & 0,067 / 0,178 & Bên ngoài vẫn lớn hơn \\
+$Q^2$ EF / nội bộ / bên ngoài & 0,369 / 0,527 / 0,590 & 0,345 / 0,505 / 0,567 & Rất gần \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Có ba điểm đáng chú ý:
+\begin{enumerate}
+  \item \textbf{$Q^2$ và sai số chuẩn của hai đường dẫn bậc 2 gần như trùng với bài báo.} Phần mô hình bậc 2 của bài báo tái hiện được rất sát.
+  \item \textbf{$R^2$ thấp hơn (0,581 so với 0,720), và hai hệ số $\beta$ bị kéo lại gần nhau.} Dữ liệu được sinh với quan hệ thật có $R^2 \approx 0{,}72$, nhưng PLS-SEM ước lượng trên điểm tổ hợp có lẫn sai số đo, nên hệ số bị suy giảm. Đây đúng là hạn chế đã nêu ở mục~\ref{sec:danh-gia-pp}~\cite{dijkstra2015}. Kết luận định tính vẫn giữ nguyên: rủi ro bên ngoài tác động mạnh hơn rủi ro nội bộ.
+  \item \textbf{13 giả thuyết H1--H13 không tái hiện được.} Trong mô hình bậc 2, mỗi nhóm bậc 1 chỉ tác động lên EF \emph{gián tiếp}, nên hệ số tương ứng với giả thuyết của nhóm đó là \emph{tổng hiệu ứng}, bằng tích của hệ số từ nhóm tới khái niệm bậc 2 và hệ số từ khái niệm bậc 2 tới EF. Trên dữ liệu mô phỏng, tổng hiệu ứng chỉ từ 0,033 đến 0,117 với $t$ từ 4,6 đến 7,8 và sai số chuẩn 0,007--0,015. Bài báo in hệ số 0,097--0,236 với sai số chỉ 0,003--0,006 và $t$ từ 26 đến 44 (Hình~\ref{fig:so-sanh-he-so}). Thứ tự tương đối giữa các nhóm thì tương tự: các nhóm bên ngoài (EC, PO) và các nhóm MR, FD ở nhóm nội bộ có hệ số lớn nhất.
+\end{enumerate}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.95\textwidth]{mp_so_sanh_he_so.png}
+\caption{Hệ số của 13 nhóm rủi ro: bài báo (Bảng 11) và tổng hiệu ứng trên dữ liệu mô phỏng, kèm khoảng tin cậy 95\%}
+\label{fig:so-sanh-he-so}
+\end{figure}
 
 \section{So sánh và thảo luận}
 \label{sec:so-sanh}
+
+Gộp kết quả của cả hai hướng, có thể chia các kết quả của bài báo thành ba nhóm (Bảng~\ref{tab:danh-gia-tong}).
+
+\begin{table}[H]
+\centering
+\caption{Đánh giá khả năng tái hiện các kết quả chính của bài báo}
+\label{tab:danh-gia-tong}
+\begin{tabularx}{\textwidth}{@{}p{3.6cm}XX@{}}
+\toprule
+\textbf{Mức độ} & \textbf{Kết quả của bài báo} & \textbf{Căn cứ} \\
+\midrule
+Tái hiện được & Xếp hạng RII; AVE, CR của 13 nhóm; $Q^2$; sai số của hai đường bậc 2; kết luận ``rủi ro bên ngoài mạnh hơn nội bộ'' & Tính lại khớp (hướng 1); mô phỏng cho kết quả tương tự (hướng 2) \\
+\addlinespace
+Tái hiện được nhưng giá trị thấp hơn & $R^2 = 0{,}720$; độ chênh giữa hai $\beta$ & Nhất quán với Bảng 9, nhưng PLS-SEM trên dữ liệu có sai số đo cho $R^2 \approx 0{,}58$ \\
+\addlinespace
+Không tái hiện được hoặc mâu thuẫn & Giá trị phân biệt; AVE của EF; AVE 0,566 trong GoF; hệ số và $t$ của 13 giả thuyết; mức PIM so với RII & Fornell--Larcker không đạt ở RM; HTMT vượt 0,85 ở 3 cặp; không có cách tính nào ra đúng số in \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Từ đó có thể rút ra ba nhận định:
+\begin{itemize}
+  \item \textbf{Kết luận định tính của bài báo đứng vững.} Trong bối cảnh Yemen, rủi ro bên ngoài (kinh tế, chính trị, an ninh) có ảnh hưởng lớn hơn rủi ro nội bộ tới thành công của dự án. Kết luận này thể hiện nhất quán ở ma trận tương quan, ở các hệ số bậc 2 và ở kết quả mô phỏng.
+  \item \textbf{Các kết luận chi tiết về từng nhóm rủi ro (H1--H13) cần thận trọng.} Cách tính các hệ số này không rõ ràng. Các giá trị $t$ rất lớn không tái hiện được. Nhiều nhóm lại chồng lấn nhau, như MR -- RM và EC -- PO -- SE. Vì vậy việc khẳng định ``cả 13 giả thuyết đều được ủng hộ mạnh'' là thiếu cơ sở.
+  \item \textbf{Bài học về phương pháp.} Một nghiên cứu PLS-SEM nên báo cáo HTMT, nói rõ cách ước lượng mô hình bậc cao, không dùng GoF làm tiêu chí phù hợp, và công bố dữ liệu hoặc ít nhất là ma trận tương quan giữa các câu hỏi để người khác kiểm chứng được~\cite{hair2019report,henseler2015,sarstedt2019hoc}.
+\end{itemize}
