@@ -25,3 +25,9 @@ __pycache__/
 # Thông tin đăng nhập, không bao giờ commit
 .env
 .env.*
+
+# Ghi chú cá nhân, chỉ giữ trên máy
+PLAN.md
+docs/
+report/README.md
+quan-ly-du-an/README.md

@@ -10,15 +10,21 @@ Nội dung chính: quản lý rủi ro dự án, chỉ số RII, ma trận xác 
 
 | Thư mục | Nội dung |
 |---|---|
-| `docs/notes/` | Ghi chú khi đọc bài báo, bảng thuật ngữ |
-| `docs/phan-bien.md` | Câu hỏi phản biện cho các nhóm khác |
 | `data/published/` | Số liệu gõ lại từ các bảng trong bài báo (CSV) |
 | `data/simulated/` | Dữ liệu khảo sát mô phỏng 314 phiếu |
-| `src/` | Code Python/R: RII, PIM, PLS-SEM, Monte Carlo |
-| `results/` | Bảng và hình kết quả |
-| `report/` | Báo cáo LaTeX theo mẫu KLTN |
+| `src/` | Code Python: kiểm tra số liệu, RII, PIM, PLS-SEM, vẽ sơ đồ, quản lý dự án |
+| `results/` | Bảng và hình kết quả phân tích |
+| `report/` | Báo cáo LaTeX theo mẫu KLTN (biên dịch bằng XeLaTeX) |
+| `quan-ly-du-an/` | WBS, Gantt, sổ rủi ro (Excel) và kế hoạch MS Project |
 | `slides/` | Slide thuyết trình |
 
-Kế hoạch làm việc theo ngày: [PLAN.md](PLAN.md)
+## Chạy lại phân tích
+
+```
+pip install -r requirements.txt
+python src/kiem_tra_so_lieu.py
+python src/ve_so_do.py
+python src/quan_ly_du_an.py
+```
 
 Hạn nộp: 04/11/2026.
