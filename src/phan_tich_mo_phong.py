@@ -273,7 +273,7 @@ def ve_so_sanh(th):
     ax.axvline(6.5, color="#999", ls=":")
     ax.text(3, ax.get_ylim()[1] * 0.95, "Nội bộ", ha="center")
     ax.text(9.5, ax.get_ylim()[1] * 0.95, "Bên ngoài", ha="center")
-    ax.legend(fontsize=8)
+    ax.legend(fontsize=8, loc="upper center", bbox_to_anchor=(0.5, -0.08), ncol=2, frameon=False)
     fig.tight_layout()
     fig.savefig(FIGURES / "mp_so_sanh_he_so.png", dpi=200)
     plt.close(fig)
