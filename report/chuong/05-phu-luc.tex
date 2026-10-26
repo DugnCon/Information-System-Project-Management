@@ -1,7 +1,42 @@
 \chapter{Mã nguồn và dữ liệu}
 
 Toàn bộ mã nguồn, số liệu và kết quả phân tích được lưu tại kho GitHub:
+\begin{center}
 \url{https://github.com/DugnCon/Information-System-Project-Management}
+\end{center}
+
+\begin{table}[H]
+\centering
+\caption{Các thành phần chính trong kho mã nguồn}
+\begin{tabularx}{\textwidth}{@{}lX@{}}
+\toprule
+\textbf{Đường dẫn} & \textbf{Nội dung} \\
+\midrule
+\texttt{data/published/} & Số liệu gõ lại từ 10 bảng của bài báo \\
+\texttt{data/simulated/} & Dữ liệu khảo sát mô phỏng 314 phiếu (tác động, xác suất) \\
+\texttt{src/kiem\_tra\_so\_lieu.py} & Kiểm tra số liệu đã công bố (mục~\ref{sec:kiem-tra}) \\
+\texttt{src/mo\_phong.py} & Sinh dữ liệu mô phỏng \\
+\texttt{src/pls\_sem.py} & Cài đặt PLS-SEM, bootstrapping, blindfolding, HTMT \\
+\texttt{src/phan\_tich\_mo\_phong.py} & Phân tích trên dữ liệu mô phỏng (mục~\ref{sec:mo-phong}) \\
+\texttt{src/vi\_du\_httt.py} & Ví dụ dự án hệ thống thông tin và mô phỏng Monte Carlo \\
+\texttt{src/quan\_ly\_du\_an.py} & Sinh WBS, Gantt, sổ rủi ro của quá trình làm báo cáo \\
+\texttt{src/ve\_so\_do.py} & Vẽ sơ đồ tư duy, sơ đồ mô hình, lưu đồ \\
+\texttt{results/} & Bảng, hình và báo cáo kết quả tự sinh \\
+\texttt{quan-ly-du-an/} & File Excel và MS Project \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Chạy lại toàn bộ phân tích:
+\begin{verbatim}
+pip install -r requirements.txt
+python src/kiem_tra_so_lieu.py
+python src/mo_phong.py
+python src/phan_tich_mo_phong.py 5000
+python src/vi_du_httt.py
+python src/quan_ly_du_an.py
+python src/ve_so_do.py
+\end{verbatim}
 
 \chapter{Khai báo công cụ hỗ trợ}
 % Điền theo yêu cầu của môn học.
