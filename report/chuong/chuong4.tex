@@ -160,6 +160,44 @@ Biểu đồ độ nhạy (Hình~\ref{fig:mc-do-nhay}) xếp các rủi ro theo 
 
 So sánh với ma trận PIM có một kết quả đáng chú ý. Rủi ro R4 nằm ở \emph{vùng đỏ} của ma trận, nhưng trong mô phỏng gần như không ảnh hưởng tới tiến độ (đóng góp kỳ vọng 0,1 ngày), vì nó tác động lên nhánh front-end có thời gian dự trữ. Ngược lại, R2 (chậm phê duyệt UAT) chỉ ở vùng vàng nhưng xếp thứ tư về độ nhạy, vì nó nằm trên đường găng. Ma trận PIM chỉ xét từng rủi ro riêng lẻ. Muốn biết rủi ro thực sự ảnh hưởng tới dự án ra sao, cần ghép rủi ro vào lịch trình, và đó là giá trị mà phân tích định lượng bổ sung cho phân tích định tính.
 
+\section{Từ kết quả phân tích đến kế hoạch ứng phó rủi ro}
+\label{sec:ung-pho}
+
+Bài báo dừng ở bước \emph{xếp hạng} và \emph{đo ảnh hưởng} của rủi ro. Phần khuyến nghị (mục 6 của bài báo) chỉ liệt kê việc nên làm cho từng bên, không gắn với rủi ro cụ thể. Theo quy trình PMBOK~\cite{pmbok6}, sau bước phân tích còn ba quy trình nữa: \emph{lập kế hoạch ứng phó}, \emph{thực hiện ứng phó} và \emph{giám sát rủi ro}. Mục này đặt mình vào vai người quản lý dự án và chuyển 10 rủi ro hàng đầu của bài báo thành một kế hoạch ứng phó (Bảng~\ref{tab:ung-pho}; bản đầy đủ có dấu hiệu cảnh báo và chỉ số theo dõi nằm trong sheet \emph{Kế hoạch ứng phó} của file \texttt{phan-tich-bai-bao.xlsx}).
+
+{\small
+\begin{longtable}{@{}p{1.1cm}p{3.1cm}p{2.6cm}p{5.2cm}p{2.3cm}@{}}
+\caption{Kế hoạch ứng phó cho 10 rủi ro hàng đầu theo RII}
+\label{tab:ung-pho}\\
+\toprule
+\textbf{Mã} & \textbf{Rủi ro} & \textbf{Chiến lược} & \textbf{Hành động chính} & \textbf{Phụ trách} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Mã} & \textbf{Rủi ro} & \textbf{Chiến lược} & \textbf{Hành động chính} & \textbf{Phụ trách} \\
+\midrule
+\endhead
+CL2 & Chính phủ bất ổn & Báo cáo lên trên, chấp nhận chủ động & Đưa lên cấp quản lý cao hơn; dự phòng thời gian cho các mốc cần nhà nước phê duyệt & Chủ đầu tư \\
+FD4 & Ước tính chi phí sai & Giảm thiểu & Ước tính ba điểm, mô phỏng Monte Carlo chi phí, thẩm tra dự toán độc lập; dự phòng chi phí theo P80 & Tư vấn, quản lý dự án \\
+FD5 & Ước tính tiến độ sai & Giảm thiểu & Lập tiến độ theo PERT, phân tích đường găng và Monte Carlo; dự phòng cho các việc găng & Quản lý dự án \\
+CL1 & Chậm ra quyết định & Giảm thiểu & Ma trận phân quyền (RACI), thời hạn phê duyệt ghi trong hợp đồng, họp ra quyết định định kỳ & Chủ đầu tư \\
+PO1 & Bất ổn chính trị & Chuyển giao, báo cáo lên trên & Bảo hiểm rủi ro chính trị, điều khoản ổn định pháp lý trong hợp đồng & Chủ đầu tư, chính phủ \\
+FM3 & Chiến tranh trong nước & Chuyển giao, chấp nhận chủ động & Điều khoản bất khả kháng, bảo hiểm, kế hoạch tạm dừng công trường và sơ tán & Chủ đầu tư, nhà thầu \\
+TC3 & Điều khoản hợp đồng không rõ & Né tránh & Dùng mẫu hợp đồng chuẩn (như FIDIC), rà soát pháp lý trước khi ký, quy định rõ cơ chế thay đổi & Chủ đầu tư, tư vấn \\
+RM1 & Thiếu lao động, năng suất thấp & Giảm thiểu & Lập kế hoạch nguồn lực sớm, đào tạo lao động địa phương, hợp đồng khung cung ứng nhân lực & Nhà thầu \\
+FD1 & Nghiên cứu khả thi không đúng & Né tránh & Thẩm tra độc lập; cổng phê duyệt giữa các giai đoạn trước khi thiết kế và đấu thầu & Chủ đầu tư \\
+EC1 & Khủng hoảng kinh tế, tài chính & Chuyển giao, giảm thiểu & Điều khoản điều chỉnh giá, phòng ngừa rủi ro tỷ giá, đa dạng nguồn vốn & Chủ đầu tư \\
+\bottomrule
+\end{longtable}
+}
+
+Khi lập kế hoạch này, có ba điểm mà bản thân bài báo không chỉ ra:
+\begin{enumerate}
+  \item \textbf{Ma trận PIM không giúp phân biệt mức ưu tiên trong nhóm 10 rủi ro này.} Quy đổi từ RII thì cả 10 rủi ro đều có điểm $P \times I$ từ 16 đến 20, cùng nằm trong vùng đỏ. Muốn xếp thứ tự ưu tiên thì phải dùng thêm RII (giá trị liên tục) và một tiêu chí thứ ba là \emph{khả năng kiểm soát}.
+  \item \textbf{Bốn trong mười rủi ro nằm ngoài tầm kiểm soát của các bên dự án}: chính phủ bất ổn, bất ổn chính trị, chiến tranh và khủng hoảng kinh tế. Với các rủi ro này, người quản lý dự án không thể giảm xác suất xảy ra. Các công cụ phù hợp là chuyển giao (bảo hiểm, điều khoản hợp đồng), báo cáo lên cấp trên và lập \emph{dự phòng}. PMBOK phân biệt \emph{dự phòng rủi ro} (contingency reserve) cho các rủi ro đã nhận diện với \emph{dự phòng quản lý} (management reserve) cho các rủi ro chưa lường trước~\cite{pmbok6}. Cần lưu ý thêm: rủi ro ``chính phủ bất ổn'' bị bài báo xếp vào nhóm chủ đầu tư (CL2), dù bản chất là rủi ro chính trị. Đây thêm một ví dụ về việc phân nhóm chưa chặt chẽ, như đã thấy ở phần giá trị phân biệt (mục~\ref{sec:kiem-tra}).
+  \item \textbf{Ba trong sáu rủi ro còn lại thuộc nhóm nghiên cứu khả thi và thiết kế}: ước tính chi phí sai, ước tính tiến độ sai và nghiên cứu khả thi không đúng. Đây chính là các quy trình \emph{lập kế hoạch} của quản lý dự án, nên ứng phó tốt nhất là dùng đúng các công cụ của môn học: ước tính ba điểm, phân tích đường găng, mô phỏng Monte Carlo (mục~\ref{sec:monte-carlo}) và theo dõi bằng quản lý giá trị thu được (chỉ số CPI, SPI). Nói cách khác, dù mô hình của bài báo cho thấy rủi ro bên ngoài có ảnh hưởng tổng thể lớn hơn, thì phần mà người quản lý dự án \emph{có thể tác động} lại nằm chủ yếu ở các rủi ro nội bộ.
+\end{enumerate}
+
 \section{Đánh giá phản biện bài báo}
 \label{sec:phan-bien}
 
