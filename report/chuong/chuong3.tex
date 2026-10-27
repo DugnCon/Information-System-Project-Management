@@ -21,6 +21,12 @@ Khó khăn lớn nhất là bài báo \textbf{không công bố dữ liệu gố
 
 \textbf{Công cụ.} Bài báo dùng SPSS v25 và SmartPLS 3, đều là phần mềm thương mại. Báo cáo dùng Python 3 với các thư viện mã nguồn mở numpy, pandas và matplotlib. Thuật toán PLS-SEM, bootstrapping, blindfolding và HTMT được tự cài đặt theo đúng các bước ở mục~\ref{sec:pls-sem}. Để kiểm tra phần cài đặt, mô hình được chạy thử trên một bộ dữ liệu biết trước đáp án: hai biến tiềm ẩn, mỗi biến 4 câu hỏi có loading thật 0,85, hệ số đường dẫn thật 0,6, cỡ mẫu 2000. Kết quả cho loading 0,88--0,89 và hệ số đường dẫn 0,544. Như vậy loading bị ước lượng cao hơn và hệ số đường dẫn thấp hơn giá trị thật, đúng với tính chất đã biết của PLS-SEM~\cite{dijkstra2015}.
 
+Phần cài đặt còn được kiểm chứng bằng hai cách nữa:
+\begin{itemize}
+  \item \textbf{So với nghiệm giải tích.} Với mô hình hai khối A $\to$ B, thuật toán PLS (Mode A, lược đồ đường dẫn) hội tụ về nghiệm có thể tính trực tiếp: trọng số mỗi khối là vectơ kỳ dị đầu tiên của ma trận hiệp phương sai chéo $X_A^\top X_B$. Loading do chương trình tính trùng với nghiệm này tới sai số $3 \times 10^{-11}$.
+  \item \textbf{So với thư viện độc lập \texttt{plspm} (Python).} Trên dữ liệu mô phỏng 314 phiếu, hai cách tính lệch nhau tối đa 0,02 ở hệ số đường dẫn và loading, và 0,003 ở $R^2$. Ở cả mô hình bậc 1 lẫn bậc 2, kết luận không đổi. Kiểm tra thêm cho thấy chính phiên bản \texttt{plspm} đã dùng (0.5.4) lệch khoảng 0,01 so với nghiệm giải tích, nên chênh lệch nhỏ này đến từ thư viện chứ không phải từ chương trình của báo cáo.
+\end{itemize}
+
 \section{Kiểm tra số liệu đã công bố}
 \label{sec:kiem-tra}
 
