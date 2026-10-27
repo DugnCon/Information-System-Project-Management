@@ -12,6 +12,7 @@ import numpy as np
 import pandas as pd
 from openpyxl import Workbook
 from openpyxl.chart import BarChart, Reference
+from openpyxl.comments import Comment
 from openpyxl.formatting.rule import CellIsRule, ColorScaleRule, FormulaRule
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 from openpyxl.utils import get_column_letter as cot
@@ -375,6 +376,93 @@ def sheet_mo_phong(wb):
     ws.add_chart(hien_truc(ch), f"A{cuoi + 4}")
 
 
+# ---------------------------------------------------------------- Kế hoạch ứng phó
+# (mã, chiến lược PMBOK, hành động chính, người phụ trách, dấu hiệu cảnh báo, chỉ số theo dõi)
+UNG_PHO = [
+    ("CL2", "Báo cáo lên trên + chấp nhận chủ động",
+     "Đưa lên cấp hội đồng quản trị/bộ chủ quản; lập dự phòng thời gian cho các mốc cần phê duyệt của nhà nước",
+     "Chủ đầu tư", "Thay đổi lãnh đạo cơ quan quản lý; hồ sơ chờ phê duyệt quá hạn", "Số ngày chờ phê duyệt"),
+    ("FD4", "Giảm thiểu",
+     "Ước tính ba điểm, mô phỏng Monte Carlo chi phí, thẩm tra dự toán độc lập; lập dự phòng chi phí theo P80",
+     "Tư vấn thiết kế, quản lý dự án", "CPI < 0,95 trong 2 kỳ báo cáo liên tiếp", "CPI (quản lý giá trị thu được)"),
+    ("FD5", "Giảm thiểu",
+     "Lập tiến độ theo PERT, phân tích đường găng, mô phỏng Monte Carlo; dự phòng tiến độ cho các việc găng",
+     "Quản lý dự án", "SPI < 0,95; thời gian dự trữ của đường găng về 0", "SPI, thời gian dự trữ đường găng"),
+    ("CL1", "Giảm thiểu",
+     "Lập ma trận phân quyền (RACI), quy định thời hạn phê duyệt trong hợp đồng, họp ra quyết định định kỳ",
+     "Chủ đầu tư", "Yêu cầu phê duyệt tồn đọng quá thời hạn quy định", "Thời gian phê duyệt trung bình"),
+    ("PO1", "Chuyển giao + báo cáo lên trên",
+     "Mua bảo hiểm rủi ro chính trị; đưa điều khoản ổn định pháp lý vào hợp đồng; báo cáo lên chính phủ",
+     "Chủ đầu tư, chính phủ", "Thay đổi chính sách, đình trệ cơ quan nhà nước", "Số thay đổi chính sách ảnh hưởng dự án"),
+    ("FM3", "Chuyển giao + chấp nhận chủ động",
+     "Điều khoản bất khả kháng rõ ràng; bảo hiểm; kế hoạch tạm dừng, bảo quản công trường và sơ tán nhân sự",
+     "Chủ đầu tư, nhà thầu", "Cảnh báo an ninh tại khu vực dự án", "Số ngày công trường phải dừng"),
+    ("TC3", "Né tránh",
+     "Dùng mẫu hợp đồng chuẩn (như FIDIC), rà soát pháp lý trước khi ký, định nghĩa rõ phạm vi và cơ chế thay đổi",
+     "Chủ đầu tư, tư vấn", "Số yêu cầu làm rõ/thay đổi hợp đồng tăng", "Số yêu cầu thay đổi, số tranh chấp"),
+    ("RM1", "Giảm thiểu",
+     "Lập kế hoạch nguồn lực sớm; đào tạo lao động địa phương; hợp đồng khung với nhà cung cấp nhân lực",
+     "Nhà thầu", "Năng suất dưới định mức; tỷ lệ nghỉ việc tăng", "Năng suất lao động so với kế hoạch"),
+    ("FD1", "Né tránh",
+     "Thẩm tra độc lập nghiên cứu khả thi; cổng phê duyệt giữa các giai đoạn trước khi chuyển sang thiết kế, đấu thầu",
+     "Chủ đầu tư", "Thay đổi phạm vi lớn sau khi đã thiết kế", "Số thay đổi phạm vi sau phê duyệt"),
+    ("EC1", "Chuyển giao + giảm thiểu",
+     "Điều khoản điều chỉnh giá, phòng ngừa rủi ro tỷ giá, đa dạng nguồn vốn; dự phòng chi phí cho trượt giá",
+     "Chủ đầu tư (bộ phận tài chính)", "Lạm phát, tỷ giá vượt ngưỡng đã giả định", "Chỉ số giá vật tư, tỷ giá"),
+]
+
+
+def sheet_ung_pho(wb):
+    ws = wb.create_sheet("Kế hoạch ứng phó")
+    dau_trang(ws, "KẾ HOẠCH ỨNG PHÓ CHO 10 RỦI RO HÀNG ĐẦU (theo 5 chiến lược ứng phó mối đe dọa của PMBOK)",
+              "RII và mức lấy từ sheet RII bằng INDEX/MATCH. Khả năng kiểm soát do người phân tích đánh giá theo bản chất "
+              "rủi ro: rủi ro ngoài tầm kiểm soát thì ưu tiên chuyển giao, báo cáo lên trên, lập dự phòng.")
+    tieu_de(ws, 4, ["Mã", "Rủi ro", "Nhóm", "Loại (theo bài báo)", "RII tổng", "Hạng", "Mức I", "Mức P", "Điểm P×I", "Vùng",
+                    "Khả năng kiểm soát", "Chiến lược", "Hành động chính", "Người phụ trách", "Dấu hiệu cảnh báo",
+                    "Chỉ số theo dõi"],
+            [6, 26, 6, 10, 8, 6, 6, 6, 8, 7, 13, 18, 48, 16, 30, 22])
+    rg = lambda c: f"RII!${c}$5:${c}$14"
+    muc_so = lambda c: f'MATCH({c},{{"VL","L","M","H","VH"}},0)'
+    for k, (ma, cl, hd, ng, dh, cs) in enumerate(UNG_PHO):
+        r = 5 + k
+        tim = f"MATCH($A{r},{rg('A')},0)"
+        o(ws, r, 1, ma)
+        o(ws, r, 2, f"=INDEX({rg('B')},{tim})", can="left")
+        o(ws, r, 3, f"=LEFT(A{r},2)")
+        o(ws, r, 4, f'=IF(ISNUMBER(MATCH(C{r},{{"CL","CO","CN","FD","TC","RM","MR"}},0)),"Nội bộ","Bên ngoài")')
+        o(ws, r, 5, f"=INDEX({rg('F')},{tim})", fmt="0.000")
+        o(ws, r, 6, f"=INDEX({rg('J')},{tim})")
+        o(ws, r, 7, f"=INDEX({rg('K')},{tim})")
+        o(ws, r, 8, f"=INDEX({rg('L')},{tim})")
+        o(ws, r, 9, f"={muc_so(f'G{r}')}*{muc_so(f'H{r}')}")
+        o(ws, r, 10, f'=IF(I{r}>=15,"Đỏ",IF(I{r}>=8,"Vàng","Xanh"))')
+        # đánh giá theo bản chất rủi ro, không theo mã nhóm (CL2 bị bài báo xếp vào nhóm chủ đầu tư)
+        kiem_soat = "Ngoài tầm kiểm soát" if ma in ("CL2", "PO1", "FM3", "EC1") else "Trong tầm kiểm soát"
+        o(ws, r, 11, kiem_soat, nhap=True)
+        if ma == "CL2":
+            ws.cell(r, 11).comment = Comment("Bài báo xếp 'chính phủ bất ổn' vào nhóm chủ đầu tư (CL), nhưng bản chất "
+                                             "là rủi ro chính trị, nằm ngoài tầm kiểm soát của các bên dự án.",
+                                             "Phân tích")
+        o(ws, r, 12, cl, nhap=True)
+        o(ws, r, 13, hd, nhap=True, can="left")
+        o(ws, r, 14, ng, nhap=True)
+        o(ws, r, 15, dh, nhap=True, can="left")
+        o(ws, r, 16, cs, nhap=True, can="left")
+        ws.row_dimensions[r].height = 48
+    cuoi = 4 + len(UNG_PHO)
+    for mau, ten in [("FFC7CE", "Đỏ"), ("FFEB9C", "Vàng"), ("C6EFCE", "Xanh")]:
+        ws.conditional_formatting.add(f"J5:J{cuoi}", CellIsRule(operator="equal", formula=[f'"{ten}"'],
+                                      fill=PatternFill("solid", fgColor=mau)))
+    ws.conditional_formatting.add(f"K5:K{cuoi}", CellIsRule(operator="equal", formula=['"Ngoài tầm kiểm soát"'],
+                                  fill=PatternFill("solid", fgColor="FCE4D6")))
+    r = cuoi + 2
+    o(ws, r, 2, "Số rủi ro nội bộ / bên ngoài", dam=True, can="left")
+    o(ws, r, 4, f'=COUNTIF(D5:D{cuoi},"Nội bộ")&" / "&COUNTIF(D5:D{cuoi},"Bên ngoài")', dam=True)
+    o(ws, r + 1, 2, "Số rủi ro vùng đỏ", dam=True, can="left")
+    o(ws, r + 1, 4, f'=COUNTIF(J5:J{cuoi},"Đỏ")', dam=True)
+    ws.freeze_panes = "C5"
+
+
 def main():
     wb = Workbook()
     sheet_huong_dan(wb)
@@ -383,6 +471,7 @@ def main():
     vt = sheet_fornell_larcker(wb)
     sheet_cau_truc(wb, vt)
     sheet_mo_phong(wb)
+    sheet_ung_pho(wb)
     OUT.parent.mkdir(exist_ok=True)
     wb.save(OUT)
     print("Đã tạo", OUT)
