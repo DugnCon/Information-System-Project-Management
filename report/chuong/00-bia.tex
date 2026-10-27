@@ -1,23 +1,37 @@
-\begin{titlepage}
-\begin{center}
-{\large\bfseries \truongdh}\\[2pt]
-{\large\bfseries \khoa}\\[4pt]
-\rule{0.4\textwidth}{0.6pt}\\[3cm]
+% Trang bìa theo bài mẫu KLTN: khung viền đôi, logo, chữ in hoa căn giữa.
+% Logo: đặt file hinh/logo.png (nếu không có thì bỏ qua).
+\newcommand{\khungbia}{%
+  \begin{tikzpicture}[remember picture,overlay]
+    \draw[line width=1.6pt] ($(current page.north west)+(2.5cm,-2cm)$) rectangle ($(current page.south east)+(-1.7cm,2cm)$);
+    \draw[line width=0.5pt] ($(current page.north west)+(2.65cm,-2.15cm)$) rectangle ($(current page.south east)+(-1.85cm,2.15cm)$);
+  \end{tikzpicture}}
 
-{\large \hoten}\\[2cm]
+\newcommand{\trangbia}[1]{%
+  \begin{titlepage}
+  \khungbia
+  \begin{center}
+  \vspace*{0.3cm}
+  {\bfseries \daihoc}\\
+  {\bfseries \truongdh}\\[1cm]
+  \IfFileExists{hinh/logo.png}{\includegraphics[width=3cm]{logo}\\[1cm]}{\vspace*{3cm}}
+  {\large \hoten}\\[1.8cm]
+  {\Large\bfseries \tende}\\[2cm]
+  {\bfseries BÁO CÁO GIỮA KỲ}\\
+  {\bfseries Môn học: \monhoc}\\[1.2cm]
+  #1
+  \vfill
+  {\bfseries \namhoc}
+  \vspace*{0.5cm}
+  \end{center}
+  \end{titlepage}}
 
-{\LARGE\bfseries \tende}\\[2cm]
+% bìa ngoài
+\trangbia{}
 
-{\large\bfseries BÁO CÁO GIỮA KỲ}\\[4pt]
-{\large Môn học: Quản lý dự án hệ thống thông tin}\\[3cm]
-
-\begin{tabular}{ll}
-Mã số sinh viên: & \mssv \\
-Lớp: & \lop \\
-Giảng viên: & \giangvien \\
-\end{tabular}
-
-\vfill
-{\large\bfseries HÀ NỘI -- 2026}
-\end{center}
-\end{titlepage}
+% bìa trong: thêm thông tin sinh viên và giảng viên
+\trangbia{%
+  \begin{tabular}{ll}
+  Mã số sinh viên: & \mssv \\
+  Lớp: & \lop \\
+  Giảng viên: & \giangvien \\
+  \end{tabular}}

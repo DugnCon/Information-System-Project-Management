@@ -14,7 +14,7 @@ Nội dung chính: quản lý rủi ro dự án, chỉ số RII, ma trận xác 
 | `data/simulated/` | Dữ liệu khảo sát mô phỏng 314 phiếu |
 | `src/` | Code Python: kiểm tra số liệu, RII, PIM, PLS-SEM, vẽ sơ đồ, quản lý dự án |
 | `results/` | Bảng và hình kết quả phân tích |
-| `report/` | Báo cáo LaTeX theo mẫu KLTN (biên dịch bằng XeLaTeX) |
+| `report/` | Báo cáo LaTeX theo mẫu KLTN (biên dịch bằng pdfLaTeX) |
 | `quan-ly-du-an/` | WBS, Gantt, sổ rủi ro (Excel) và kế hoạch MS Project |
 | `slides/` | Slide thuyết trình |
 

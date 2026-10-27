@@ -1,39 +1,33 @@
 % Báo cáo giữa kỳ – Quản lý dự án HTTT
-% Biên dịch bằng XeLaTeX + Biber (Overleaf: Menu -> Compiler -> XeLaTeX)
+% Định dạng theo bài mẫu KLTN (lớp report, gói vntex, font VNR 13pt)
+% Biên dịch bằng pdfLaTeX + Biber (Overleaf: Menu -> Compiler -> pdfLaTeX)
 \documentclass[a4paper,oneside]{report}
-\usepackage[fontsize=13pt]{scrextend}  % cỡ chữ 13pt theo mẫu KLTN
+\usepackage[fontsize=13pt]{scrextend}  % chữ thân bài 13pt như bài mẫu
 
 % ---------- Ngôn ngữ, phông chữ ----------
-\usepackage{fontspec}
-\setmainfont{TeX Gyre Termes}          % tương đương Times New Roman, đủ dấu tiếng Việt
+\usepackage[utf8]{inputenc}
+\usepackage[T5]{fontenc}               % font VNR (Computer Modern tiếng Việt) như bài mẫu
 \usepackage[vietnamese]{babel}
 
 % ---------- Trình bày trang ----------
-\usepackage[left=3.5cm,right=2cm,top=2.5cm,bottom=2.5cm]{geometry}
+\usepackage[left=3cm,right=2cm,top=2.5cm,bottom=2.5cm]{geometry}
 \usepackage{setspace}
-\onehalfspacing
-\setlength{\parindent}{1cm}
-\setlength{\parskip}{6pt}
+\setstretch{1.38}                      % khoảng cách dòng ~21,5pt như bài mẫu
 \usepackage{indentfirst}
 
 % ---------- Toán, bảng, hình ----------
 \usepackage{amsmath,amssymb}
-\numberwithin{equation}{chapter}       % công thức đánh số (1.1), (1.2)... ở lề phải
+\numberwithin{equation}{chapter}       % công thức đánh số (2.1), (2.2)... ở lề phải
 \usepackage{graphicx}
 \graphicspath{{hinh/}{../results/figures/}}
 \usepackage{booktabs,longtable,tabularx,multirow,array}
 \usepackage{float}
-\usepackage[font=small,labelfont=bf]{caption}
+\usepackage{caption}
 \usepackage{xcolor}
 \usepackage{enumitem}
-\setlist{nosep,leftmargin=1.2cm}
-
-% ---------- Tiêu đề chương ----------
-\usepackage{titlesec}
-\titleformat{\chapter}[display]{\centering\bfseries\Large}{CHƯƠNG \thechapter}{6pt}{\MakeUppercase}
-\titlespacing*{\chapter}{0pt}{0pt}{18pt}
-\titleformat{\section}{\bfseries\large}{\thesection}{0.6em}{}
-\titleformat{\subsection}{\bfseries\itshape}{\thesubsection}{0.6em}{}
+\setlist{nosep}
+\usepackage{tikz}
+\usetikzlibrary{calc}
 
 % ---------- Tài liệu tham khảo ----------
 \usepackage[backend=biber,style=numeric,sorting=none,maxbibnames=6]{biblatex}
@@ -41,20 +35,22 @@
 
 \usepackage[hidelinks]{hyperref}
 
-% ---------- Thông tin sinh viên (sửa ở đây) ----------
-\newcommand{\truongdh}{TRƯỜNG ĐẠI HỌC ...}
-\newcommand{\khoa}{KHOA ...}
+% ---------- Thông tin trang bìa (sửa ở đây) ----------
+\newcommand{\daihoc}{ĐẠI HỌC QUỐC GIA HÀ NỘI}
+\newcommand{\truongdh}{TRƯỜNG ĐẠI HỌC CÔNG NGHỆ}
 \newcommand{\hoten}{Họ và tên sinh viên}
-\newcommand{\mssv}{MSSV}
+\newcommand{\mssv}{Mã số sinh viên}
 \newcommand{\lop}{Lớp}
-\newcommand{\giangvien}{Giảng viên hướng dẫn}
-\newcommand{\tende}{QUẢN LÝ RỦI RO TRONG DỰ ÁN XÂY DỰNG DẦU KHÍ\\BẰNG MÔ HÌNH PHƯƠNG TRÌNH CẤU TRÚC PLS-SEM}
+\newcommand{\monhoc}{Quản lý dự án hệ thống thông tin}
+\newcommand{\giangvien}{Giảng viên}
+\newcommand{\namhoc}{HÀ NỘI - 2026}
+\newcommand{\tende}{QUẢN LÝ RỦI RO TRONG DỰ ÁN XÂY DỰNG DẦU KHÍ\\BẰNG MÔ HÌNH PHƯƠNG TRÌNH CẤU TRÚC\\PLS-SEM}
 
 \begin{document}
 
 \input{chuong/00-bia}
 
-\pagenumbering{roman}
+\pagenumbering{arabic}
 \input{chuong/01-tom-tat}
 
 \tableofcontents
@@ -65,7 +61,6 @@
 \listoftables
 \clearpage
 
-\pagenumbering{arabic}
 \input{chuong/03-mo-dau}
 \input{chuong/chuong1}
 \input{chuong/chuong2}
@@ -76,7 +71,7 @@
 \clearpage
 \phantomsection
 \addcontentsline{toc}{chapter}{TÀI LIỆU THAM KHẢO}
-\printbibliography[title={TÀI LIỆU THAM KHẢO}]
+\printbibliography[title={Tài liệu tham khảo}]
 
 \appendix
 \input{chuong/05-phu-luc}
