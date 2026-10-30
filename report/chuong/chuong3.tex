@@ -236,6 +236,59 @@ Có ba điểm đáng chú ý:
 \label{fig:so-sanh-he-so}
 \end{figure}
 
+\section{Áp dụng quy trình trên một bộ dữ liệu thật công khai}
+\label{sec:aceh}
+
+Dữ liệu mô phỏng chỉ cho biết quy trình hoạt động thế nào khi mọi tham số của bài báo đều đúng. Để thử quy trình trên dữ liệu \emph{thật}, báo cáo tìm các bộ dữ liệu khảo sát công khai có cấu trúc gần với bài báo. Bộ phù hợp nhất là dữ liệu của Rauzana~\cite{rauzana2021data} (giấy phép CC BY 4.0): 68 nhà thầu ở tỉnh Aceh (Indonesia) chấm mức ảnh hưởng (thang 1--5) của 60 nguyên nhân chậm trễ, chia thành 10 nhóm, cùng 4 câu Y1--Y4. Cấu trúc này tương tự bài báo của Kassem: nhiều nhóm nguyên nhân cùng tác động lên một biến kết quả. Bài báo gốc của bộ dữ liệu~\cite{rauzana2022} chỉ dùng thống kê mô tả và Cronbach's $\alpha$, không có RII hay PLS-SEM, nên việc áp dụng quy trình của Kassem lên bộ dữ liệu này là một thực nghiệm mới.
+
+\textbf{Kiểm tra đọc dữ liệu.} Các con số tính lại khớp với bài báo gốc: $\alpha$ thấp nhất ở nhóm Chính trị (0,638), cao nhất ở nhóm Lao động (0,944); tổng điểm cao nhất là ``chậm phê duyệt ngân sách'' (327), thấp nhất là ``tin tức bất lợi trên báo chí'' (234). Bốn câu Y1--Y4 có $\alpha = 0{,}946$. Bài gốc không định nghĩa bốn câu này, nhưng hệ số cao cho thấy chúng đo cùng một khái niệm, nên báo cáo dùng chúng làm biến kết quả ``mức độ chậm trễ''. Các phép tính RII và Cronbach's $\alpha$ cũng được làm lại bằng công thức Excel (file \texttt{du-lieu-aceh.xlsx}) và cho cùng kết quả.
+
+Có hai khác biệt so với dữ liệu của bài báo. Thứ nhất, mỗi yếu tố chỉ được chấm \emph{một lần} (mức ảnh hưởng), nên chỉ tính được RII theo mức ảnh hưởng, không dựng được ma trận xác suất -- tác động. Thứ hai, cỡ mẫu 68 nhỏ so với mô hình 64 câu hỏi.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.85\textwidth]{aceh_rii_top10.png}
+\caption{Mười nguyên nhân chậm trễ có RII cao nhất ở Aceh (tính từ dữ liệu của~\cite{rauzana2021data})}
+\label{fig:aceh-rii}
+\end{figure}
+
+\textbf{RII.} Đứng đầu là chậm phê duyệt ngân sách (0,962), chủ đầu tư chậm thanh toán (0,938) và tổ chức quần chúng phản đối vì lợi ích nhóm (0,935) (Hình~\ref{fig:aceh-rii}). Tính trung bình theo nhóm thì nhóm Tài chính cao nhất (0,918), nhóm Giám đốc dự án thấp nhất (0,816). Mọi RII đều rất cao (trên 0,8), vì người trả lời có xu hướng chấm mọi yếu tố đều ``ảnh hưởng cao''. Đây là hạn chế chung của RII: chỉ số này cho biết thứ hạng nhưng không cho biết khác biệt có thực sự đáng kể hay không.
+
+\textbf{Mô hình đo lường.} Có 14/64 câu có loading dưới 0,708. Nhóm Chính trị và nhóm Giám đốc dự án có câu với loading âm, nhóm Tội phạm có $AVE = 0{,}33 < 0{,}5$. Như vậy bảng hỏi của Rauzana chưa được thiết kế cho PLS-SEM. Một nghiên cứu đầy đủ sẽ loại bớt các câu yếu. Ở đây báo cáo giữ nguyên để áp dụng đúng quy trình của Kassem. Ngược lại, HTMT lớn nhất chỉ 0,55, nghĩa là các nhóm phân biệt nhau tốt hơn nhiều so với các nhóm trong bài báo của Kassem.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{aceh_he_so.png}
+\caption{Hệ số đường dẫn của 10 nhóm nguyên nhân lên mức độ chậm trễ ở Aceh, kèm khoảng tin cậy bootstrap 95\% (2000 lần)}
+\label{fig:aceh-he-so}
+\end{figure}
+
+\textbf{Mô hình cấu trúc.} Với mô hình bậc 1 (10 nhóm cùng tác động lên Y), $R^2 = 0{,}683$ và $Q^2 = 0{,}576$. Chỉ có 4/10 nhóm có ý nghĩa ở mức 5\%: Chính trị ($\beta = 0{,}30$; $t = 3{,}4$), Quản lý (0,23; 3,0), Lao động (0,22; 2,3) và Tài chính (0,22; 2,6) (Hình~\ref{fig:aceh-he-so}). Với mô hình bậc 2 theo đúng cách của Kassem (7 nhóm nội bộ và 3 nhóm bên ngoài), $R^2$ giảm còn 0,343, hệ số của rủi ro nội bộ là $\beta = 0{,}47$ ($t = 2{,}6$; $f^2 = 0{,}34$) và của rủi ro bên ngoài là $\beta = 0{,}32$ ($t = 1{,}8$; $f^2 = 0{,}16$). Lưu ý rằng với mẫu 68 phiếu, nhiều mẫu bootstrap của mô hình bậc 2 hội tụ chậm, và khoảng tin cậy phân vị của cả hai hệ số đều chứa 0. Vì vậy so sánh giữa hai khối chỉ nên coi là gợi ý.
+
+\begin{table}[H]
+\centering
+\caption{Cùng một quy trình trên hai bộ dữ liệu}
+\label{tab:aceh-kassem}
+\begin{tabular}{@{}lcc@{}}
+\toprule
+\textbf{Chỉ số} & \textbf{Kassem -- Yemen (công bố)} & \textbf{Aceh -- dữ liệu thật (tính lại)} \\
+\midrule
+Cỡ mẫu & 314 & 68 \\
+HTMT lớn nhất & không báo cáo (mô phỏng: 0,87) & 0,55 \\
+$\beta$ nội bộ / bên ngoài & 0,200 / 0,673 & 0,470 / 0,321 \\
+$R^2$ mô hình bậc 2 & 0,720 & 0,343 \\
+Số nhóm bậc 1 có ý nghĩa & 13/13 ($t$ = 26--44) & 4/10 ($t$ = 2,3--3,4) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+So sánh hai bộ dữ liệu (Bảng~\ref{tab:aceh-kassem}) cho thấy ba điều:
+\begin{enumerate}
+  \item \textbf{Trên dữ liệu thật, các giá trị $t$ có độ lớn thông thường} (2--3), và chỉ một phần các nhóm có ý nghĩa. Các giá trị $t$ từ 26 đến 44 cho cả 13 nhóm trong bài báo của Kassem càng tỏ ra bất thường.
+  \item \textbf{Ở bối cảnh không có xung đột vũ trang, rủi ro nội bộ có xu hướng mạnh hơn.} Kết quả này ngược với Yemen nhưng nhất quán với hai ví dụ thực tế ở Chương~\ref{chuong:mo-rong}. Dù vậy, nhóm riêng lẻ mạnh nhất ở Aceh lại là \emph{Chính trị}, chủ yếu do chậm phê duyệt ngân sách và thủ tục của cơ quan nhà nước. Như vậy rủi ro từ phía nhà nước vẫn quan trọng, chỉ là ở dạng thủ tục hành chính chứ không phải chiến tranh.
+  \item \textbf{Cách gộp nhóm thay đổi kết luận.} Gộp 10 nhóm thành 2 khối làm $R^2$ giảm từ 0,68 xuống 0,34. Kết luận ``khối nào mạnh hơn'' phụ thuộc vào việc nhóm nào được xếp vào khối nào. Đây là một lý do nữa để thận trọng với mô hình bậc 2 của bài báo.
+\end{enumerate}
+
 \section{So sánh và thảo luận}
 \label{sec:so-sanh}
 
