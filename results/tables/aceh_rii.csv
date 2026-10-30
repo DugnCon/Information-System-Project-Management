@@ -1,0 +1,61 @@
+ma,rii,nhom,yeu_to,hang
+X8.5,0.9617647058823529,Chính trị,Chậm phê duyệt ngân sách,1
+X3.2,0.9382352941176471,Tài chính,Chủ đầu tư chậm thanh toán,2
+X8.6,0.9352941176470588,Chính trị,Tổ chức quần chúng phản đối vì lợi ích nhóm,3
+X3.4,0.9323529411764706,Tài chính,"Chi phí vận hành, quản lý của nhà thầu cao",4
+X3.1,0.9323529411764706,Tài chính,Tình hình tài chính kém khi thi công,4
+X6.3,0.9264705882352942,Thực hiện,Lỗi thiết kế của đơn vị lập kế hoạch,6
+X8.3,0.9205882352941176,Chính trị,Ý kiến cơ quan khác làm thay đổi thiết kế,7
+X6.4,0.9176470588235294,Thực hiện,Phát sinh khối lượng,8
+X2.1,0.9176470588235294,Thiết bị,Thiết bị hỏng,8
+X1.4,0.9147058823529411,Vật tư,Vật tư hư hỏng khi lưu kho,10
+X6.2,0.9147058823529411,Thực hiện,Thay đổi thiết kế,10
+X2.2,0.9117647058823529,Thiết bị,Thiếu thiết bị,12
+X5.3,0.9029411764705882,Lao động,Chủ đầu tư can thiệp,13
+X5.7,0.9029411764705882,Lao động,Công nhân nghỉ việc nhiều,13
+X1.9,0.9029411764705882,Vật tư,Tính sai nhu cầu vật tư,13
+X7.5,0.9,Quản lý,Hiểu sai hồ sơ hợp đồng,16
+X1.7,0.9,Vật tư,Sử dụng vật tư lãng phí,16
+X1.2,0.9,Vật tư,"Thay đổi hình dạng, chức năng, quy cách vật tư",16
+X2.3,0.9,Thiết bị,Năng suất thiết bị thấp,16
+X5.8,0.8970588235294118,Lao động,Lực lượng lao động thiếu động lực,20
+X5.5,0.8970588235294118,Lao động,Công nhân thiếu ý thức an toàn lao động,20
+X9.5,0.8970588235294118,Tội phạm,Bị tống tiền từ bên ngoài,20
+X7.8,0.8911764705882353,Quản lý,Chọn sai biện pháp thi công,23
+X8.2,0.8882352941176471,Chính trị,Thiếu phối hợp giữa các cơ quan khi ra quyết định,24
+X1.1,0.8852941176470589,Vật tư,Thiếu vật tư xây dựng,25
+X7.4,0.8852941176470589,Quản lý,Không có quy trình cho từng công việc,25
+X1.5,0.8852941176470589,Vật tư,Khan hiếm vật tư,25
+X7.6,0.8823529411764707,Quản lý,"Quản lý an toàn, sức khỏe nghề nghiệp kém",28
+X4.3,0.8764705882352942,Môi trường,Vấn đề địa chất tại công trường,29
+X9.3,0.8735294117647058,Tội phạm,Tham nhũng vặt,30
+X10.3,0.8735294117647058,Giám đốc dự án,Giám đốc dự án thiếu kinh nghiệm lập tiến độ,30
+X7.2,0.8735294117647058,Quản lý,Sắp xếp trình tự công việc chưa tốt,30
+X8.4,0.8735294117647058,Chính trị,Thủ tục cấp phép phức tạp,30
+X9.2,0.8705882352941176,Tội phạm,"Phá hoại dụng cụ, vật tư, công trình",34
+X4.1,0.8705882352941176,Môi trường,Ảnh hưởng của thời tiết,34
+X3.3,0.8705882352941176,Tài chính,Không được ngân hàng cấp vốn lưu động bổ sung,34
+X1.3,0.8705882352941176,Vật tư,Giao vật tư chậm,34
+X9.1,0.8676470588235293,Tội phạm,"Mất vật tư, thiết bị",38
+X10.7,0.8676470588235293,Giám đốc dự án,"Thiếu giám sát, kiểm soát khi thi công",38
+X5.2,0.8647058823529411,Lao động,Lao động thiếu năng lực,40
+X9.4,0.8588235294117647,Tội phạm,Công nhân dùng chất cấm,41
+X7.1,0.8558823529411764,Quản lý,Kiểm soát thời gian yếu,42
+X1.8,0.8558823529411764,Vật tư,Vật tư về muộn,42
+X7.3,0.8558823529411764,Quản lý,Không rà soát quy cách trước khi thi công,42
+X7.7,0.8529411764705882,Quản lý,Quy trình quản lý chất lượng không phù hợp,45
+X9.6,0.8529411764705882,Tội phạm,Công nhân đánh nhau,45
+X10.2,0.85,Giám đốc dự án,Giám đốc dự án thiếu kinh nghiệm phân công,47
+X4.4,0.85,Môi trường,Nhà thầu thiếu trao đổi với cộng đồng,47
+X4.2,0.85,Môi trường,An toàn môi trường kém,47
+X1.6,0.8441176470588235,Vật tư,Đặt hàng vật tư không chính xác,50
+X5.1,0.8382352941176471,Lao động,Thiếu lao động,51
+X10.1,0.8382352941176471,Giám đốc dự án,Giám đốc dự án chọn nhân sự kém,51
+X5.4,0.8294117647058824,Lao động,Lao động mệt mỏi do tăng ca,53
+X5.6,0.8117647058823529,Lao động,Thay công nhân mới,54
+X10.4,0.7911764705882354,Giám đốc dự án,Giám đốc dự án kém giao tiếp với chủ đầu tư,55
+X4.5,0.7852941176470588,Môi trường,Thiết bị nặng khó vào công trường,56
+X10.5,0.7735294117647059,Giám đốc dự án,Giao tiếp kém với đội ngũ và nhà thầu phụ,57
+X6.1,0.7617647058823529,Thực hiện,Chậm cấp phép,58
+X10.6,0.7205882352941176,Giám đốc dự án,Không thúc đẩy cả đội làm việc hết mình,59
+X8.1,0.6882352941176471,Chính trị,Tin tức bất lợi trên báo chí,60

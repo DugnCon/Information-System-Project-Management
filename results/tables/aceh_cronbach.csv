@@ -1,0 +1,12 @@
+ma,nhom,so_cau,alpha
+X1,Vật tư,9,0.943
+X2,Thiết bị,3,0.819
+X3,Tài chính,4,0.916
+X4,Môi trường,5,0.903
+X5,Lao động,8,0.944
+X6,Thực hiện,4,0.787
+X7,Quản lý,8,0.937
+X8,Chính trị,6,0.638
+X9,Tội phạm,6,0.913
+X10,Giám đốc dự án,7,0.902
+Y,Y,4,0.946
