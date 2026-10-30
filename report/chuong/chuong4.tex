@@ -219,6 +219,7 @@ Khi lập kế hoạch này, có ba điểm mà bản thân bài báo không ch�
   \item \textbf{Kết quả của 13 giả thuyết không tái hiện được.} Hệ số và giá trị $t$ của các nhóm bậc 1 không khớp với bất kỳ cách ước lượng chuẩn nào. Phần thảo luận còn mâu thuẫn với bảng kết quả: H5 được nói là ``không được ủng hộ'' nhưng bảng cho $p < 0{,}001$, và các giá trị $t$ trong văn bản khác với Bảng 11.
   \item \textbf{Dùng GoF làm tiêu chí phù hợp}, trong khi chính tài liệu tác giả trích dẫn~\cite{henseler2013} đã chỉ ra GoF không có tác dụng đó.
   \item \textbf{Lỗi trình bày và biên tập.} Có đoạn văn bị lặp nguyên văn, hình bị chồng chữ, $Q^2$ bị ghi ngược ở phần kết luận, và còn sót dòng ``FOR PEER REVIEW''. Một tài liệu trích dẫn không liên quan tới nội dung, như tài liệu [45] về cảm biến đường sắt được dẫn cho một dự án lọc dầu.
+  \item \textbf{Một bộ dữ liệu, nhiều bài báo, số liệu không thống nhất.} Mô hình PLS-SEM của bài báo, với cùng các giá trị $R^2 = 0{,}720$, GoF $= 0{,}638$ và các hệ số đường dẫn, đã có trong luận án tiến sĩ của tác giả hoàn thành năm 2020~\cite{kassem2020luanan}, nhưng bài báo không nhắc tới điều này. Cùng bộ câu hỏi (51 yếu tố, Cronbach's $\alpha$ bằng 0,974 và 0,81) còn được dùng trong một bài khác của nhóm tác giả, nhưng bài đó ghi 357 người trả lời~\cite{kassem2020rii} thay vì 314. Người đọc vì vậy không biết chắc cỡ mẫu thật là bao nhiêu.
   \item \textbf{Phạm vi khái quát hẹp.} Dữ liệu chỉ từ Yemen trong giai đoạn xung đột. Kết luận ``rủi ro bên ngoài lấn át'' không áp dụng được cho bối cảnh ổn định, như hai ví dụ trong chương này cho thấy.
   \item \textbf{Dữ liệu tự đánh giá.} Toàn bộ điểm số dựa trên cảm nhận của người trả lời, không đối chiếu với số liệu thực tế về chi phí hay tiến độ của các dự án.
 \end{enumerate}
@@ -232,6 +233,35 @@ Khi lập kế hoạch này, có ba điểm mà bản thân bài báo không ch�
   \item Thay GoF bằng đánh giá khả năng dự báo ngoài mẫu (PLSpredict~\cite{shmueli2019}). Dùng PLSc~\cite{dijkstra2015} để giảm sai lệch do sai số đo.
   \item Bổ sung phân tích định lượng tác động lên tiến độ và chi phí, như mô phỏng Monte Carlo ở mục~\ref{sec:monte-carlo}, để chuyển từ ``rủi ro nào quan trọng'' sang ``dự án cần dự phòng bao nhiêu''.
 \end{itemize}
+
+\section{So sánh các công cụ hỗ trợ quản lý rủi ro}
+\label{sec:cong-cu}
+
+Bài báo chỉ dùng hai phần mềm thương mại (SPSS và SmartPLS) và không so sánh với công cụ nào khác. Trong quá trình làm báo cáo, nhiều công cụ đã được dùng cho từng bước của quy trình. Bảng~\ref{tab:cong-cu} tổng hợp ưu điểm, hạn chế và vị trí của từng công cụ trong quy trình quản lý rủi ro của PMBOK~\cite{pmbok6}.
+
+{\small
+\begin{longtable}{@{}p{2.3cm}p{2.9cm}p{4.3cm}p{4.3cm}@{}}
+\caption{So sánh các công cụ dùng trong bài báo và trong báo cáo}
+\label{tab:cong-cu}\\
+\toprule
+\textbf{Công cụ} & \textbf{Quy trình PMBOK} & \textbf{Ưu điểm} & \textbf{Hạn chế} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Công cụ} & \textbf{Quy trình PMBOK} & \textbf{Ưu điểm} & \textbf{Hạn chế} \\
+\midrule
+\endhead
+Excel & Nhận diện, phân tích định tính (sổ rủi ro, RII, PIM) & Phổ biến, công thức minh bạch, người đọc tự kiểm tra từng bước; có định dạng có điều kiện và biểu đồ & Không phù hợp cho PLS-SEM, bootstrap hay mô phỏng lớn; dễ sai khi bảng phức tạp \\
+SPSS (bài báo dùng) & Phân tích dữ liệu khảo sát (thống kê mô tả, Cronbach's $\alpha$) & Giao diện trực quan, chuẩn trong nghiên cứu khảo sát & Thương mại; bản gốc không có PLS-SEM \\
+SmartPLS (bài báo dùng) & Phân tích định lượng quan hệ rủi ro -- kết quả (PLS-SEM) & Vẽ mô hình kéo thả, có sẵn bootstrap, HTMT, PLSpredict & Thương mại; kết quả phụ thuộc thiết lập mặc định, khó tái lập nếu không công bố các thiết lập \\
+R (seminr) và Python & PLS-SEM, mô phỏng, kiểm tra số liệu & Miễn phí, mã nguồn mở, tái lập được hoàn toàn~\cite{hair2021workbook}; linh hoạt (dữ liệu mô phỏng, kiểm chứng với nghiệm giải tích) & Cần biết lập trình; thư viện có thể có sai lệch (như \texttt{plspm} 0.5.4 ở mục~\ref{sec:quy-trinh}) \\
+MS Project & Lập kế hoạch, giám sát (WBS, lịch trình, đường găng, baseline) & Chuẩn công nghiệp; tự tính đường găng; theo dõi kế hoạch so với thực tế & Không có phân tích rủi ro định lượng sẵn; phải thêm công cụ bổ trợ \\
+RiskyProject / Monte Carlo & Phân tích định lượng (rủi ro tiến độ, chi phí) & Gắn rủi ro vào lịch trình, cho phân phối thời gian hoàn thành, P80, độ nhạy & Kết quả phụ thuộc vào ước lượng xác suất và tác động đầu vào; RiskyProject là phần mềm thương mại \\
+\bottomrule
+\end{longtable}
+}
+
+Các công cụ này \emph{bổ sung} cho nhau chứ không thay thế nhau. Excel và ma trận PIM trả lời câu hỏi ``rủi ro nào quan trọng''. PLS-SEM trả lời ``nhóm rủi ro nào ảnh hưởng tới kết quả dự án''. MS Project kết hợp với Monte Carlo trả lời ``dự án cần dự phòng bao nhiêu và rủi ro nào làm chậm dự án nhất''. Bài báo chỉ dừng ở hai câu hỏi đầu, trong khi câu hỏi thứ ba mới là câu hỏi người quản lý dự án cần trả lời khi lập kế hoạch.
 
 \section{Áp dụng công cụ quản lý dự án cho chính quá trình làm báo cáo}
 \label{sec:quan-ly-bao-cao}
