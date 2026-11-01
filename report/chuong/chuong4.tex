@@ -97,6 +97,29 @@ Healthcare.gov là cổng đăng ký bảo hiểm y tế trực tuyến của Ch
 
 Nếu xếp các vấn đề trên vào 13 nhóm của Kassem~\cite{kassem2022}, phần lớn rơi vào nhóm \emph{nội bộ}: chủ đầu tư (CL, thay đổi yêu cầu, quyết định chậm), nghiên cứu khả thi (FD, giao việc khi chưa biết quy mô), đấu thầu và hợp đồng (TC, loại hợp đồng không phù hợp) và quản lý dự án (MR, thiếu chiến lược rủi ro, giám sát lỏng lẻo). Như vậy, giống ví dụ Thái Bình 2, đây là một thất bại chủ yếu do rủi ro nội bộ.
 
+\subsection{Khung 13 nhóm của Kassem có đủ cho dự án hệ thống thông tin không?}
+
+Giáo trình quản lý dự án công nghệ thông tin của Schwalbe~\cite{schwalbe2019} nêu năm nguồn rủi ro thường gặp ở dự án CNTT. Sách cũng nhắc lại bốn yếu tố thành công hàng đầu theo nghiên cứu của Standish Group: sự bảo trợ của lãnh đạo, sự trưởng thành về cảm xúc của đội ngũ, sự tham gia của người dùng, và tối ưu hóa phạm vi. Bảng~\ref{tab:nguon-rui-ro-cntt} đối chiếu năm nguồn rủi ro này với 13 nhóm của Kassem.
+
+\begin{table}[H]
+\centering
+\caption{Đối chiếu nguồn rủi ro của dự án CNTT (Schwalbe) với 13 nhóm của Kassem}
+\label{tab:nguon-rui-ro-cntt}
+\begin{tabularx}{\textwidth}{@{}p{3cm}Xp{3.2cm}@{}}
+\toprule
+\textbf{Nguồn rủi ro CNTT} & \textbf{Câu hỏi điển hình~\cite{schwalbe2019}} & \textbf{Nhóm tương ứng của Kassem} \\
+\midrule
+Thị trường & Người dùng có chấp nhận và sử dụng sản phẩm không? Đối thủ có làm nhanh hơn không? & Không có \\
+Tài chính & Tổ chức có đủ khả năng tài chính? Dự án có đạt NPV, ROI dự kiến? & EC, một phần CL \\
+Công nghệ & Dự án có khả thi về kỹ thuật? Công nghệ đã chín muồi hay còn quá mới? Có lỗi thời trước khi xong? & Không có (một phần FD) \\
+Con người & Đội ngũ có đủ kỹ năng, kinh nghiệm? Lãnh đạo có ủng hộ? & CO, CN, MR, RM \\
+Cấu trúc, quy trình & Dự án làm thay đổi quy trình nghiệp vụ tới đâu? Phải tích hợp với bao nhiêu hệ thống khác? & Một phần LP, MR \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Khung của Kassem thiếu hẳn hai nguồn rủi ro quan trọng với dự án hệ thống thông tin là \textbf{rủi ro công nghệ} và \textbf{rủi ro thị trường} (người dùng có chấp nhận hệ thống không). Đây đúng là hai vấn đề lớn của Healthcare.gov: hệ thống không đáp ứng được tải khi vận hành, và người dân không đăng ký được. Ngược lại, các nhóm an ninh, chiến tranh, bất khả kháng của Kassem ít liên quan tới phần lớn dự án CNTT. Vì vậy, muốn dùng khung này cho dự án hệ thống thông tin thì phải bổ sung hai nhóm trên. Sổ đăng ký rủi ro của dự án mẫu ở mục tiếp theo đã có rủi ro công nghệ (R3, R10, R11) và rủi ro người dùng (R9).
+
 \subsection{Áp dụng công cụ cho một dự án hệ thống thông tin mẫu}
 
 Để minh họa cách dùng các công cụ quản lý rủi ro của môn học, báo cáo xây dựng một dự án mẫu: \emph{cổng đăng ký dịch vụ trực tuyến} gồm 12 công việc, từ khảo sát yêu cầu tới triển khai chính thức. Thời lượng mỗi công việc được ước lượng ba điểm (lạc quan, khả dĩ nhất, bi quan). Dự án có 12 rủi ro được rút ra từ bài học Healthcare.gov và xếp theo 13 nhóm của bài báo. \textbf{Các thông số này là giả định để minh họa}, không phải số liệu của một dự án cụ thể. Các công cụ được dùng gồm:
@@ -111,7 +134,7 @@ Với thời lượng khả dĩ nhất, đường găng là T1 $\to$ T2 $\to$ T3
 \section{Mô phỏng Monte Carlo tác động của rủi ro lên tiến độ}
 \label{sec:monte-carlo}
 
-Ma trận PIM xếp hạng rủi ro nhưng không trả lời được câu hỏi mà chủ đầu tư quan tâm nhất: \emph{với các rủi ro này, khả năng dự án xong đúng hạn là bao nhiêu?} Mô phỏng Monte Carlo trả lời câu hỏi đó. Đây là kỹ thuật phân tích định lượng trong Bảng~\ref{tab:ky-thuat}. Mô phỏng gồm 10.000 lần chạy, mỗi lần:
+Ma trận PIM xếp hạng rủi ro nhưng không trả lời được câu hỏi mà chủ đầu tư quan tâm nhất: \emph{với các rủi ro này, khả năng dự án xong đúng hạn là bao nhiêu?} Mô phỏng Monte Carlo trả lời câu hỏi đó. Đây là kỹ thuật phân tích định lượng trong Bảng~\ref{tab:ky-thuat}. Theo Schwalbe~\cite{schwalbe2019}, Monte Carlo mô phỏng kết quả của mô hình (ở đây là sơ đồ mạng công việc) nhiều lần để có phân phối thống kê. Nhờ đó, nó cho biết xác suất hoàn thành trước một ngày cụ thể, thay vì chỉ cho một con số như PERT. Đầu vào là ước lượng lạc quan, khả dĩ nhất và bi quan của từng công việc, giống như PERT. Mô phỏng gồm 10.000 lần chạy, mỗi lần:
 \begin{enumerate}
   \item Rút thời lượng của từng công việc từ phân phối tam giác $(O, M, P)$.
   \item Với mỗi rủi ro, rút ngẫu nhiên xem rủi ro có xảy ra hay không theo xác suất của nó. Nếu xảy ra, cộng thêm vào công việc bị ảnh hưởng một số ngày trễ lấy ngẫu nhiên đều trong khoảng [tối thiểu; tối đa].
@@ -190,6 +213,10 @@ EC1 & Khủng hoảng kinh tế, tài chính & Chuyển giao, giảm thiểu & �
 \bottomrule
 \end{longtable}
 }
+
+Sổ đăng ký rủi ro đầy đủ trong file Excel theo cấu trúc mà Schwalbe~\cite{schwalbe2019} đề xuất: mã rủi ro, thứ hạng, tên, mô tả, nhóm, nguyên nhân gốc, dấu hiệu cảnh báo (trigger), phương án ứng phó, người phụ trách, xác suất, tác động và tình trạng. Schwalbe khuyên viết mô tả rủi ro theo mẫu ``Vì \textless nguyên nhân\textgreater, \textless sự kiện\textgreater{} có thể xảy ra, dẫn tới \textless hậu quả\textgreater''. Ví dụ với rủi ro FD4: \emph{Vì nghiên cứu khả thi làm vội và thiếu dữ liệu về giá vật tư, dự toán có thể thấp hơn thực tế, dẫn tới vượt chi phí và phải điều chỉnh tổng mức đầu tư}. Trường hợp Thái Bình 2, với tổng mức đầu tư tăng 32,7\%, chính là kịch bản này.
+
+Lập kế hoạch xong mới là một nửa công việc. Để \emph{giám sát}, Schwalbe đề xuất kỹ thuật \textbf{theo dõi 10 rủi ro hàng đầu} (Top Ten Risk Item Tracking): định kỳ, ví dụ hằng tháng, họp với lãnh đạo để xem thứ hạng hiện tại và kỳ trước của từng rủi ro, số kỳ rủi ro đó nằm trong danh sách, và tiến độ xử lý. Các rủi ro ưu tiên thấp được đưa vào \textbf{danh sách theo dõi} (watch list) để không bị bỏ quên. Về tài chính, cần phân biệt \textbf{dự phòng rủi ro} (contingency reserve), dành cho các rủi ro đã nhận diện như 10 rủi ro trong Bảng~\ref{tab:ung-pho}, với \textbf{dự phòng quản lý} (management reserve), dành cho rủi ro chưa lường trước~\cite{schwalbe2019,pmbok6}. Quy mô dự phòng rủi ro có thể tính bằng Monte Carlo như ở mục~\ref{sec:monte-carlo}.
 
 Khi lập kế hoạch này, có ba điểm mà bản thân bài báo không chỉ ra:
 \begin{enumerate}
