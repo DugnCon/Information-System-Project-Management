@@ -26,7 +26,7 @@ from openpyxl.worksheet.datavalidation import DataValidation
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "quan-ly-du-an"
-NGAY_BAO_CAO = date(2026, 10, 26)
+NGAY_BAO_CAO = date(2026, 11, 1)
 BAT_DAU, KET_THUC = date(2026, 10, 18), date(2026, 11, 4)
 
 
@@ -49,57 +49,84 @@ def d(ngay, thang=10):
 
 
 # (WBS, tên, KH bắt đầu, KH kết thúc, TT bắt đầu, TT kết thúc, % xong, giờ công, sản phẩm, mục barem)
-# KH = theo PLAN.md ngày 18/10; TT = theo lịch sử commit
+# KH = theo PLAN.md ngày 18/10 (5.3, 6.x bổ sung ngày 01/11); KH trống = việc phát sinh; TT = theo lịch sử commit
 CONG_VIEC = [
     ("1", "Khởi động dự án", None, None, None, None, None, None, "", ""),
-    ("1.1", "Tạo repo, kế hoạch, cấu trúc thư mục", d(18), d(18), d(19), d(19), 1.0, 3, "PLAN.md, README.md", "GitHub"),
-    ("1.2", "Gửi email xin dữ liệu gốc cho tác giả", d(18), d(18), None, None, 0.0, 1, "docs/email-xin-du-lieu.md", "Tái hiện"),
+    ("1.1", "Đọc yêu cầu môn học (slide Bài 1), chọn bài báo", d(18), d(18), d(18), d(18), 1.0, 2, "PLAN.md", "Nội dung"),
+    ("1.2", "Lập kế hoạch theo ngày, cấu trúc thư mục, tạo repo", d(18), d(19), d(19), d(19), 1.0, 3, "README.md, .gitignore", "GitHub"),
+    ("1.3", "Soạn email xin dữ liệu gốc cho tác giả", d(18), d(19), d(19), d(19), 1.0, 1, "docs/email-xin-du-lieu.md", "Tái hiện"),
+    ("1.4", "Tìm dữ liệu công khai thay thế (Mendeley, luận án)", None, None, d(30), d(30), 1.0, 3, "data/external/aceh", "Tái hiện"),
     ("2", "Đọc hiểu bài báo", None, None, None, None, None, None, "", ""),
-    ("2.1", "Ghi chú mục 1–3, bảng thuật ngữ", d(19), d(20), d(20), d(20), 1.0, 6, "docs/notes/01, 02, thuat-ngu", "Nội dung"),
-    ("2.2", "Ghi chú kết quả, tổng hợp điểm mâu thuẫn", d(21), d(21), d(20), d(20), 1.0, 4, "docs/notes/03, 04", "Mở rộng"),
-    ("2.3", "Lập danh sách tài liệu tham khảo", d(21), d(21), d(20), d(20), 1.0, 2, "docs/tai-lieu-tham-khao.md", "Nội dung"),
+    ("2.1", "Ghi chú phần mở đầu, tổng quan tài liệu", d(19), d(19), d(20), d(20), 1.0, 2, "docs/notes/01", "Nội dung"),
+    ("2.2", "Ghi chú phương pháp: khảo sát, RII, PIM, PLS-SEM", d(20), d(20), d(20), d(20), 1.0, 3, "docs/notes/02", "Nội dung"),
+    ("2.3", "Lập bảng thuật ngữ Anh – Việt", d(19), d(19), d(20), d(20), 1.0, 1, "docs/notes/thuat-ngu", "Nội dung"),
+    ("2.4", "Ghi chú kết quả (Bảng 5–14)", d(21), d(21), d(20), d(20), 1.0, 3, "docs/notes/03", "Tái hiện"),
+    ("2.5", "Tổng hợp điểm mâu thuẫn trong số liệu", d(21), d(21), d(20), d(20), 1.0, 2, "docs/notes/04", "Mở rộng"),
+    ("2.6", "Lập danh sách tài liệu tham khảo", d(21), d(21), d(20), d(20), 1.0, 2, "docs/tai-lieu-tham-khao.md", "Nội dung"),
     ("3", "Tái hiện thực nghiệm", None, None, None, None, None, None, "", ""),
-    ("3.1", "Nhập số liệu các bảng của bài báo", d(22), d(23), d(26), d(26), 1.0, 3, "data/published/*.csv", "Tái hiện"),
-    ("3.2", "Kiểm tra lại số liệu đã công bố", d(23), d(23), d(26), d(26), 1.0, 5, "src/kiem_tra_so_lieu.py", "Tái hiện"),
-    ("3.3", "Sinh dữ liệu mô phỏng 314 phiếu", d(27), d(27), d(26), d(26), 1.0, 4, "data/simulated", "Tái hiện"),
-    ("3.4", "Cronbach, RII, PIM trên dữ liệu mô phỏng", d(27), d(27), d(26), d(26), 1.0, 4, "results", "Tái hiện"),
-    ("3.5", "PLS-SEM, bootstrapping, HTMT", d(28), d(28), d(26), d(26), 1.0, 8, "src, results", "Tái hiện"),
+    ("3.1", "Nhập số liệu các bảng của bài báo ra CSV", d(22), d(23), d(26), d(26), 1.0, 3, "data/published/*.csv", "Tái hiện"),
+    ("3.2", "Kiểm tra lại RII, PIM, AVE, CR, Fornell–Larcker", d(23), d(23), d(26), d(26), 1.0, 5, "src/kiem_tra_so_lieu.py", "Tái hiện"),
+    ("3.3", "Kiểm tra bootstrap, Q², GoF, tính nhất quán R²–β–f²", d(23), d(23), d(26), d(26), 1.0, 3, "results/kiem-tra-so-lieu.md", "Tái hiện"),
+    ("3.4", "Excel kiểm tra số liệu bằng công thức", None, None, d(26), d(26), 1.0, 3, "phan-tich-bai-bao.xlsx", "Tái hiện"),
+    ("3.5", "Sinh dữ liệu mô phỏng 314 phiếu", d(27), d(27), d(26), d(26), 1.0, 4, "data/simulated", "Tái hiện"),
+    ("3.6", "Cài đặt thuật toán PLS-SEM, bootstrapping, HTMT, Q²", d(28), d(28), d(26), d(26), 1.0, 8, "src/pls_sem.py", "Tái hiện"),
+    ("3.7", "Chạy quy trình bài báo trên dữ liệu mô phỏng", d(28), d(28), d(26), d(26), 1.0, 4, "results/mo-phong.md", "Tái hiện"),
+    ("3.8", "Kiểm chứng PLS-SEM với nghiệm giải tích và plspm", None, None, d(27), d(27), 1.0, 4, "results/kiem-chung-plspm.md", "Tái hiện"),
+    ("3.9", "Chạy quy trình trên dữ liệu thật Aceh (n = 68)", None, None, d(30), d(30), 1.0, 6, "src/du_lieu_that_aceh.py", "Tái hiện"),
+    ("3.10", "Excel RII và Cronbach cho dữ liệu Aceh", None, None, d(30), d(30), 1.0, 2, "du-lieu-aceh.xlsx", "Tái hiện"),
     ("4", "Viết báo cáo", None, None, None, None, None, None, "", ""),
     ("4.1", "Dựng khung LaTeX theo mẫu KLTN", d(22), d(22), d(26), d(26), 1.0, 2, "report/main.tex", "Hình thức"),
-    ("4.2", "Viết Chương 1 – Tổng quan", d(24), d(24), d(26), d(26), 1.0, 5, "report/chuong/chuong1.tex", "Nội dung"),
-    ("4.3", "Vẽ sơ đồ tư duy và sơ đồ mô hình", d(25), d(25), d(26), d(26), 1.0, 3, "report/hinh", "Nội dung"),
-    ("4.4", "Viết Chương 2 – Phương pháp và mô hình", d(25), d(26), d(26), d(26), 1.0, 8, "report/chuong/chuong2.tex", "Nội dung"),
-    ("4.5", "Viết Chương 3 – Tái hiện thực nghiệm", d(29), d(29), d(26), d(26), 1.0, 8, "report/chuong/chuong3.tex", "Tái hiện"),
-    ("4.6", "Ví dụ thực tế 1: dự án dầu khí Việt Nam", d(30), d(30), d(26), d(26), 1.0, 6, "chuong4.tex", "Mở rộng"),
-    ("4.7", "Ví dụ thực tế 2: dự án HTTT (MS Project, Excel)", d(31), d(31), d(26), d(26), 1.0, 8, "chuong4.tex", "Mở rộng"),
-    ("4.8", "Mô phỏng Monte Carlo, phản biện bài báo", d(1, 11), d(1, 11), d(26), d(26), 1.0, 6, "chuong4.tex", "Mở rộng"),
-    ("4.9", "Mở đầu, kết luận, rà soát, xuất PDF", d(2, 11), d(2, 11), d(26), None, 0.6, 6, "bao-cao.pdf", "Hình thức"),
-    ("5", "Thuyết trình và nộp bài", None, None, None, None, None, None, "", ""),
-    ("5.1", "Làm slide (≤ 15 slide nội dung)", d(3, 11), d(3, 11), None, None, 0.0, 4, "slides/", "Thuyết trình"),
-    ("5.2", "Tập thuyết trình, soạn câu hỏi", d(3, 11), d(3, 11), None, None, 0.0, 3, "", "Thuyết trình"),
-    ("5.3", "Nộp bài", d(4, 11), d(4, 11), None, None, 0.0, 0, "Mốc", "Hình thức"),
-    ("6", "Quản lý dự án", None, None, None, None, None, None, "", ""),
-    ("6.1", "Lập WBS, Gantt, sổ rủi ro (Excel, MS Project)", d(26), d(26), d(26), d(26), 1.0, 2, "quan-ly-du-an/", "Mở rộng"),
+    ("4.2", "Chương 1 – Tổng quan quản lý rủi ro dự án", d(24), d(24), d(26), d(26), 1.0, 5, "chuong1.tex", "Nội dung"),
+    ("4.3", "Vẽ sơ đồ tư duy, mô hình nghiên cứu, lưu đồ", d(25), d(25), d(26), d(26), 1.0, 3, "report/hinh", "Nội dung"),
+    ("4.4", "Chương 2 – Dữ liệu, RII, PIM, PLS-SEM, xu hướng", d(25), d(26), d(26), d(26), 1.0, 8, "chuong2.tex", "Nội dung"),
+    ("4.5", "Chương 3 – Quy trình tái hiện, kiểm tra, mô phỏng", d(29), d(29), d(26), d(27), 1.0, 8, "chuong3.tex", "Tái hiện"),
+    ("4.6", "Mục 3.4 – Áp dụng trên dữ liệu thật Aceh", None, None, d(30), d(30), 1.0, 3, "chuong3.tex", "Tái hiện"),
+    ("4.7", "Ví dụ 1: dự án Nhiệt điện Thái Bình 2", d(30), d(30), d(26), d(26), 1.0, 6, "chuong4.tex", "Mở rộng"),
+    ("4.8", "Ví dụ 2: dự án HTTT, PERT, Monte Carlo", d(31), d(31), d(26), d(26), 1.0, 8, "chuong4.tex, vi-du-httt.xlsx", "Mở rộng"),
+    ("4.9", "Kế hoạch ứng phó rủi ro theo PMBOK", None, None, d(27), d(27), 1.0, 3, "chuong4.tex", "Mở rộng"),
+    ("4.10", "Phản biện bài báo, so sánh công cụ", d(1, 11), d(1, 11), d(26), d(30), 1.0, 4, "chuong4.tex", "Mở rộng"),
+    ("4.11", "Áp dụng giáo trình Schwalbe về rủi ro dự án CNTT", None, None, d(1, 11), d(1, 11), 1.0, 3, "chuong2.tex, chuong4.tex", "Nội dung"),
+    ("4.12", "Mở đầu, kết luận, tóm tắt, phụ lục A", d(2, 11), d(2, 11), d(26), d(26), 1.0, 4, "03-mo-dau.tex, 04-ket-luan.tex", "Hình thức"),
+    ("4.13", "Định dạng theo bài mẫu, căn bảng, xuất PDF", d(2, 11), d(2, 11), d(27), d(1, 11), 1.0, 4, "bao-cao.pdf", "Hình thức"),
+    ("4.14", "Điền thông tin bìa, viết phụ lục B (khai báo công cụ)", d(2, 11), d(2, 11), None, None, 0.0, 3, "bao-cao.pdf", "Hình thức"),
+    ("5", "Quản lý dự án bằng công cụ", None, None, None, None, None, None, "", ""),
+    ("5.1", "WBS, Gantt, sổ rủi ro, barem, nhật ký (Excel)", None, None, d(26), d(26), 1.0, 2, "quan-ly-du-an.xlsx", "Mở rộng"),
+    ("5.2", "Xuất kế hoạch và kịch bản sang MS Project (XML)", None, None, d(26), d(1, 11), 1.0, 2, "ke-hoach.xml, vi-du-httt*.xml", "Mở rộng"),
+    ("5.3", "Mở trong MS Project, lưu .mpp, chụp màn hình", d(2, 11), d(2, 11), None, None, 0.0, 2, "Hình chụp MS Project", "Mở rộng"),
+    ("5.4", "Cập nhật tiến độ thực tế theo commit", None, None, d(26), None, 0.8, 2, "Nhật ký", "GitHub"),
+    ("6", "Tự thực nghiệm", None, None, None, None, None, None, "", ""),
+    ("6.1", "Tính tay RII và Cronbach trên Excel", d(2, 11), d(2, 11), None, None, 0.0, 2, "docs/huong-dan-thuc-nghiem.md", "Tái hiện"),
+    ("6.2", "Đổi tham số mô phỏng, chạy lại PLS-SEM", d(2, 11), d(2, 11), None, None, 0.0, 2, "results/", "Tái hiện"),
+    ("6.3", "Thay đổi kịch bản trễ trong MS Project", d(3, 11), d(3, 11), None, None, 0.0, 1, "vi-du-httt-T5/T6-tre.xml", "Mở rộng"),
+    ("7", "Thuyết trình và nộp bài", None, None, None, None, None, None, "", ""),
+    ("7.1", "Làm slide (≤ 15 slide nội dung)", d(3, 11), d(3, 11), d(30), d(30), 1.0, 4, "slides/thuyet-trinh.pptx", "Thuyết trình"),
+    ("7.2", "Ôn câu hỏi, tập thuyết trình 15 phút", d(3, 11), d(3, 11), None, None, 0.0, 3, "docs/cau-hoi-on-tap.md", "Thuyết trình"),
+    ("7.3", "Đọc lại PDF, sửa chính tả, gắn tag v1.0", d(4, 11), d(4, 11), None, None, 0.0, 2, "bao-cao.pdf", "Hình thức"),
+    ("7.4", "Nộp báo cáo PDF và link GitHub", d(4, 11), d(4, 11), None, None, 0.0, 0, "Mốc", "Hình thức"),
 ]
 
 # (mã, mô tả, nguyên nhân, xác suất 1-5, tác động 1-5, chiến lược, hành động, người phụ trách, trạng thái)
 RUI_RO = [
     ("R1", "Không có dữ liệu gốc của bài báo", "Tác giả chỉ cung cấp khi có yêu cầu", 5, 4, "Giảm thiểu",
-     "Kiểm tra lại số liệu đã công bố + dùng dữ liệu mô phỏng; gửi email xin dữ liệu", "Sinh viên", "Đang xử lý"),
+     "Kiểm tra lại số liệu đã công bố + dữ liệu mô phỏng + dữ liệu thật công khai (Aceh); gửi email xin dữ liệu", "Sinh viên", "Đang xử lý"),
     ("R2", "Lịch sử GitHub ngắn hơn 3 tuần", "Bắt đầu muộn (19/10, hạn 04/11)", 5, 3, "Chấp nhận",
      "Commit đều mỗi ngày; chủ động báo giảng viên", "Sinh viên", "Đã xảy ra"),
     ("R3", "Chậm tiến độ so với kế hoạch", "Đã trễ 4 ngày ở giai đoạn 22–25/10", 4, 4, "Giảm thiểu",
      "Làm bù ngày 26/10; ưu tiên mục có trong barem", "Sinh viên", "Đang xử lý"),
-    ("R4", "Không biên dịch được LaTeX trên máy", "Máy chưa cài TeX", 3, 3, "Né tránh",
-     "Biên dịch trên Overleaf (XeLaTeX)", "Sinh viên", "Đang theo dõi"),
+    ("R4", "Không biên dịch được LaTeX trên máy", "Máy chưa cài TeX", 3, 3, "Giảm thiểu",
+     "Cài MiKTeX, biên dịch pdfLaTeX + Biber; dự phòng Overleaf", "Sinh viên", "Đã xử lý"),
     ("R5", "Báo cáo dưới 20 trang ruột", "Chương 3–4 chưa viết", 2, 4, "Giảm thiểu",
-     "Đếm trang sau mỗi chương; bổ sung phần mở rộng nếu thiếu", "Sinh viên", "Đang theo dõi"),
+     "Đếm trang sau mỗi chương; bổ sung phần mở rộng nếu thiếu", "Sinh viên", "Đã xử lý"),
     ("R6", "Không trả lời được câu hỏi khi thuyết trình", "Kiến thức PLS-SEM mới với sinh viên", 3, 5, "Giảm thiểu",
      "Đọc lại ghi chú, soạn trước 10 câu hỏi và câu trả lời", "Sinh viên", "Đang theo dõi"),
     ("R7", "Thiếu nguồn tin cậy cho ví dụ dầu khí Việt Nam", "Nhiều thông tin chỉ có trên báo mạng", 3, 3, "Giảm thiểu",
      "Dùng bài báo khoa học, kết luận thanh tra, báo cáo kiểm toán", "Sinh viên", "Đang theo dõi"),
     ("R8", "Thiếu phụ lục khai báo công cụ hỗ trợ", "Chưa viết phụ lục B", 3, 5, "Giảm thiểu",
      "Hoàn thiện phụ lục B trước khi xuất PDF (02/11)", "Sinh viên", "Mở"),
+    ("R10", "Không chụp được màn hình MS Project", "Máy không mở được MS Project qua script", 2, 3, "Giảm thiểu",
+     "Mở thủ công file XML; nếu không được thì dùng Gantt Excel và hình Gantt trong báo cáo", "Sinh viên", "Đang theo dõi"),
+    ("R11", "Kết quả mô phỏng bị hiểu nhầm là dữ liệu thật", "Không có dữ liệu gốc", 2, 4, "Giảm thiểu",
+     "Ghi rõ “dữ liệu mô phỏng” ở mọi bảng, hình; tách riêng mục dữ liệu thật Aceh", "Sinh viên", "Đã xử lý"),
     ("R9", "Mất dữ liệu trên máy cá nhân", "Hỏng ổ cứng, xoá nhầm", 1, 5, "Chuyển giao",
      "Push lên GitHub sau mỗi buổi làm", "Sinh viên", "Đang theo dõi"),
 ]
@@ -110,7 +137,7 @@ BAREM = [
      "Chương 1, Chương 2"),
     ("Tái hiện thực nghiệm phân tích dữ liệu của bài báo", 2.5, 1.0, "Chương 3, src/, results/"),
     ("Khả năng mở rộng, liên hệ thực tế (2 ví dụ thực tế)", 2.0, 1.0, "Chương 4, docs/notes/04"),
-    ("Thuyết trình và trả lời câu hỏi", 2.0, 0.0, "slides/"),
+    ("Thuyết trình và trả lời câu hỏi", 2.0, 0.6, "slides/, docs/cau-hoi-on-tap.md"),
     ("Phản biện các đề tài khác", 1.0, 0.0, "docs/phan-bien.md"),
 ]
 
@@ -118,6 +145,9 @@ NOI_DUNG_NGAY = {
     d(19): "Khởi tạo repo, kế hoạch, cấu trúc thư mục",
     d(20): "Ghi chú đọc bài báo, thuật ngữ, điểm mâu thuẫn, tài liệu tham khảo",
     d(26): "Số liệu, kiểm tra số liệu, mô phỏng, PLS-SEM, Monte Carlo, Excel/MS Project, Chương 1–4",
+    d(27): "Định dạng theo bài mẫu KLTN, kế hoạch ứng phó rủi ro, kiểm chứng PLS-SEM với plspm",
+    d(30): "Dữ liệu thật Aceh, so sánh công cụ, slide thuyết trình",
+    d(1, 11): "Áp dụng giáo trình Schwalbe, chỉnh bảng và bìa, xuất PDF, kịch bản trễ MS Project",
 }
 
 
@@ -180,7 +210,8 @@ def sheet_wbs(wb):
     o(ws, 2, 2, NGAY_BAO_CAO, nhap=True, fmt="dd/mm/yyyy")
     ws["B2"].comment = Comment("Ngày cập nhật tình trạng. Sửa ô này mỗi lần cập nhật tiến độ.", "Sinh viên")
     ghi_chu_dau_trang(ws, 3, "Ô nền vàng chữ xanh: dữ liệu nhập tay. Các cột còn lại là công thức. "
-                             "KH = kế hoạch theo PLAN.md (18/10); TT = thực tế theo lịch sử commit.")
+                             "KH = kế hoạch theo PLAN.md (18/10), việc 5.3 và 6.x bổ sung ngày 01/11; KH trống là việc phát sinh "
+                             "ngoài kế hoạch; TT = thực tế theo lịch sử commit.")
 
     cot = ["WBS", "Công việc", "KH bắt đầu", "KH kết thúc", "TT bắt đầu", "TT kết thúc", "Thời lượng KH (ngày)",
            "Chênh lệch kết thúc (ngày)", "% hoàn thành", "Giờ công", "Trạng thái", "Sản phẩm", "Mục barem"]
@@ -189,7 +220,7 @@ def sheet_wbs(wb):
     tong = {}
     for wbs, ten, kb, kk, tb, tk, pt, gio, sp, barem in CONG_VIEC:
         r = hang
-        if kb is None:                       # dòng tổng hợp
+        if pt is None:                       # dòng tổng hợp
             tong[wbs] = r
             for c in range(1, 14):
                 o(ws, r, c, None, dam=True).fill = NEN_TONG
@@ -202,12 +233,12 @@ def sheet_wbs(wb):
             o(ws, r, 4, kk, nhap=True, fmt="dd/mm", can="center")
             o(ws, r, 5, tb, nhap=True, fmt="dd/mm", can="center")
             o(ws, r, 6, tk, nhap=True, fmt="dd/mm", can="center")
-            o(ws, r, 7, f"=D{r}-C{r}+1", fmt="0", can="center")
-            o(ws, r, 8, f'=IF(F{r}="","",F{r}-D{r})', fmt='+0;-0;0', can="center")
+            o(ws, r, 7, f'=IF(C{r}="","Phát sinh",D{r}-C{r}+1)', fmt="0", can="center")
+            o(ws, r, 8, f'=IF(OR(F{r}="",D{r}=""),"",F{r}-D{r})', fmt='+0;-0;0', can="center")
             o(ws, r, 9, pt, nhap=True, fmt="0%", can="center")
             o(ws, r, 10, gio, nhap=True, fmt="0", can="center")
             o(ws, r, 11, f'=IF(I{r}>=1,"Hoàn thành",IF(I{r}>0,"Đang làm",'
-                         f'IF(D{r}<$B$2,"Trễ hạn","Chưa bắt đầu")))', can="center")
+                         f'IF(AND(D{r}<>"",D{r}<$B$2),"Trễ hạn","Chưa bắt đầu")))', can="center")
             o(ws, r, 12, sp)
             o(ws, r, 13, barem, can="center")
         hang += 1
@@ -292,8 +323,8 @@ def sheet_gantt(wb, cuoi):
         ws.cell(r, 2, f"=WBS!B{i}").font = CHU
         for k in range(so_ngay):
             cl = get_column_letter(3 + k)
-            c = ws.cell(r, 3 + k, f'=IF(WBS!$C{i}="","",IF(AND(WBS!$E{i}<>"",{cl}$4>=WBS!$E{i},{cl}$4<=WBS!$F{i}),"■",'
-                                  f'IF(AND({cl}$4>=WBS!$C{i},{cl}$4<=WBS!$D{i}),"□","")))')
+            c = ws.cell(r, 3 + k, f'=IF(AND(WBS!$C{i}="",WBS!$E{i}=""),"",IF(AND(WBS!$E{i}<>"",{cl}$4>=WBS!$E{i},{cl}$4<=WBS!$F{i}),"■",'
+                                  f'IF(AND(WBS!$C{i}<>"",{cl}$4>=WBS!$C{i},{cl}$4<=WBS!$D{i}),"□","")))')
             c.alignment = Alignment(horizontal="center")
             c.font = Font(name=FONT, size=9)
             c.border = VIEN
@@ -376,12 +407,12 @@ def sheet_barem(wb):
 
     ws.cell(r + 2, 1, "Yêu cầu hình thức (slide 54)").font = CHU_DAM
     hinh_thuc = [("Mẫu KLTN, 1 file PDF, khuyến khích LaTeX", "Đạt"),
-                 ("Tối thiểu 20 trang ruột", "Đạt (ước tính 35–40 trang)"),
+                 ("Tối thiểu 20 trang ruột", "Đạt (khoảng 56 trang nội dung)"),
                  ("Chữ trong bảng, hình là tiếng Việt", "Đạt"),
                  ("Gõ lại công thức, đánh số ở lề phải", "Đạt"),
                  ("Danh mục tài liệu tham khảo, trích dẫn trong bài", "Đạt"),
                  ("Khai báo công cụ hỗ trợ đã dùng", "Chưa đạt"),
-                 ("Đẩy file phân tích lên GitHub, lịch sử ≥ 3 tuần", "Không đạt (16 ngày)"),
+                 ("Đẩy file phân tích lên GitHub, lịch sử ≥ 3 tuần", "Không đạt (17 ngày)"),
                  ("Không dùng nguồn không tin cậy", "Đạt")]
     for k, (yc, tt) in enumerate(hinh_thuc):
         o(ws, r + 3 + k, 1, yc)
@@ -447,11 +478,11 @@ def ghi_mspdi():
     for wbs, ten, kb, kk, tb, tk, pt, gio_cong, sp, barem in CONG_VIEC:
         uid += 1
         cap = wbs.count(".") + 1
-        if kb is None:
+        if pt is None:
             tasks.append(f"<Task><UID>{uid}</UID><ID>{uid}</ID><Name>{escape(ten)}</Name><WBS>{wbs}</WBS>"
                          f"<OutlineNumber>{wbs}</OutlineNumber><OutlineLevel>{cap}</OutlineLevel><Summary>1</Summary></Task>")
             continue
-        bd, kt = (tb, tk or max(kk, tb)) if tb else (kb, kk)     # việc đang làm: lấy hạn kế hoạch
+        bd, kt = (tb, tk or max(kk or NGAY_BAO_CAO, tb)) if tb else (kb, kk)  # việc đang làm: lấy hạn kế hoạch
         so_gio = max((kt - bd).days + 1, 1) * 8
         moc = gio_cong == 0
         thuc_te = ""
@@ -467,10 +498,10 @@ def ghi_mspdi():
             f"<Duration>{gio(0 if moc else so_gio)}</Duration><DurationFormat>7</DurationFormat>"
             f"<ConstraintType>4</ConstraintType><ConstraintDate>{xml_ngay(bd, '08:00:00')}</ConstraintDate>"
             f"<PercentComplete>{int(pt * 100)}</PercentComplete>{thuc_te}"
-            f"<Notes>{escape(f'Sản phẩm: {sp}. Mục barem: {barem}. Giờ công ước tính: {gio_cong}')}</Notes>"
-            f"<Baseline><Number>0</Number><Start>{xml_ngay(kb, '08:00:00')}</Start>"
-            f"<Finish>{xml_ngay(kk, '17:00:00')}</Finish>"
-            f"<Duration>{gio(((kk - kb).days + 1) * 8)}</Duration></Baseline></Task>")
+            f"<Notes>{escape(f'Sản phẩm: {sp}. Mục barem: {barem}. Giờ công ước tính: {gio_cong}' + ('' if kb else '. Việc phát sinh, không có trong kế hoạch ban đầu'))}</Notes>"
+            + (f"<Baseline><Number>0</Number><Start>{xml_ngay(kb, '08:00:00')}</Start>"
+               f"<Finish>{xml_ngay(kk, '17:00:00')}</Finish>"
+               f"<Duration>{gio(((kk - kb).days + 1) * 8)}</Duration></Baseline>" if kb else "") + "</Task>")
     xml = (
         '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n'
         '<Project xmlns="http://schemas.microsoft.com/project">'
@@ -490,12 +521,13 @@ def ghi_mspdi():
 
 # ---------------------------------------------------------------- hình Gantt cho báo cáo
 def ve_gantt():
-    viec = [v for v in CONG_VIEC if v[2] is not None]
-    fig, ax = plt.subplots(figsize=(11, 7.5))
+    viec = [v for v in CONG_VIEC if v[6] is not None]
+    fig, ax = plt.subplots(figsize=(11, 0.24 * len(viec) + 1.6))
     for k, (wbs, ten, kb, kk, tb, tk, pt, *_ ) in enumerate(viec):
         y = len(viec) - k
-        ax.barh(y + 0.18, (kk - kb).days + 1, left=mdates.date2num(kb), height=0.32, color="#bdd7ee",
-                edgecolor="#5b9bd5", label="Kế hoạch" if k == 0 else None)
+        if kb:
+            ax.barh(y + 0.18, (kk - kb).days + 1, left=mdates.date2num(kb), height=0.32, color="#bdd7ee",
+                    edgecolor="#5b9bd5", label="Kế hoạch" if k == 0 else None)
         if tb and tk:
             ax.barh(y - 0.18, (tk - tb).days + 1, left=mdates.date2num(tb), height=0.32, color="#2e75b6",
                     label="Thực tế (đã xong)" if wbs == "1.1" else None)
@@ -504,14 +536,15 @@ def ve_gantt():
                     color="#2e75b6", hatch="///", edgecolor="white", label="Thực tế (đang làm)")
     ax.axvline(mdates.date2num(NGAY_BAO_CAO + timedelta(days=1)), color="#c00000", ls="--", lw=1.2,
                label=f"Ngày báo cáo {NGAY_BAO_CAO:%d/%m}")
-    ax.set_yticks([len(viec) - k for k in range(len(viec))], [f"{v[0]}  {v[1]}" for v in viec], fontsize=8)
+    ax.set_yticks([len(viec) - k for k in range(len(viec))],
+                  [f"{v[0]}  {v[1]}" + ("  (*)" if v[2] is None else "") for v in viec], fontsize=7.5)
     ax.xaxis.set_major_locator(mdates.DayLocator())
     ax.xaxis.set_major_formatter(mdates.DateFormatter("%d/%m"))
     plt.setp(ax.get_xticklabels(), rotation=90, fontsize=8)
     ax.set_xlim(mdates.date2num(BAT_DAU), mdates.date2num(KET_THUC + timedelta(days=1)))
     ax.grid(axis="x", color="#eee")
     ax.set_title("Kế hoạch và thực tế thực hiện báo cáo giữa kỳ")
-    ax.legend(loc="lower left", fontsize=8)
+    ax.legend(loc="lower left", fontsize=8, title="(*) việc phát sinh ngoài kế hoạch", title_fontsize=8)
     fig.tight_layout()
     fig.savefig(ROOT / "results" / "figures" / "gantt_bao_cao.png", dpi=200)
     plt.close(fig)
