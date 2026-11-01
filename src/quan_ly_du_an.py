@@ -1,13 +1,3 @@
-"""Sinh hồ sơ quản lý dự án cho chính việc làm báo cáo giữa kỳ.
-
-Từ một bảng công việc duy nhất (CONG_VIEC), script tạo:
-  - quan-ly-du-an/quan-ly-du-an.xlsx : WBS, Gantt, sổ đăng ký rủi ro, đối chiếu barem, nhật ký
-  - quan-ly-du-an/ke-hoach.xml       : file MSPDI để mở bằng MS Project (File > Open > .xml)
-  - results/figures/gantt_bao_cao.png: biểu đồ Gantt kế hoạch và thực tế cho báo cáo
-
-Chạy:  python src/quan_ly_du_an.py
-Cập nhật tiến độ: sửa cột thực tế và % hoàn thành trong CONG_VIEC, sửa NGAY_BAO_CAO, chạy lại.
-"""
 from datetime import date, datetime, timedelta
 from pathlib import Path
 from xml.sax.saxutils import escape
@@ -31,7 +21,6 @@ BAT_DAU, KET_THUC = date(2026, 10, 18), date(2026, 11, 4)
 
 
 def hien_truc(bd):
-    """openpyxl 3.1 mặc định ẩn trục khi mở bằng Excel mới: bật lại trục, chú thích đặt dưới."""
     bd.x_axis.delete = False
     bd.y_axis.delete = False
     if bd.title is not None:
@@ -39,7 +28,7 @@ def hien_truc(bd):
     if bd.legend is not None:
         bd.legend.position = "b"
         bd.legend.overlay = False
-    bd.x_axis.title = None                               # tên trục dễ đè lên số; tiêu đề biểu đồ đã đủ rõ
+    bd.x_axis.title = None
     bd.y_axis.title = None
     return bd
 
@@ -48,8 +37,6 @@ def d(ngay, thang=10):
     return date(2026, thang, ngay)
 
 
-# (WBS, tên, KH bắt đầu, KH kết thúc, TT bắt đầu, TT kết thúc, % xong, giờ công, sản phẩm, mục barem)
-# KH = theo PLAN.md ngày 18/10 (5.3, 6.x bổ sung ngày 01/11); KH trống = việc phát sinh; TT = theo lịch sử commit
 CONG_VIEC = [
     ("1", "Khởi động dự án", None, None, None, None, None, None, "", ""),
     ("1.1", "Đọc yêu cầu môn học (slide Bài 1), chọn bài báo", d(18), d(18), d(18), d(18), 1.0, 2, "PLAN.md", "Nội dung"),
@@ -105,7 +92,6 @@ CONG_VIEC = [
     ("7.4", "Nộp báo cáo PDF và link GitHub", d(4, 11), d(4, 11), None, None, 0.0, 0, "Mốc", "Hình thức"),
 ]
 
-# (mã, mô tả, nguyên nhân, xác suất 1-5, tác động 1-5, chiến lược, hành động, người phụ trách, trạng thái)
 RUI_RO = [
     ("R1", "Không có dữ liệu gốc của bài báo", "Tác giả chỉ cung cấp khi có yêu cầu", 5, 4, "Giảm thiểu",
      "Kiểm tra lại số liệu đã công bố + dữ liệu mô phỏng + dữ liệu thật công khai (Aceh); gửi email xin dữ liệu", "Sinh viên", "Đang xử lý"),
@@ -131,7 +117,6 @@ RUI_RO = [
      "Push lên GitHub sau mỗi buổi làm", "Sinh viên", "Đang theo dõi"),
 ]
 
-# (yêu cầu theo slide 52, điểm tối đa, mức hoàn thành hiện tại, nơi đáp ứng)
 BAREM = [
     ("Nội dung báo cáo: khái niệm, thành phần, mô hình, cách hoạt động, ứng dụng, ưu/nhược, xu hướng", 2.5, 1.0,
      "Chương 1, Chương 2"),
@@ -152,7 +137,6 @@ NOI_DUNG_NGAY = {
 
 
 def nhat_ky_tu_git():
-    """Đếm số commit theo ngày từ lịch sử git."""
     import subprocess
     from collections import Counter
     ra = subprocess.run(["git", "log", "--format=%ad", "--date=short"], cwd=ROOT,
@@ -160,7 +144,6 @@ def nhat_ky_tu_git():
     dem = Counter(date.fromisoformat(x) for x in ra)
     return [(ngay, so, NOI_DUNG_NGAY.get(ngay, "")) for ngay, so in sorted(dem.items())]
 
-# ---------------------------------------------------------------- định dạng
 FONT = "Arial"
 VIEN = Border(*(Side(style="thin", color="BFBFBF"),) * 4)
 NEN_TIEU_DE = PatternFill("solid", fgColor="1F4E78")
@@ -199,7 +182,6 @@ def ghi_chu_dau_trang(ws, dong, noi_dung):
     c.font = Font(name=FONT, size=9, italic=True, color="595959")
 
 
-# ---------------------------------------------------------------- sheet WBS
 def sheet_wbs(wb):
     ws = wb.active
     ws.title = "WBS"
@@ -220,7 +202,7 @@ def sheet_wbs(wb):
     tong = {}
     for wbs, ten, kb, kk, tb, tk, pt, gio, sp, barem in CONG_VIEC:
         r = hang
-        if pt is None:                       # dòng tổng hợp
+        if pt is None:
             tong[wbs] = r
             for c in range(1, 14):
                 o(ws, r, c, None, dam=True).fill = NEN_TONG
@@ -244,7 +226,6 @@ def sheet_wbs(wb):
         hang += 1
     cuoi = hang - 1
 
-    # dòng tổng hợp: lấy min/max ngày, % theo giờ công của các việc con
     ma_tong = list(tong)
     for i, wbs in enumerate(ma_tong):
         r = tong[wbs]
@@ -257,7 +238,6 @@ def sheet_wbs(wb):
         for c in (3, 4, 7, 9, 10):
             ws.cell(r, c).alignment = Alignment(horizontal="center")
 
-    # tổng toàn dự án
     r = cuoi + 2
     o(ws, r, 2, "TOÀN DỰ ÁN (tính theo giờ công)", dam=True)
     tu = "+".join(f"I{tong[k]}*J{tong[k]}" for k in ma_tong)
@@ -279,7 +259,6 @@ def sheet_wbs(wb):
                                   font=Font(name=FONT, color="C00000", bold=True)))
     ws.freeze_panes = "C6"
 
-    # bảng tóm tắt % theo nhóm (công thức trỏ về dòng tổng hợp) + biểu đồ
     o(ws, 5, 15, "Nhóm công việc", dam=True)
     o(ws, 5, 16, "% hoàn thành", dam=True)
     ws.column_dimensions["O"].width = 26
@@ -301,7 +280,6 @@ def sheet_wbs(wb):
     return ws, cuoi
 
 
-# ---------------------------------------------------------------- sheet Gantt
 def sheet_gantt(wb, cuoi):
     ws = wb.create_sheet("Gantt")
     ws["A1"] = "BIỂU ĐỒ GANTT – KẾ HOẠCH (□) VÀ THỰC TẾ (■)"
@@ -340,7 +318,6 @@ def sheet_gantt(wb, cuoi):
     ws.freeze_panes = "C5"
 
 
-# ---------------------------------------------------------------- sheet rủi ro
 def sheet_rui_ro(wb):
     ws = wb.create_sheet("Rủi ro")
     ws["A1"] = "SỔ ĐĂNG KÝ RỦI RO CỦA DỰ ÁN LÀM BÁO CÁO"
@@ -384,7 +361,6 @@ def sheet_rui_ro(wb):
     ws.freeze_panes = "C5"
 
 
-# ---------------------------------------------------------------- sheet barem
 def sheet_barem(wb):
     ws = wb.create_sheet("Barem")
     ws["A1"] = "ĐỐI CHIẾU BAREM CHẤM ĐIỂM (Lesson 1, slide 52)"
@@ -421,7 +397,6 @@ def sheet_barem(wb):
     ws.conditional_formatting.add(vung, FormulaRule(formula=[f'LEFT(C{r + 3},3)="Đạt"'],
                                   fill=PatternFill("solid", fgColor="C6EFCE")))
 
-    # tên ngắn cho biểu đồ + biểu đồ điểm tối đa và điểm dự kiến
     ten_ngan = ["Nội dung", "Tái hiện", "Mở rộng", "Thuyết trình", "Phản biện"]
     o(ws, 4, 7, "Mục", dam=True)
     ws.column_dimensions["G"].width = 13
@@ -441,7 +416,6 @@ def sheet_barem(wb):
                                   fill=PatternFill("solid", fgColor="FFC7CE")))
 
 
-# ---------------------------------------------------------------- sheet nhật ký
 def sheet_nhat_ky(wb):
     ws = wb.create_sheet("Nhật ký")
     ws["A1"] = "NHẬT KÝ LÀM VIỆC (theo lịch sử commit GitHub)"
@@ -459,7 +433,6 @@ def sheet_nhat_ky(wb):
     o(ws, r, 2, f"=SUM(B4:B{r - 1})", dam=True, can="center")
 
 
-# ---------------------------------------------------------------- MS Project (MSPDI)
 def xml_ngay(ngay, gio):
     return f"{ngay.isoformat()}T{gio}"
 
@@ -482,7 +455,7 @@ def ghi_mspdi():
             tasks.append(f"<Task><UID>{uid}</UID><ID>{uid}</ID><Name>{escape(ten)}</Name><WBS>{wbs}</WBS>"
                          f"<OutlineNumber>{wbs}</OutlineNumber><OutlineLevel>{cap}</OutlineLevel><Summary>1</Summary></Task>")
             continue
-        bd, kt = (tb, tk or max(kk or NGAY_BAO_CAO, tb)) if tb else (kb, kk)  # việc đang làm: lấy hạn kế hoạch
+        bd, kt = (tb, tk or max(kk or NGAY_BAO_CAO, tb)) if tb else (kb, kk)
         so_gio = max((kt - bd).days + 1, 1) * 8
         moc = gio_cong == 0
         thuc_te = ""
@@ -519,7 +492,6 @@ def ghi_mspdi():
     (OUT / "ke-hoach.xml").write_text(xml, encoding="utf-8")
 
 
-# ---------------------------------------------------------------- hình Gantt cho báo cáo
 def ve_gantt():
     viec = [v for v in CONG_VIEC if v[6] is not None]
     fig, ax = plt.subplots(figsize=(11, 0.24 * len(viec) + 1.6))
@@ -531,7 +503,7 @@ def ve_gantt():
         if tb and tk:
             ax.barh(y - 0.18, (tk - tb).days + 1, left=mdates.date2num(tb), height=0.32, color="#2e75b6",
                     label="Thực tế (đã xong)" if wbs == "1.1" else None)
-        elif tb:                                                  # đang làm: vẽ tới ngày báo cáo
+        elif tb:
             ax.barh(y - 0.18, (NGAY_BAO_CAO - tb).days + 1, left=mdates.date2num(tb), height=0.32,
                     color="#2e75b6", hatch="///", edgecolor="white", label="Thực tế (đang làm)")
     ax.axvline(mdates.date2num(NGAY_BAO_CAO + timedelta(days=1)), color="#c00000", ls="--", lw=1.2,

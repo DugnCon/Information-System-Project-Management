@@ -1,15 +1,3 @@
-"""Sinh bộ dữ liệu khảo sát mô phỏng 314 phiếu theo đúng cấu trúc bài báo công bố.
-
-Không có dữ liệu gốc, nên dữ liệu được sinh sao cho khớp với các số liệu đã in:
-  - tương quan giữa 13 nhóm rủi ro = ma trận Bảng 9 (đường chéo = 1);
-  - loading của 51 câu hỏi và 5 câu hậu quả = Bảng 8;
-  - biến kết quả EF = 0.200 * Nội bộ + 0.673 * Bên ngoài + nhiễu (Bảng 11);
-  - điểm trung bình tác động / xác suất của top 10 rủi ro = RII Bảng 7 (RII = trung bình / 5);
-  - điểm trung bình 5 câu hậu quả = mục 5.2 của bài báo.
-
-Chạy:  python src/mo_phong.py
-Kết quả: data/simulated/tac_dong.csv, xac_suat.csv, muc_tieu.csv
-"""
 from pathlib import Path
 
 import numpy as np
@@ -25,8 +13,8 @@ NOI_BO = ["CL", "CO", "CN", "FD", "TC", "RM", "MR"]
 BEN_NGOAI = ["EC", "PO", "LP", "EN", "SE", "FM"]
 BETA_NOI_BO, BETA_BEN_NGOAI = 0.200, 0.673
 TB_HAU_QUA = {"EF1": 3.917, "EF2": 2.755, "EF3": 2.755, "EF4": 3.420, "EF5": 2.975}
-DO_RONG = 0.95        # độ lệch chuẩn của điểm liên tục trước khi làm tròn sang thang 1–5
-TQ_XS_TD = 0.5        # tương quan giữa điểm xác suất và điểm tác động của cùng một câu
+DO_RONG = 0.95
+TQ_XS_TD = 0.5
 
 
 def ma_tran_tuong_quan():
@@ -38,13 +26,10 @@ def ma_tran_tuong_quan():
 
 
 def sang_likert(z, tb):
-    """Chuyển điểm chuẩn hoá z sang thang 1–5 có trung bình xấp xỉ tb."""
     return np.clip(np.rint(tb + DO_RONG * z), 1, 5).astype(int)
 
 
 def muc_tieu_rii(rng, cau):
-    """RII tác động và xác suất mục tiêu cho từng câu: top 10 lấy từ Bảng 7, còn lại rút ngẫu nhiên
-    sao cho RII tổng < 0.50 (thấp hơn top 10)."""
     b7 = pd.read_csv(PUB / "bang7_rii_top10.csv").set_index("ma")
     dong = []
     for c in cau:
@@ -66,10 +51,8 @@ def sinh_du_lieu():
     nhom = list(phi.index)
     ld = pd.read_csv(PUB / "bang8_loading.csv")
 
-    # 1. điểm 13 nhóm rủi ro bậc 1, tương quan theo Bảng 9
     F = pd.DataFrame(rng.multivariate_normal(np.zeros(len(nhom)), phi.values, size=N), columns=nhom)
 
-    # 2. hai khái niệm bậc 2 = trung bình chuẩn hoá các nhóm con; EF theo hệ số đường dẫn của bài báo
     chuan = lambda s: (s - s.mean()) / s.std(ddof=0)
     INT, EXT = chuan(F[NOI_BO].mean(axis=1)), chuan(F[BEN_NGOAI].mean(axis=1))
     r = np.corrcoef(INT, EXT)[0, 1]
@@ -78,7 +61,6 @@ def sinh_du_lieu():
     EF = BETA_NOI_BO * INT + BETA_BEN_NGOAI * EXT + nhieu * rng.standard_normal(N)
     EF = chuan(EF)
 
-    # 3. câu hỏi: x* = λ·F + sqrt(1-λ²)·e, rồi làm tròn sang Likert
     cau_rui_ro = ld[ld.nhom != "EF"]
     mt = muc_tieu_rii(rng, list(cau_rui_ro.cau))
     tac_dong, xac_suat = {}, {}

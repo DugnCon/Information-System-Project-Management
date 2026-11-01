@@ -1,16 +1,3 @@
-"""Ví dụ 2: áp dụng công cụ quản lý rủi ro cho một dự án hệ thống thông tin mẫu.
-
-Dự án mẫu: xây dựng cổng đăng ký dịch vụ trực tuyến. Rủi ro được rút ra từ bài học của dự án
-Healthcare.gov (GAO-14-694) và xếp theo 13 nhóm rủi ro của Kassem (2022). Thời lượng ba điểm và
-xác suất, tác động của rủi ro là THÔNG SỐ GIẢ ĐỊNH để minh hoạ cách dùng công cụ.
-
-Sinh ra:
-  - quan-ly-du-an/vi-du-httt.xlsx : Lịch trình (PERT), Sổ rủi ro (PIM), Kết quả Monte Carlo
-  - quan-ly-du-an/vi-du-httt.xml  : lịch trình cho MS Project
-  - results/figures/mc_*.png, results/tables/mc_*.csv, results/vi-du-httt.md
-
-Chạy:  python src/vi_du_httt.py
-"""
 from pathlib import Path
 from xml.sax.saxutils import escape
 
@@ -34,7 +21,6 @@ SEED = 2026
 
 
 def hien_truc(bd):
-    """openpyxl 3.1 mặc định ẩn trục khi mở bằng Excel mới: bật lại trục, chú thích đặt dưới."""
     bd.x_axis.delete = False
     bd.y_axis.delete = False
     if bd.title is not None:
@@ -42,14 +28,13 @@ def hien_truc(bd):
     if bd.legend is not None:
         bd.legend.position = "b"
         bd.legend.overlay = False
-    bd.x_axis.title = None                               # tên trục dễ đè lên số; tiêu đề biểu đồ đã đủ rõ
+    bd.x_axis.title = None
     bd.y_axis.title = None
     return bd
 
 
-HAN_CHOT = 95          # số ngày làm việc cam kết trong hợp đồng (giả định)
+HAN_CHOT = 95
 
-# (mã, công việc, tiền nhiệm, lạc quan, khả dĩ nhất, bi quan) – đơn vị: ngày làm việc
 CONG_VIEC = [
     ("T1", "Khảo sát, thu thập yêu cầu", [], 8, 10, 15),
     ("T2", "Phân tích, đặc tả yêu cầu", ["T1"], 8, 10, 16),
@@ -65,7 +50,6 @@ CONG_VIEC = [
     ("T12", "Triển khai chính thức", ["T10", "T11"], 2, 3, 5),
 ]
 
-# (mã, nhóm theo Kassem, rủi ro, bài học Healthcare.gov, xác suất, trễ tối thiểu, trễ tối đa, công việc bị ảnh hưởng)
 RUI_RO = [
     ("R1", "CL", "Chủ đầu tư thay đổi yêu cầu sau khi chốt đặc tả", "Yêu cầu thay đổi liên tục gây chậm và lãng phí công sức nhà thầu", 0.40, 5, 15, "T5"),
     ("R2", "CL", "Chủ đầu tư chậm phê duyệt kết quả UAT", "Đánh giá sẵn sàng bị dời sát ngày vận hành, thiếu phê duyệt", 0.35, 3, 8, "T9"),
@@ -90,9 +74,7 @@ def muc_tac_dong(tre_tb):
     return 1 if tre_tb < 3 else 2 if tre_tb < 5 else 3 if tre_tb < 7 else 4 if tre_tb < 10 else 5
 
 
-# ---------------------------------------------------------------- tính lịch
 def duong_gang(thoi_gian: dict):
-    """Lan truyền thuận: thời điểm kết thúc sớm nhất của từng việc và của cả dự án."""
     xong = {}
     for ma, _, truoc, *_ in CONG_VIEC:
         bat_dau = max((xong[t] for t in truoc), default=0)
@@ -119,7 +101,6 @@ def duong_tới_han(thoi_gian):
     return list(reversed(duong)), xong[cuoi]
 
 
-# ---------------------------------------------------------------- Monte Carlo
 def monte_carlo():
     rng = np.random.default_rng(SEED)
     D = pd.DataFrame({ma: rng.triangular(o, m, p, SO_LAN) for ma, _, _, o, m, p in CONG_VIEC})
@@ -132,7 +113,6 @@ def monte_carlo():
     xong = duong_gang_vector(D_rr)
     tong = xong.max(axis=1)
 
-    # chỉ số tới hạn: tỉ lệ số lần mỗi việc nằm trên đường găng
     toi_han = {ma: 0 for ma, *_ in CONG_VIEC}
     for k in range(SO_LAN):
         tg = {ma: D_rr.at[k, ma] for ma, *_ in CONG_VIEC}
@@ -141,12 +121,10 @@ def monte_carlo():
             toi_han[ma] += 1
     toi_han = pd.Series(toi_han) / SO_LAN
 
-    # độ nhạy: trung bình thời gian dự án khi rủi ro xảy ra trừ khi không xảy ra
     nhay = pd.Series({r[0]: tong[xay_ra[r[0]]].mean() - tong[~xay_ra[r[0]]].mean() for r in RUI_RO})
     return tong_khong_rr, tong, toi_han, nhay
 
 
-# ---------------------------------------------------------------- Excel
 FONT = "Arial"
 VIEN = Border(*(Side(style="thin", color="BFBFBF"),) * 4)
 
@@ -264,7 +242,6 @@ def ghi_excel(ket_qua):
     o(ws, 12, 1, "Dự phòng thời gian đề xuất (P80 − kế hoạch)", can="left", dam=True)
     o(ws, 12, 3, f"=C8-'Lịch trình'!C{len(CONG_VIEC) + 7}", fmt="0.0", dam=True)
 
-    # bảng tần suất (từ Python) + xác suất tích lũy (công thức) để vẽ biểu đồ Excel
     bins = np.arange(int(tong_khong_rr.min()) // 5 * 5, int(tong.max()) // 5 * 5 + 10, 5)
     dem0 = np.histogram(tong_khong_rr, bins)[0]
     dem1 = np.histogram(tong, bins)[0]
@@ -298,7 +275,6 @@ def ghi_excel(ket_qua):
     cot_ch.height, cot_ch.width = 9, 20
     ws.add_chart(hien_truc(cot_ch), f"A{cuoi + 3}")
 
-    # sổ rủi ro: đóng góp kỳ vọng = xác suất × độ nhạy, và biểu đồ
     rr = wb["Sổ rủi ro"]
     c = rr.cell(4, 16, "Đóng góp kỳ vọng (ngày)")
     c.font = Font(name=FONT, size=10, bold=True, color="FFFFFF")
@@ -319,9 +295,7 @@ def ghi_excel(ket_qua):
     wb.save(OUT / "vi-du-httt.xlsx")
 
 
-# ---------------------------------------------------------------- MS Project
 def ghi_mspdi(ten_file="vi-du-httt.xml", tang=None, ghi_chu=""):
-    """Ghi lịch trình (thời lượng khả dĩ M) cho MS Project. tang = {mã việc: số ngày tăng thêm} để tạo kịch bản."""
     tang = tang or {}
     uid = {ma: k + 1 for k, (ma, *_) in enumerate(CONG_VIEC)}
     tieu_de = "Cổng đăng ký dịch vụ trực tuyến" + (f" – {ghi_chu}" if ghi_chu else "")
@@ -345,7 +319,6 @@ def ghi_mspdi(ten_file="vi-du-httt.xml", tang=None, ghi_chu=""):
     (OUT / ten_file).write_text(xml, encoding="utf-8")
 
 
-# ---------------------------------------------------------------- hình
 def ve_hinh(ket_qua):
     tong_khong_rr, tong, toi_han, nhay = ket_qua
     _, ke_hoach = duong_tới_han({ma: m for ma, _, _, _, m, _ in CONG_VIEC})

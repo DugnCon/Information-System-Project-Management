@@ -1,8 +1,3 @@
-"""Vẽ sơ đồ tư duy chủ đề và sơ đồ mô hình nghiên cứu cho báo cáo.
-
-Chạy:  python src/ve_so_do.py
-Kết quả: report/hinh/so_do_tu_duy.png, report/hinh/mo_hinh_nghien_cuu.png
-"""
 from pathlib import Path
 
 import matplotlib
@@ -17,7 +12,6 @@ OUT = ROOT / "report" / "hinh"
 
 
 def hop(ax, x, y, chu, mau, w=None, h=None, co=9, dam=False, chu_mau="black"):
-    """Vẽ một hộp chữ bo góc, tâm tại (x, y)."""
     t = ax.text(x, y, chu, ha="center", va="center", fontsize=co, color=chu_mau,
                 weight="bold" if dam else "normal", zorder=3, linespacing=1.3)
     if w is None:
@@ -29,7 +23,6 @@ def hop(ax, x, y, chu, mau, w=None, h=None, co=9, dam=False, chu_mau="black"):
     return w, h
 
 
-# ---------------------------------------------------------------- sơ đồ tư duy
 NHANH = [
     ("Khái niệm nền tảng", "#cfe2f3", [
         "Dự án: tạm thời, duy nhất",
@@ -65,7 +58,6 @@ NHANH = [
 ]
 
 
-# vị trí (x, y) của từng nhánh: 4 nhánh bên phải, 3 nhánh bên trái
 VI_TRI = [(3.3, 4.7), (3.3, 1.75), (3.3, -1.5), (3.3, -4.75), (-4.3, -3.6), (-4.3, 0.0), (-4.3, 3.6)]
 
 
@@ -96,7 +88,6 @@ def ve_so_do_tu_duy():
     plt.close(fig)
 
 
-# ---------------------------------------------------------------- mô hình nghiên cứu
 NOI_BO = [("CL", "Chủ đầu tư"), ("CO", "Nhà thầu"), ("CN", "Tư vấn"), ("FD", "Khả thi và thiết kế"),
           ("TC", "Đấu thầu và hợp đồng"), ("RM", "Nguồn lực và vật tư"), ("MR", "Quản lý dự án")]
 BEN_NGOAI = [("EC", "Kinh tế quốc gia"), ("PO", "Chính trị"), ("LP", "Người dân địa phương"),
@@ -160,7 +151,6 @@ def ve_mo_hinh():
 
 
 def ve_quy_trinh():
-    """Lưu đồ quy trình tái hiện thực nghiệm: hai hướng song song từ bài báo tới so sánh kết quả."""
     fig, ax = plt.subplots(figsize=(13, 7))
     ax.set_xlim(0, 13)
     ax.set_ylim(0, 7.4)

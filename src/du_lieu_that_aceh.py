@@ -1,16 +1,3 @@
-"""Áp dụng quy trình phân tích của Kassem (2022) lên một bộ dữ liệu THẬT, công khai.
-
-Dữ liệu: Rauzana, A. (2021). Dataset of Causes of delays in construction projects. Mendeley Data, V1,
-doi:10.17632/2wckhrzz5j.1 (CC BY 4.0). Bài báo gốc: Rauzana & Dharma (2022), PLoS ONE 17(1): e0263337.
-68 nhà thầu ở Aceh (Indonesia) chấm mức ảnh hưởng (1–5) của 60 nguyên nhân chậm trễ thuộc 10 nhóm (X1–X10)
-và 4 câu Y1–Y4 (bài gốc không định nghĩa Y; α = 0,946 nên dùng làm biến kết quả "mức độ chậm trễ").
-
-Quy trình: kiểm tra đọc dữ liệu so với bài gốc → Cronbach's α → RII → PLS-SEM (bậc 1 và bậc 2) → so với Kassem.
-Không dựng được ma trận PIM vì mỗi yếu tố chỉ được chấm một lần (không tách xác suất và tác động).
-
-Chạy:  python src/du_lieu_that_aceh.py [số lần bootstrap, mặc định 2000]
-Kết quả: results/aceh.md, results/tables/aceh_*.csv, results/figures/aceh_*.png
-"""
 import sys
 from pathlib import Path
 
@@ -21,7 +8,7 @@ import numpy as np
 import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from pls_sem import PLSSEM, gof, tom_tat_bootstrap  # noqa: E402
+from pls_sem import PLSSEM, gof, tom_tat_bootstrap
 
 ROOT = Path(__file__).resolve().parents[1]
 FILE = ROOT / "data" / "external" / "aceh" / "Dataset_1.xlsx"
@@ -30,10 +17,10 @@ FIG = ROOT / "results" / "figures"
 
 NHOM = {"X1": "Vật tư", "X2": "Thiết bị", "X3": "Tài chính", "X4": "Môi trường", "X5": "Lao động",
         "X6": "Thực hiện", "X7": "Quản lý", "X8": "Chính trị", "X9": "Tội phạm", "X10": "Giám đốc dự án"}
-NOI_BO = ["X1", "X2", "X3", "X5", "X6", "X7", "X10"]       # do các bên trong dự án gây ra
-BEN_NGOAI = ["X4", "X8", "X9"]                              # môi trường, chính trị, tội phạm
+NOI_BO = ["X1", "X2", "X3", "X5", "X6", "X7", "X10"]
+BEN_NGOAI = ["X4", "X8", "X9"]
 
-TEN = {  # dịch từ bảng yếu tố của Rauzana & Dharma (2022)
+TEN = {
     "X1.1": "Thiếu vật tư xây dựng", "X1.2": "Thay đổi hình dạng, chức năng, quy cách vật tư",
     "X1.3": "Giao vật tư chậm", "X1.4": "Vật tư hư hỏng khi lưu kho", "X1.5": "Khan hiếm vật tư",
     "X1.6": "Đặt hàng vật tư không chính xác", "X1.7": "Sử dụng vật tư lãng phí", "X1.8": "Vật tư về muộn",
@@ -95,7 +82,6 @@ def main():
         f"File này do `src/du_lieu_that_aceh.py` sinh ra. Dữ liệu: Rauzana (2021), Mendeley Data, "
         f"doi:10.17632/2wckhrzz5j.1, CC BY 4.0. n = {n} nhà thầu, 60 yếu tố, 10 nhóm, biến kết quả Y (4 câu).", "")
 
-    # ---- 1. kiểm tra đọc dữ liệu so với bài gốc
     a = pd.Series({g: alpha(df[c]) for g, c in khoi.items()})
     tong = df[[c for g in NHOM for c in khoi[g]]].sum()
     ghi("## 1. Kiểm tra đọc dữ liệu so với bài gốc (Rauzana & Dharma, 2022)", "",
@@ -107,7 +93,6 @@ def main():
     pd.DataFrame({"nhom": [NHOM.get(g, "Y") for g in a.index], "so_cau": [len(khoi[g]) for g in a.index],
                   "alpha": a.round(3)}).to_csv(TAB / "aceh_cronbach.csv", index_label="ma")
 
-    # ---- 2. RII (chỉ theo mức ảnh hưởng)
     rii = (df[[c for g in NHOM for c in khoi[g]]].mean() / 5).rename("rii").to_frame()
     rii["nhom"] = [NHOM[c.split(".")[0]] for c in rii.index]
     rii["yeu_to"] = [TEN[c] for c in rii.index]
@@ -120,9 +105,7 @@ def main():
         "RII trung bình theo nhóm: " + ", ".join(f"{k} {v:.3f}" for k, v in rii_nhom.items()) + ".", "")
     ve_rii(rii)
 
-    # ---- 3. PLS-SEM
     ghi("## 3. PLS-SEM", "")
-    # mô hình 1: 10 nhóm → Y
     m1 = PLSSEM(khoi, [(g, "Y") for g in NHOM])
     k1 = m1.uoc_luong(df)
     tc = PLSSEM.do_tin_cay(k1, df, khoi)
@@ -155,7 +138,6 @@ def main():
         f"- Số nhóm có ý nghĩa (p < 0,05): {len(co_y_nghia)}/10"
         + (" (" + ", ".join(co_y_nghia.nhom) + ")" if len(co_y_nghia) else "") + ".", "")
 
-    # mô hình 2: bậc 2 như Kassem
     khoi2 = dict(khoi)
     khoi2["INT"] = [c for g in NOI_BO for c in khoi[g]]
     khoi2["EXT"] = [c for g in BEN_NGOAI for c in khoi[g]]
@@ -173,7 +155,6 @@ def main():
     hs2.round(4).to_csv(TAB / "aceh_he_so_bac2.csv")
     ve_he_so(hs1)
 
-    # ---- 4. so sánh với Kassem
     ghi("## 4. So sánh với Kassem (2022)", "",
         "| Chỉ số | Kassem – Yemen (công bố) | Aceh – dữ liệu thật (tính lại) |",
         "|---|---|---|",

@@ -1,11 +1,3 @@
-"""Sinh file Excel kiểm tra số liệu bài báo bằng CÔNG THỨC Excel (không gõ cứng kết quả).
-
-Mỗi sheet ứng với một phép kiểm tra ở mục 3.2 của báo cáo:
-  RII, AVE-CR, Fornell-Larcker, Cấu trúc (Q², GoF, R²/f²), Mô phỏng (so sánh với kết quả Python)
-
-Chạy:  python src/excel_phan_tich.py   → quan-ly-du-an/phan-tich-bai-bao.xlsx
-Sau đó mở bằng Excel (hoặc tính lại tự động) để xem kết quả công thức.
-"""
 from pathlib import Path
 
 import numpy as np
@@ -30,7 +22,6 @@ NOI_BO = ["CL", "CO", "CN", "FD", "TC", "RM", "MR"]
 
 
 def hien_truc(bd):
-    """openpyxl 3.1 mặc định ẩn trục khi mở bằng Excel mới: bật lại trục, chú thích đặt dưới."""
     bd.x_axis.delete = False
     bd.y_axis.delete = False
     if bd.title is not None:
@@ -38,7 +29,7 @@ def hien_truc(bd):
     if bd.legend is not None:
         bd.legend.position = "b"
         bd.legend.overlay = False
-    bd.x_axis.title = None                               # tên trục dễ đè lên số; tiêu đề biểu đồ đã đủ rõ
+    bd.x_axis.title = None
     bd.y_axis.title = None
     return bd
 
@@ -74,7 +65,6 @@ def dau_trang(ws, tieu, ghi_chu):
     ws["A2"].font = Font(name=FONT, size=9, italic=True, color="595959")
 
 
-# ---------------------------------------------------------------- sheet hướng dẫn
 def sheet_huong_dan(wb):
     ws = wb.active
     ws.title = "Hướng dẫn"
@@ -110,7 +100,6 @@ def sheet_huong_dan(wb):
 SAI_SO = "'Hướng dẫn'!$B$20"
 
 
-# ---------------------------------------------------------------- RII
 def sheet_rii(wb):
     ws = wb.create_sheet("RII")
     dau_trang(ws, "RII TỔNG VÀ MỨC MA TRẬN XÁC SUẤT – TÁC ĐỘNG (Bảng 6, 7)",
@@ -168,7 +157,6 @@ def sheet_rii(wb):
     ws.freeze_panes = "C5"
 
 
-# ---------------------------------------------------------------- AVE, CR
 def sheet_ave_cr(wb):
     ws = wb.create_sheet("AVE-CR")
     dau_trang(ws, "AVE VÀ CR TÍNH LẠI TỪ LOADING (Bảng 8)",
@@ -220,7 +208,6 @@ def sheet_ave_cr(wb):
     ws.add_chart(hien_truc(ch), f"F{hc + 4}")
 
 
-# ---------------------------------------------------------------- Fornell–Larcker
 def sheet_fornell_larcker(wb):
     ws = wb.create_sheet("Fornell-Larcker")
     dau_trang(ws, "TIÊU CHÍ FORNELL–LARCKER (Bảng 9, dựng lại từ các đường chéo trong PDF)",
@@ -229,7 +216,7 @@ def sheet_fornell_larcker(wb):
     fl = pd.read_csv(PUB / "bang9_fornell_larcker.csv", index_col=0)
     ten = list(fl.index)
     n = len(ten)
-    r0, c0 = 5, 3                        # ô đầu ma trận C5
+    r0, c0 = 5, 3
     tieu_de(ws, 4, ["Nhóm", "Loại"] + ten + ["√AVE", "Tương quan lớn nhất", "Với nhóm", "Chênh lệch", "Kết quả"],
             [7, 10] + [6.5] * n + [8, 10, 9, 10, 11])
     for i, a in enumerate(ten):
@@ -279,7 +266,6 @@ def sheet_fornell_larcker(wb):
     return {"r0": r0, "c0": c0, "n": n, "rc": rc}
 
 
-# ---------------------------------------------------------------- Cấu trúc
 def sheet_cau_truc(wb, vt):
     ws = wb.create_sheet("Cấu trúc")
     dau_trang(ws, "MÔ HÌNH CẤU TRÚC: Q², GoF, KIỂM TRA R² VÀ f² (Bảng 11–14)",
@@ -344,7 +330,6 @@ def sheet_cau_truc(wb, vt):
         Font(name=FONT, size=9, italic=True)
 
 
-# ---------------------------------------------------------------- Mô phỏng
 def sheet_mo_phong(wb):
     ws = wb.create_sheet("Mô phỏng")
     dau_trang(ws, "SO SÁNH VỚI KẾT QUẢ PLS-SEM TRÊN DỮ LIỆU MÔ PHỎNG",
@@ -376,8 +361,6 @@ def sheet_mo_phong(wb):
     ws.add_chart(hien_truc(ch), f"A{cuoi + 4}")
 
 
-# ---------------------------------------------------------------- Kế hoạch ứng phó
-# (mã, chiến lược PMBOK, hành động chính, người phụ trách, dấu hiệu cảnh báo, chỉ số theo dõi)
 UNG_PHO = [
     ("CL2", "Báo cáo lên trên + chấp nhận chủ động",
      "Đưa lên cấp hội đồng quản trị/bộ chủ quản; lập dự phòng thời gian cho các mốc cần phê duyệt của nhà nước",
@@ -436,7 +419,6 @@ def sheet_ung_pho(wb):
         o(ws, r, 8, f"=INDEX({rg('L')},{tim})")
         o(ws, r, 9, f"={muc_so(f'G{r}')}*{muc_so(f'H{r}')}")
         o(ws, r, 10, f'=IF(I{r}>=15,"Đỏ",IF(I{r}>=8,"Vàng","Xanh"))')
-        # đánh giá theo bản chất rủi ro, không theo mã nhóm (CL2 bị bài báo xếp vào nhóm chủ đầu tư)
         kiem_soat = "Ngoài tầm kiểm soát" if ma in ("CL2", "PO1", "FM3", "EC1") else "Trong tầm kiểm soát"
         o(ws, r, 11, kiem_soat, nhap=True)
         if ma == "CL2":

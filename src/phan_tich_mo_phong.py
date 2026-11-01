@@ -1,10 +1,3 @@
-"""Chạy lại toàn bộ quy trình phân tích của bài báo trên dữ liệu mô phỏng.
-
-Cronbach's α → RII → PIM → PLS-SEM (mô hình bậc 2, cách lặp chỉ báo) → bootstrapping → so sánh với bài báo.
-
-Chạy:  python src/phan_tich_mo_phong.py [số lần bootstrap, mặc định 5000]
-Kết quả: results/mo-phong.md, results/tables/mp_*.csv, results/figures/mp_*.png
-"""
 import sys
 from pathlib import Path
 
@@ -15,7 +8,7 @@ import numpy as np
 import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from pls_sem import PLSSEM, gof, tom_tat_bootstrap  # noqa: E402
+from pls_sem import PLSSEM, gof, tom_tat_bootstrap
 
 ROOT = Path(__file__).resolve().parents[1]
 SIM = ROOT / "data" / "simulated"
@@ -26,7 +19,7 @@ FIGURES = ROOT / "results" / "figures"
 NOI_BO = ["CL", "CO", "CN", "FD", "TC", "RM", "MR"]
 BEN_NGOAI = ["EC", "PO", "LP", "EN", "SE", "FM"]
 NHOM = NOI_BO + BEN_NGOAI
-CAU_EF = ["EF1", "EF2", "EF4", "EF5"]          # bỏ EF3 như tác giả
+CAU_EF = ["EF1", "EF2", "EF4", "EF5"]
 MUC = ["VL", "L", "M", "H", "VH"]
 
 bao_cao = []
@@ -45,7 +38,6 @@ def rii_sang_muc(x):
     return MUC[min(int(x / 0.2), 4)]
 
 
-# ---------------------------------------------------------------- 1. Cronbach, RII, PIM
 def phan_tich_mo_ta(td, xs):
     cau = {g: [c for c in td.columns if c.startswith(g)] for g in NHOM}
     cau["EF"] = [c for c in td.columns if c.startswith("EF")]
@@ -114,10 +106,9 @@ def ve_pim(rii):
     plt.close(fig)
 
 
-# ---------------------------------------------------------------- 2. PLS-SEM
 def mo_hinh(td):
     khoi = {g: [c for c in td.columns if c.startswith(g)] for g in NHOM}
-    khoi["INT"] = [c for g in NOI_BO for c in khoi[g]]          # lặp chỉ báo
+    khoi["INT"] = [c for g in NOI_BO for c in khoi[g]]
     khoi["EXT"] = [c for g in BEN_NGOAI for c in khoi[g]]
     khoi["EF"] = CAU_EF
     duong = [(g, "INT") for g in NOI_BO] + [(g, "EXT") for g in BEN_NGOAI] + [("INT", "EF"), ("EXT", "EF")]
@@ -174,7 +165,6 @@ def phan_tich_pls(td, B):
     ghi()
     ve_htmt(H)
 
-    # ---- mô hình cấu trúc
     ghi("## 4. PLS-SEM – mô hình cấu trúc")
     ghi()
     print(f"Bootstrapping {B} lần...")
@@ -220,7 +210,6 @@ def phan_tich_pls(td, B):
         "Bài báo: 0.638 với AVE trung bình 0.566.")
     ghi()
 
-    # ---- 13 "giả thuyết": tổng hiệu ứng của nhóm bậc 1 lên EF
     th = tom_tat_bootstrap(kq.tong_hieu_ung.set_index(["tu", "den"]).tong, th_bs)
     th = th.xs("EF", level="den").loc[NHOM].round(4)
     th["beta_bai_bao"] = b11.loc[NHOM, "beta"]

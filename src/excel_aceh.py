@@ -1,8 +1,3 @@
-"""File Excel tính RII và Cronbach's α trên dữ liệu thật Aceh bằng CÔNG THỨC Excel.
-
-Dữ liệu: Rauzana (2021), Mendeley Data, doi:10.17632/2wckhrzz5j.1 (CC BY 4.0).
-Chạy:  python src/excel_aceh.py   → quan-ly-du-an/du-lieu-aceh.xlsx
-"""
 import sys
 from pathlib import Path
 
@@ -12,7 +7,7 @@ from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 from openpyxl.utils import get_column_letter as cot
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from du_lieu_that_aceh import NHOM, TEN, doc_du_lieu  # noqa: E402
+from du_lieu_that_aceh import NHOM, TEN, doc_du_lieu
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "quan-ly-du-an" / "du-lieu-aceh.xlsx"
@@ -56,7 +51,6 @@ def main():
     n = len(df)
     wb = Workbook()
 
-    # ---- dữ liệu thô
     ws = wb.active
     ws.title = "Dữ liệu"
     ws["A1"] = ("Dữ liệu gốc: Rauzana (2021), Dataset of Causes of delays in construction projects, Mendeley Data, "
@@ -73,7 +67,6 @@ def main():
     cot_cua = {c: cot(j) for j, c in enumerate(df.columns, 2)}
     ws.freeze_panes = "B4"
 
-    # ---- tổng điểm theo nhóm cho từng phiếu (để tính Cronbach)
     tg = wb.create_sheet("Tổng nhóm")
     tg["A1"] = "Tổng điểm của từng phiếu theo nhóm (dùng để tính phương sai tổng trong công thức Cronbach's α)"
     tg["A1"].font = Font(name=FONT, size=9, italic=True)
@@ -86,7 +79,6 @@ def main():
             tg.cell(i, k, "=" + "+".join(f"'Dữ liệu'!{cot_cua[c]}{i}" for c in cau[g]))
     cot_tong = {g: cot(k) for k, g in enumerate(nhom, 2)}
 
-    # ---- RII từng yếu tố
     ws = wb.create_sheet("RII")
     ws["A1"] = "RII = trung bình điểm / 5 (= tổng điểm / (5 × n)). Tổng điểm và hạng để đối chiếu với bài gốc (X8.5 = 327)."
     ws["A1"].font = Font(name=FONT, size=9, italic=True)
@@ -102,7 +94,7 @@ def main():
         o(ws, r, 5, f"=AVERAGE({vung})/5", fmt="0.000")
         o(ws, r, 6, f"=RANK(E{r},$E$4:$E${3 + len(yeu_to)})")
         o(ws, r, 7, f"=VAR({vung})", fmt="0.000")
-    for k, c in enumerate(cau["Y"]):          # thêm 4 câu Y để tính phương sai cho Cronbach
+    for k, c in enumerate(cau["Y"]):
         r = 4 + len(yeu_to) + k
         vung = f"'Dữ liệu'!{cot_cua[c]}{dau}:{cot_cua[c]}{cuoi}"
         o(ws, r, 1, c)
@@ -112,7 +104,6 @@ def main():
     het = 3 + len(yeu_to) + 4
     ws.freeze_panes = "D4"
 
-    # ---- Cronbach và RII theo nhóm
     cr = wb.create_sheet("Cronbach-Nhóm")
     cr["A1"] = "α = k/(k−1) × (1 − Σ phương sai từng câu / phương sai tổng điểm). Bài gốc: Chính trị 0,638; Lao động 0,944."
     cr["A1"].font = Font(name=FONT, size=9, italic=True)

@@ -1,11 +1,3 @@
-"""Kiểm tra lại các số liệu đã công bố trong bài báo Kassem (2022).
-
-Đọc các bảng đã gõ lại trong data/published, tính lại những gì tính lại được
-(RII, PIM, AVE, CR, Fornell-Larcker, Q2, GoF, f2) và so với số trong bài.
-
-Chạy:  python src/kiem_tra_so_lieu.py
-Kết quả: results/tables/*.csv, results/figures/*.png, results/kiem-tra-so-lieu.md
-"""
 from itertools import combinations
 from pathlib import Path
 
@@ -19,13 +11,13 @@ ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / "data" / "published"
 TABLES = ROOT / "results" / "tables"
 FIGURES = ROOT / "results" / "figures"
-N = 314          # số phiếu hợp lệ
-TOL = 0.0015     # sai số làm tròn chấp nhận được (số in 3 chữ số thập phân)
+N = 314
+TOL = 0.0015
 
 MUC = ["VL", "L", "M", "H", "VH"]
 MUC_SO = {m: i + 1 for i, m in enumerate(MUC)}
 
-bao_cao = []     # các dòng markdown cho file tổng hợp
+bao_cao = []
 
 
 def ghi(dong=""):
@@ -37,12 +29,9 @@ def khop(a, b, tol=TOL):
 
 
 def rii_sang_muc(rii):
-    """Quy đổi RII sang 5 mức theo thang chia đều hay dùng:
-    0-0.2 VL, 0.2-0.4 L, 0.4-0.6 M, 0.6-0.8 H, 0.8-1 VH."""
     return MUC[min(int(rii / 0.2), 4)]
 
 
-# ---------------------------------------------------------------- RII
 def kiem_tra_rii():
     df = pd.read_csv(DATA / "bang7_rii_top10.csv")
     df["rii_tong_tinh_lai"] = (df.rii_tac_dong * df.rii_xac_suat).round(4)
@@ -63,12 +52,10 @@ def kiem_tra_rii():
     return df
 
 
-# ---------------------------------------------------------------- PIM
 def kiem_tra_pim(rii):
     pim = pd.read_csv(DATA / "bang6_pim_top10.csv")
     pim["diem_pim"] = pim.tac_dong.map(MUC_SO) * pim.xac_suat.map(MUC_SO)
 
-    # so mức trong Bảng 6 với mức suy ra từ RII ở Bảng 7 (cho các rủi ro có mã)
     gop = pim.merge(rii[["ma", "rii_tac_dong", "rii_xac_suat", "hang_tong"]], on="ma", how="left")
     gop["tac_dong_tu_rii"] = gop.rii_tac_dong.map(lambda x: rii_sang_muc(x) if pd.notna(x) else "")
     gop["xac_suat_tu_rii"] = gop.rii_xac_suat.map(lambda x: rii_sang_muc(x) if pd.notna(x) else "")
@@ -95,7 +82,7 @@ def kiem_tra_pim(rii):
 
 
 def ve_ma_tran_pim(pim):
-    diem = np.outer(np.arange(1, 6), np.arange(1, 6))  # hàng = xác suất, cột = tác động
+    diem = np.outer(np.arange(1, 6), np.arange(1, 6))
     vung = np.where(diem >= 15, 2, np.where(diem >= 8, 1, 0))
     mau = matplotlib.colors.ListedColormap(["#9bd39b", "#f5d76e", "#ef8a7a"])
 
@@ -119,7 +106,6 @@ def ve_ma_tran_pim(pim):
     plt.close(fig)
 
 
-# ---------------------------------------------------------------- mô hình đo lường
 def ave_cr(loading):
     l = np.asarray(loading)
     ave = np.mean(l ** 2)
@@ -149,7 +135,6 @@ def kiem_tra_do_luong():
     ghi(df.to_markdown(index=False))
     ghi()
 
-    # biến kết quả EF: thử bỏ từng câu xem có ra AVE 0.549 không
     ef = ld[ld.nhom == "EF"].set_index("cau").loading
     thu = []
     for bo in [None] + list(ef.index):
@@ -172,7 +157,7 @@ def kiem_tra_fornell_larcker():
     fl = pd.read_csv(DATA / "bang9_fornell_larcker.csv", index_col=0)
     cs = pd.read_csv(DATA / "bang8_chi_so_nhom.csv").set_index("nhom")
     M = fl.values.copy()
-    M = np.where(np.isnan(M), M.T, M)          # đối xứng hoá
+    M = np.where(np.isnan(M), M.T, M)
     ten = list(fl.index)
 
     dong = []
@@ -211,7 +196,6 @@ def kiem_tra_fornell_larcker():
     return df
 
 
-# ---------------------------------------------------------------- mô hình cấu trúc
 def kiem_tra_cau_truc(ave_df):
     p = pd.read_csv(DATA / "bang11_duong_dan.csv")
     p["do_lech_chuan_suy_ra"] = (p.beta / p.t).round(4)
@@ -245,7 +229,6 @@ def kiem_tra_cau_truc(ave_df):
         "13 hệ số này được ước lượng thế nào, nên không kiểm chứng được.")
     ghi()
 
-    # Q2
     q = pd.read_csv(DATA / "bang14_q2.csv")
     q["q2_tinh_lai"] = (1 - q.sse / q.sso).round(3)
     q["so_cau_suy_ra"] = (q.sso / N).round(2)
@@ -263,7 +246,6 @@ def kiem_tra_cau_truc(ave_df):
         "(nội bộ 0.590, bên ngoài 0.527) bị nhầm.")
     ghi()
 
-    # GoF
     r2 = 0.720
     ghi("## 7. GoF = √(R² × AVE trung bình)")
     ghi()
@@ -284,7 +266,6 @@ def kiem_tra_cau_truc(ave_df):
     ghi("Không cách nào ra đúng 0.566. Nếu lấy trung bình 13 nhóm bậc 1 (cách thường dùng) thì GoF ≈ 0.735.")
     ghi()
 
-    # f2
     ghi("## 8. f² và R² khi bỏ từng biến")
     ghi()
     ghi("f² = (R²_có − R²_bỏ) / (1 − R²_có) ⇒ R²_bỏ = R²_có − f² × (1 − R²_có).")
@@ -298,15 +279,12 @@ def kiem_tra_cau_truc(ave_df):
 
 
 def kiem_tra_nhat_quan_cau_truc():
-    """R² và f² của bài báo có khớp với β và tương quan Nội bộ – Bên ngoài suy ra từ Bảng 9 không?
-    Với 2 biến giải thích chuẩn hoá: R² = β1² + β2² + 2·β1·β2·r; bỏ biến 1 thì R² = (β2 + β1·r)²."""
     fl = pd.read_csv(DATA / "bang9_fornell_larcker.csv", index_col=0)
     M = fl.values.copy()
     M = np.where(np.isnan(M), M.T, M)
     np.fill_diagonal(M, 1.0)
     C = pd.DataFrame(M, index=fl.index, columns=fl.columns)
     nb, bn = ["CL", "CO", "CN", "FD", "TC", "RM", "MR"], ["EC", "PO", "LP", "EN", "SE", "FM"]
-    # tương quan giữa trung bình các nhóm nội bộ và trung bình các nhóm bên ngoài
     r = C.loc[nb, bn].values.sum() / np.sqrt(C.loc[nb, nb].values.sum() * C.loc[bn, bn].values.sum())
     b1, b2 = 0.200, 0.673
     r2 = b1 ** 2 + b2 ** 2 + 2 * b1 * b2 * r

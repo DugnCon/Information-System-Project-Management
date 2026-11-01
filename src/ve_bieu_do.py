@@ -1,11 +1,3 @@
-"""Biểu đồ từ số liệu đã công bố, dùng trong báo cáo.
-
-  - bd_nguoi_tra_loi.png   : cơ cấu kinh nghiệm và độ tuổi người trả lời (mục 4.3 bài báo)
-  - bd_fornell_larcker.png : ma trận Fornell–Larcker (Bảng 9), tô đỏ ô vi phạm
-  - bd_thai_binh_2.png     : tổng mức đầu tư và tiến độ dự án Nhiệt điện Thái Bình 2
-
-Chạy:  python src/ve_bieu_do.py
-"""
 from pathlib import Path
 
 import matplotlib
@@ -22,8 +14,6 @@ N = 314
 
 
 def ve_nguoi_tra_loi():
-    """Số liệu mục 4.3.1–4.3.2 của bài báo. Bài không nêu nhóm kinh nghiệm còn lại (45 người)
-    và không nêu tỷ lệ nhóm trên 50 tuổi, nên để là 'không nêu rõ'."""
     kinh_nghiem = pd.Series({"5–10 năm": 81, "10–20 năm": 102, "20–30 năm": 66, "> 30 năm": 20})
     kinh_nghiem["Không nêu rõ"] = N - kinh_nghiem.sum()
     tuoi = pd.Series({"< 30 tuổi": 12 / N, "30–40 tuổi": 0.41, "40–50 tuổi": 0.44})
@@ -84,8 +74,6 @@ def ve_fornell_larcker():
 
 
 def ve_thai_binh_2():
-    """Số liệu: kết luận thanh tra (Báo Đấu thầu, 07/08/2020) và tin khánh thành (Bộ Công Thương, 2023).
-    Mốc kết thúc kế hoạch chỉ là ước tính: khởi công 2011 + gói EPC 45 tháng."""
     fig, (a1, a2) = plt.subplots(1, 2, figsize=(11.5, 4.2), gridspec_kw={"width_ratios": [1, 1.7]})
 
     tmdt = pd.Series({"Phê duyệt\nban đầu (7/2010)": 31505.4, "Sau 2 lần\nđiều chỉnh (2016)": 41799.1})

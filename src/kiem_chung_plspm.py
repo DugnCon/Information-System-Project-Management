@@ -1,14 +1,3 @@
-"""Kiểm chứng phần cài đặt PLS-SEM (src/pls_sem.py).
-
-Hai phép kiểm tra:
-  1. So với NGHIỆM GIẢI TÍCH: mô hình hai khối A → B (Mode A, lược đồ đường dẫn) có nghiệm chính xác là
-     vectơ kỳ dị đầu tiên của ma trận hiệp phương sai chéo X_A'X_B. Đây là "đáp án chuẩn" không phụ thuộc phần mềm.
-  2. So với thư viện độc lập plspm (Python) trên dữ liệu mô phỏng 314 phiếu, mô hình bậc 1 và bậc 2.
-
-plspm 0.5.4 cần pandas < 2.0, nên chạy trong môi trường riêng:
-  python -m venv .venv && .venv/Scripts/python -m pip install -r requirements-kiem-chung.txt
-  .venv/Scripts/python src/kiem_chung_plspm.py      → results/kiem-chung-plspm.md
-"""
 import sys
 import warnings
 from pathlib import Path
@@ -18,12 +7,12 @@ import pandas as pd
 
 warnings.filterwarnings("ignore")
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from pls_sem import PLSSEM, _chuan_hoa  # noqa: E402
+from pls_sem import PLSSEM, _chuan_hoa
 
-import plspm.config as c  # noqa: E402
-from plspm.mode import Mode  # noqa: E402
-from plspm.plspm import Plspm  # noqa: E402
-from plspm.scheme import Scheme  # noqa: E402
+import plspm.config as c
+from plspm.mode import Mode
+from plspm.plspm import Plspm
+from plspm.scheme import Scheme
 
 ROOT = Path(__file__).resolve().parents[1]
 NOI_BO = ["CL", "CO", "CN", "FD", "TC", "RM", "MR"]
@@ -32,7 +21,6 @@ CAU_EF = ["EF1", "EF2", "EF4", "EF5"]
 
 
 def chay_plspm(du_lieu, khoi, duong):
-    """Chạy plspm; tạo bản sao cột riêng cho từng khối để dùng được cách lặp chỉ báo."""
     cot, du_lieu_pl = {}, pd.DataFrame(index=du_lieu.index)
     for j, cols in khoi.items():
         cot[j] = []
@@ -42,7 +30,7 @@ def chay_plspm(du_lieu, khoi, duong):
     cau_truc = c.Structure()
     for i, k in duong:
         cau_truc.add_path([i], [k])
-    p = cau_truc.path()                       # chỉ gọi path() một lần (gọi lại sẽ lỗi)
+    p = cau_truc.path()
     cfg = c.Config(p, scaled=True)
     for j in p.index:
         cfg.add_lv(j, Mode.A, *[c.MV(t) for t in cot[j]])
