@@ -31,3 +31,6 @@ PLAN.md
 docs/
 report/README.md
 quan-ly-du-an/README.md
+*.bcf
+*.run.xml
+report/main.pdf
