@@ -320,24 +320,29 @@ def ghi_excel(ket_qua):
 
 
 # ---------------------------------------------------------------- MS Project
-def ghi_mspdi():
+def ghi_mspdi(ten_file="vi-du-httt.xml", tang=None, ghi_chu=""):
+    """Ghi lịch trình (thời lượng khả dĩ M) cho MS Project. tang = {mã việc: số ngày tăng thêm} để tạo kịch bản."""
+    tang = tang or {}
     uid = {ma: k + 1 for k, (ma, *_) in enumerate(CONG_VIEC)}
-    tasks = ["<Task><UID>0</UID><ID>0</ID><Name>Cổng đăng ký dịch vụ trực tuyến</Name>"
+    tieu_de = "Cổng đăng ký dịch vụ trực tuyến" + (f" – {ghi_chu}" if ghi_chu else "")
+    tasks = [f"<Task><UID>0</UID><ID>0</ID><Name>{escape(tieu_de)}</Name>"
              "<OutlineLevel>0</OutlineLevel><Summary>1</Summary></Task>"]
     for ma, ten, truoc, o_, m_, p_ in CONG_VIEC:
         lien_ket = "".join(f"<PredecessorLink><PredecessorUID>{uid[t]}</PredecessorUID><Type>1</Type></PredecessorLink>"
                            for t in truoc)
+        ngay = m_ + tang.get(ma, 0)
+        ten_hien = f"{ma} {ten}" + (f" (+{tang[ma]} ngày)" if ma in tang else "")
         tasks.append(
-            f"<Task><UID>{uid[ma]}</UID><ID>{uid[ma]}</ID><Name>{escape(ten)}</Name><WBS>{uid[ma]}</WBS>"
-            f"<OutlineLevel>1</OutlineLevel><Duration>PT{m_ * 8}H0M0S</Duration><DurationFormat>7</DurationFormat>"
+            f"<Task><UID>{uid[ma]}</UID><ID>{uid[ma]}</ID><Name>{escape(ten_hien)}</Name><WBS>{uid[ma]}</WBS>"
+            f"<OutlineLevel>1</OutlineLevel><Duration>PT{ngay * 8}H0M0S</Duration><DurationFormat>7</DurationFormat>"
             f"<Notes>{escape(f'{ma}: lạc quan {o_}, khả dĩ {m_}, bi quan {p_} ngày')}</Notes>{lien_ket}</Task>")
     xml = ('<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n'
            '<Project xmlns="http://schemas.microsoft.com/project">'
            "<Name>Vi du HTTT - Cong dang ky dich vu truc tuyen</Name>"
-           "<Title>Cổng đăng ký dịch vụ trực tuyến</Title>"
+           f"<Title>{escape(tieu_de)}</Title>"
            "<StartDate>2027-01-04T08:00:00</StartDate><ScheduleFromStart>1</ScheduleFromStart>"
            f"<Tasks>{''.join(tasks)}</Tasks></Project>")
-    (OUT / "vi-du-httt.xml").write_text(xml, encoding="utf-8")
+    (OUT / ten_file).write_text(xml, encoding="utf-8")
 
 
 # ---------------------------------------------------------------- hình
@@ -396,6 +401,8 @@ def main():
     duong, ke_hoach = duong_tới_han({ma: m for ma, _, _, _, m, _ in CONG_VIEC})
     ghi_excel(kq)
     ghi_mspdi()
+    ghi_mspdi("vi-du-httt-T5-tre.xml", {"T5": 5}, "kịch bản T5 trễ 5 ngày (việc găng)")
+    ghi_mspdi("vi-du-httt-T6-tre.xml", {"T6": 5}, "kịch bản T6 trễ 5 ngày (có dự trữ)")
     ve_hinh(kq)
     pd.DataFrame({"chi_so_toi_han": toi_han}).to_csv(TAB / "mc_chi_so_toi_han.csv", index_label="viec")
     pd.DataFrame({"do_nhay_ngay": nhay}).to_csv(TAB / "mc_do_nhay.csv", index_label="rui_ro")
